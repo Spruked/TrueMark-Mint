@@ -11,7 +11,13 @@
 
 ## ✨ **Overview**
 
-TrueMark Mint is a sophisticated digital certificate platform that combines premium heritage branding with cutting-edge blockchain technology. Built for organizations requiring authenticated, verifiable digital assets with institutional-grade security.
+TrueMark Mint is a sophisticated digital certificate platform implementing the complete **Alpha CertSig NFT Taxonomy** with 7 specialized certificate types. Combines premium heritage branding with cutting-edge blockchain technology and comprehensive royalty management systems.
+
+**Featuring Complete Alpha CertSig Implementation:**
+- **7 NFT Certificate Types**: K, L, H, E, A, C, and Lic-NFT
+- **Dual Pricing Tiers**: Entry and Premium phases with configurable switching
+- **Royalty Management**: 1.5% resale and 3% licensing royalties
+- **Multi-Network Support**: Polygon (personal) and Ethereum (enterprise)
 
 **Certified by Alpha CertSig Mint © 2025 TrueMark LLC, an affiliate of Pro Prime Holdings.**
 
@@ -42,6 +48,39 @@ TrueMark Mint is a sophisticated digital certificate platform that combines prem
 - **Drag & Drop Upload**: Intuitive file selection interface
 - **Certificate Generation**: Branded PDF certificates with QR codes
 - **Invoice System**: Professional billing documentation
+
+---
+
+## 🎖️ **Alpha CertSig NFT Taxonomy**
+
+### **7 Specialized Certificate Types**
+
+| NFT Type | Symbol | Description | Network Priority |
+|----------|--------|-------------|------------------|
+| **Knowledge** | K | Educational credentials, training certificates, academic achievements | Polygon |
+| **Liability** | L | Legal compliance, insurance certificates, liability documentation | Ethereum |
+| **Health** | H | Medical records, health certifications, wellness documents | Ethereum |
+| **Experience** | E | Professional experience, skill verification, work history | Polygon |
+| **Asset** | A | Physical/digital asset authentication, ownership certificates | Ethereum |
+| **Compliance** | C | Regulatory compliance, standards certification, audit reports | Ethereum |
+| **License** | Lic-NFT | Professional licenses, permits, commercial authorizations | Ethereum |
+
+### **Pricing Structure**
+
+#### **Entry Phase** (Basic Minting)
+- **Ethereum**: 0.01 ETH
+- **Polygon**: 15 MATIC
+- Standard NFT features
+
+#### **Premium Phase** (Enhanced Features)
+- **Ethereum**: 0.05 ETH  
+- **Polygon**: 75 MATIC
+- Royalty benefits and enhanced metadata
+
+### **Royalty System**
+- **Resale Royalty**: 1.5% on secondary market transactions
+- **Licensing Royalty**: 3% on commercial usage and licensing
+- **EIP-2981 Compliance**: Standard royalty implementation
 
 ---
 
