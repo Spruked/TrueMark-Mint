@@ -13,6 +13,42 @@ const MINT_CONFIG = {
         certificate: '/api/certificate/generate',
         invoice: '/api/invoice/generate'
     },
+    networks: {
+        polygon: {
+            name: 'Polygon',
+            chainId: 137,
+            rpcUrl: 'https://polygon-rpc.com',
+            currency: 'MATIC',
+            explorerUrl: 'https://polygonscan.com',
+            gasSettings: {
+                gasPrice: '30000000000', // 30 gwei
+                gasLimit: '300000'
+            },
+            contracts: {
+                truemark: '0x...', // TrueMark contract on Polygon
+                marketplace: '0x...' // Marketplace contract on Polygon
+            },
+            type: 'personal',
+            features: ['low-cost', 'fast', 'eco-friendly']
+        },
+        ethereum: {
+            name: 'Ethereum',
+            chainId: 1,
+            rpcUrl: 'https://mainnet.infura.io/v3/YOUR_INFURA_KEY',
+            currency: 'ETH',
+            explorerUrl: 'https://etherscan.io',
+            gasSettings: {
+                gasPrice: '20000000000', // 20 gwei
+                gasLimit: '300000'
+            },
+            contracts: {
+                truemark: '0x...', // TrueMark contract on Ethereum
+                marketplace: '0x...' // Marketplace contract on Ethereum
+            },
+            type: 'enterprise',
+            features: ['maximum-security', 'largest-ecosystem', 'premium']
+        }
+    },
     supported_formats: {
         images: ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp'],
         documents: ['.pdf', '.doc', '.docx', '.txt', '.md'],
@@ -28,20 +64,161 @@ const MINT_CONFIG = {
 // Mint state management
 let mintState = {
     currentStep: 1,
-    totalSteps: 4,
+    totalSteps: 5, // Updated to 5 steps
+    selectedNFTType: null,
     selectedFile: null,
+    selectedNetwork: 'polygon', // Default to Polygon
+    networkConfig: null,
     uploadProgress: 0,
     mintRequestId: null,
     isProcessing: false,
     certificate: null,
-    invoice: null
+    invoice: null,
+    web3: null,
+    account: null,
+    royaltyInfo: {
+        resaleRate: 1.5,
+        licensingRate: 3.0
+    }
 };
 
 document.addEventListener('DOMContentLoaded', function() {
     initializeMintForm();
+    setupNFTTypeSelection();
     setupFileUpload();
     setupStepNavigation();
+    setupNetworkSelection();
 });
+
+/**
+ * Setup NFT type selection interface
+ */
+function setupNFTTypeSelection() {
+    const grid = document.getElementById('nftTypesGrid');
+    if (!grid) return;
+
+    // Clear existing content
+    grid.innerHTML = '';
+
+    // Generate NFT type cards
+    const nftTypes = nftTaxonomy.getAllNFTTypes();
+    const userContext = {
+        userType: window.authSystem?.getUserType() || 'demo',
+        hasCustomPricing: false
+    };
+
+    Object.entries(nftTypes).forEach(([key, nftType]) => {
+        const validation = nftTaxonomy.validateSelection(key, userContext);
+        const pricing = nftTaxonomy.getPricing(key);
+        const priceDisplay = nftTaxonomy.formatPrice(key);
+
+        const card = document.createElement('div');
+        card.className = `nft-type-card ${nftType.colorClass}`;
+        card.setAttribute('data-nft-type', key);
+        
+        // Add special classes for features
+        if (nftType.royaltyEnabled) card.classList.add('has-royalty');
+        if (nftType.updatableMetadata) card.classList.add('has-updatable');
+
+        card.innerHTML = `
+            <input type="radio" name="nftType" value="${key}" id="nftType${key.charAt(0).toUpperCase() + key.slice(1)}">
+            <div class="nft-type-header">
+                <div class="nft-type-icon">${nftType.icon}</div>
+                <div class="nft-type-info">
+                    <h4>${nftType.name}</h4>
+                    <span class="nft-type-key">${nftType.key}</span>
+                </div>
+            </div>
+            <div class="nft-type-description">${nftType.tooltip}</div>
+            <div class="nft-type-footer">
+                <div class="nft-type-price">${priceDisplay}</div>
+                <div class="nft-type-features">
+                    ${nftType.features.slice(0, 3).map(feature => 
+                        `<span class="nft-feature-tag">${feature.replace('-', ' ')}</span>`
+                    ).join('')}
+                </div>
+            </div>
+        `;
+
+        // Disable if validation failed
+        if (!validation.valid) {
+            card.classList.add('disabled');
+            card.title = validation.errors.join(', ');
+        }
+
+        // Add click handler
+        card.addEventListener('click', () => {
+            if (validation.valid) {
+                selectNFTType(key);
+            }
+        });
+
+        grid.appendChild(card);
+    });
+
+    // Setup radio button handlers
+    const radioButtons = grid.querySelectorAll('input[name="nftType"]');
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                selectNFTType(e.target.value);
+            }
+        });
+    });
+}
+
+/**
+ * Select an NFT type
+ */
+function selectNFTType(typeKey) {
+    // Remove previous selections
+    document.querySelectorAll('.nft-type-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+
+    // Select new type
+    const selectedCard = document.querySelector(`[data-nft-type="${typeKey}"]`);
+    if (selectedCard) {
+        selectedCard.classList.add('selected');
+        const radio = selectedCard.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+    }
+
+    // Update state
+    mintState.selectedNFTType = typeKey;
+    const nftType = nftTaxonomy.getNFTType(typeKey);
+    
+    // Enable next button
+    const nextBtn = document.getElementById('nextStep1');
+    if (nextBtn) {
+        nextBtn.disabled = false;
+    }
+
+    // Show selection feedback
+    showSuccess(`Selected ${nftType.name} - ${nftType.tooltip}`);
+    
+    // Auto-suggest network based on NFT type
+    suggestNetworkForNFTType(typeKey);
+}
+
+/**
+ * Suggest optimal network for NFT type
+ */
+function suggestNetworkForNFTType(typeKey) {
+    const nftType = nftTaxonomy.getNFTType(typeKey);
+    if (!nftType) return;
+
+    // Enterprise and Custom types should default to Ethereum
+    if (['enterprise', 'custom'].includes(typeKey)) {
+        mintState.selectedNetwork = 'ethereum';
+    } else {
+        // Personal types default to Polygon
+        mintState.selectedNetwork = 'polygon';
+    }
+
+    // Update network config
+    mintState.networkConfig = MINT_CONFIG.networks[mintState.selectedNetwork];
+}
 
 /**
  * Initialize mint form functionality
@@ -57,6 +234,12 @@ function initializeMintForm() {
         showError('Your account does not have minting permissions. Please contact support.');
         return;
     }
+
+    // Initialize network based on user type
+    initializeDefaultNetwork();
+
+    // Setup Web3 connection
+    initializeWeb3();
 
     // Initialize form handlers
     setupFormValidation();
@@ -485,17 +668,29 @@ async function uploadFile() {
 }
 
 /**
- * Create mint request
+ * Create mint request with NFT type and royalty information
  */
 async function createMintRequest(fileHash) {
+    const nftType = nftTaxonomy.getNFTType(mintState.selectedNFTType);
+    const royaltyRates = nftTaxonomy.getRoyaltyRates();
+    
     const mintRequest = {
         fileHash: fileHash,
         metadata: getFormData(),
+        nftType: {
+            key: nftType.key,
+            name: nftType.name,
+            contractType: nftType.contractType,
+            updatableMetadata: nftType.updatableMetadata,
+            features: nftType.features
+        },
         mintOptions: {
-            network: 'ethereum',
+            network: mintState.selectedNetwork,
             standard: 'ERC-721',
-            royalty: 0
-        }
+            royalty: royaltyRates.resale, // 1.5%
+            licensingRoyalty: nftType.licensingRoyalty ? royaltyRates.licensing : 0 // 3% for Lic/E
+        },
+        pricing: nftTaxonomy.getPricing(mintState.selectedNFTType)
     };
 
     try {
@@ -687,51 +882,117 @@ function showError(message) {
 }
 
 /**
- * Download functions
+ * Download functions with NFT type and royalty information
  */
 function downloadCertificate() {
-    // Create a mock PDF certificate for demo
+    const nftType = nftTaxonomy.getNFTType(mintState.selectedNFTType);
+    const network = mintState.networkConfig;
+    const royaltyRates = nftTaxonomy.getRoyaltyRates();
+    
+    // Create enhanced certificate with NFT type and royalty info
     const certificateContent = `
 TrueMark Mint Digital Certificate
+${nftType.icon} ${nftType.name} (${nftType.key})
 
 Certificate ID: ${mintState.certificate.id}
 Token ID: ${mintState.certificate.tokenId}
 Transaction Hash: ${mintState.certificate.transactionHash}
+Network: ${network.name} (Chain ID: ${network.chainId})
 Issue Date: ${mintState.certificate.issueDate}
 
 Asset Information:
 - Title: ${mintState.certificate.metadata.assetTitle}
 - Creator: ${mintState.certificate.metadata.creatorName}
 - Email: ${mintState.certificate.metadata.creatorEmail}
+- Category: ${mintState.certificate.metadata.assetCategory || 'Unspecified'}
 
-This certificate verifies the authenticity and ownership of the above digital asset as recorded on the blockchain.
+NFT Type Features:
+- Contract Type: ${nftType.contractType}
+- Updatable Metadata: ${nftType.updatableMetadata ? 'Yes' : 'No'}
+- Special Features: ${nftType.features.join(', ')}
+
+Royalty Provisions:
+- Resale Royalty: ${royaltyRates.resale}% (automatically distributed on secondary sales)
+- Licensing Royalty: ${nftType.licensingRoyalty ? royaltyRates.licensing + '% (on licensing revenue)' : 'Not applicable'}
+
+${nftType.licensingRoyalty ? `
+Licensing Information:
+This ${nftType.name} includes built-in licensing capabilities. All licensing agreements
+and royalty payments are tracked on-chain, ensuring transparent revenue distribution.
+` : ''}
+
+Blockchain Verification:
+View on ${network.explorerName}: ${network.explorerUrl}/tx/${mintState.certificate.transactionHash}
+
+This certificate verifies the authenticity and ownership of the above digital asset 
+as recorded on the ${network.name} blockchain. Includes royalty provisions: 
+${royaltyRates.resale}% resale${nftType.licensingRoyalty ? `, ${royaltyRates.licensing}% licensing revenue` : ''}.
 
 Certified by Alpha CertSig Mint
 © 2025 TrueMark LLC, an affiliate of Pro Prime Holdings.
     `;
     
-    downloadTextFile(`certificate_${mintState.certificate.id}.txt`, certificateContent);
+    downloadTextFile(`certificate_${nftType.key}_${mintState.certificate.id}.txt`, certificateContent);
 }
 
 function downloadInvoice() {
-    // Create a mock invoice for demo
+    const nftType = nftTaxonomy.getNFTType(mintState.selectedNFTType);
+    const pricing = nftTaxonomy.getPricing(mintState.selectedNFTType);
+    const network = mintState.networkConfig;
+    const royaltyRates = nftTaxonomy.getRoyaltyRates();
+    
+    // Calculate estimated cost based on NFT type and network
+    let estimatedCost = '$0.00';
+    if (!pricing.isCustom) {
+        const avgPrice = pricing.max ? (pricing.min + pricing.max) / 2 : pricing.min;
+        estimatedCost = `$${avgPrice.toFixed(2)}`;
+    }
+    
+    // Create enhanced invoice with NFT type and royalty info
     const invoiceContent = `
 TrueMark Mint Invoice
+${nftType.icon} ${nftType.name} Service
 
 Invoice ID: ${mintState.invoice.id}
 Certificate ID: ${mintState.invoice.certificateId}
 Issue Date: ${mintState.invoice.issueDate}
-Amount: ${mintState.invoice.amount}
+Amount: ${estimatedCost}
 Status: ${mintState.invoice.status}
+Network: ${network.name}
 
-Service: Digital Asset Certification
-Description: Blockchain-based NFT certificate for digital asset authentication
+Service Details:
+- NFT Type: ${nftType.name} (${nftType.key})
+- Description: ${nftType.description}
+- Contract Type: ${nftType.contractType}
+- Network: ${network.name} (${network.currency})
+
+Pricing Tier: ${nftTaxonomy.getPricingPhase().charAt(0).toUpperCase() + nftTaxonomy.getPricingPhase().slice(1)}
+${pricing.isCustom ? 'Custom Pricing - Contact sales for details' : `Price Range: $${pricing.min}${pricing.max ? ' - $' + pricing.max : '+'}`}
+
+Royalty Provisions Included:
+- Resale Royalty: ${royaltyRates.resale}% on all secondary market sales
+- Licensing Royalty: ${nftType.licensingRoyalty ? royaltyRates.licensing + '% on licensing revenue' : 'Not applicable for this NFT type'}
+
+${nftType.licensingRoyalty ? `
+Licensing Benefits:
+Your ${nftType.name} includes built-in licensing tracking and revenue distribution.
+All licensing agreements are recorded on-chain with automatic royalty payments.
+` : ''}
+
+Features Included:
+${nftType.features.map(feature => `- ${feature.replace('-', ' ')}`).join('\n')}
+
+Terms & Conditions:
+- All sales are final and recorded on the blockchain
+- Royalty provisions are automatically enforced by smart contracts
+- TrueMark retains specified royalty percentages as outlined above
+- Certificate authenticity is verifiable on ${network.explorerName}
 
 Certified by Alpha CertSig Mint
 © 2025 TrueMark LLC, an affiliate of Pro Prime Holdings.
     `;
     
-    downloadTextFile(`invoice_${mintState.invoice.id}.txt`, invoiceContent);
+    downloadTextFile(`invoice_${nftType.key}_${mintState.invoice.id}.txt`, invoiceContent);
 }
 
 function downloadTextFile(filename, content) {
@@ -750,12 +1011,246 @@ window.mintSystem = {
     config: MINT_CONFIG,
     downloadCertificate: downloadCertificate,
     downloadInvoice: downloadInvoice,
+    switchNetwork: switchNetwork,
+    getNetworkConfig: () => mintState.networkConfig,
     resetMint: () => {
         mintState.currentStep = 1;
-        mintState.selectedFile = null;
-        mintState.certificate = null;
-        mintState.invoice = null;
+        updateStepProgress();
         showStep(1);
-        updateStepIndicator();
+        resetForm();
     }
 };
+
+/**
+ * Network Selection and Management
+ */
+
+/**
+ * Initialize default network based on user type
+ */
+function initializeDefaultNetwork() {
+    const userType = window.authSystem.getUserType();
+    
+    // Set default network based on user type
+    if (userType === 'enterprise' || userType === 'admin') {
+        mintState.selectedNetwork = 'ethereum';
+        const ethereumRadio = document.getElementById('networkEthereum');
+        if (ethereumRadio) ethereumRadio.checked = true;
+    } else {
+        mintState.selectedNetwork = 'polygon';
+        const polygonRadio = document.getElementById('networkPolygon');
+        if (polygonRadio) polygonRadio.checked = true;
+    }
+    
+    // Update network config
+    mintState.networkConfig = MINT_CONFIG.networks[mintState.selectedNetwork];
+    updateNetworkDisplay();
+}
+
+/**
+ * Setup network selection event handlers
+ */
+function setupNetworkSelection() {
+    const networkOptions = document.querySelectorAll('input[name="network"]');
+    
+    networkOptions.forEach(option => {
+        option.addEventListener('change', function() {
+            if (this.checked) {
+                switchNetwork(this.value);
+            }
+        });
+    });
+    
+    // Add click handlers for network option containers
+    const networkContainers = document.querySelectorAll('.network-option');
+    networkContainers.forEach(container => {
+        container.addEventListener('click', function() {
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio && !radio.checked) {
+                radio.checked = true;
+                switchNetwork(radio.value);
+            }
+        });
+    });
+}
+
+/**
+ * Switch to a different blockchain network
+ * @param {string} networkKey - The network identifier (polygon/ethereum)
+ */
+async function switchNetwork(networkKey) {
+    if (!MINT_CONFIG.networks[networkKey]) {
+        showError(`Unsupported network: ${networkKey}`);
+        return false;
+    }
+    
+    const oldNetwork = mintState.selectedNetwork;
+    mintState.selectedNetwork = networkKey;
+    mintState.networkConfig = MINT_CONFIG.networks[networkKey];
+    
+    try {
+        // Update Web3 connection if available
+        if (mintState.web3) {
+            await updateWeb3Network();
+        }
+        
+        updateNetworkDisplay();
+        showSuccess(`Switched to ${mintState.networkConfig.name} network`);
+        
+        // Log network switch
+        console.log(`Network switched from ${oldNetwork} to ${networkKey}`);
+        
+        return true;
+    } catch (error) {
+        console.error('Failed to switch network:', error);
+        showError(`Failed to switch to ${mintState.networkConfig.name}: ${error.message}`);
+        
+        // Revert on error
+        mintState.selectedNetwork = oldNetwork;
+        mintState.networkConfig = MINT_CONFIG.networks[oldNetwork];
+        return false;
+    }
+}
+
+/**
+ * Initialize Web3 connection
+ */
+async function initializeWeb3() {
+    try {
+        // Check if Web3 is available
+        if (typeof window.ethereum !== 'undefined') {
+            // Initialize Web3 with current network
+            await connectWallet();
+        } else {
+            console.log('Web3 not available - operating in demo mode');
+            showInfo('MetaMask not detected. Operating in demo mode.');
+        }
+    } catch (error) {
+        console.error('Web3 initialization failed:', error);
+        showInfo('Web3 connection failed. Operating in demo mode.');
+    }
+}
+
+/**
+ * Connect to user's wallet
+ */
+async function connectWallet() {
+    try {
+        // Request account access
+        const accounts = await window.ethereum.request({ 
+            method: 'eth_requestAccounts' 
+        });
+        
+        if (accounts.length > 0) {
+            mintState.account = accounts[0];
+            
+            // Initialize Web3 instance
+            mintState.web3 = new Web3(window.ethereum);
+            
+            // Switch to correct network
+            await updateWeb3Network();
+            
+            showSuccess(`Wallet connected: ${mintState.account.substring(0, 6)}...${mintState.account.substring(38)}`);
+        }
+        
+        return true;
+    } catch (error) {
+        console.error('Wallet connection failed:', error);
+        showError('Failed to connect wallet. Please try again.');
+        return false;
+    }
+}
+
+/**
+ * Update Web3 to use current network
+ */
+async function updateWeb3Network() {
+    if (!mintState.web3 || !mintState.networkConfig) return;
+    
+    try {
+        const currentChainId = await mintState.web3.eth.getChainId();
+        const targetChainId = mintState.networkConfig.chainId;
+        
+        if (currentChainId !== targetChainId) {
+            // Request network switch
+            await window.ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: `0x${targetChainId.toString(16)}` }],
+            });
+        }
+        
+        // Update Web3 provider
+        mintState.web3.setProvider(window.ethereum);
+        
+    } catch (error) {
+        if (error.code === 4902) {
+            // Network not added to wallet, add it
+            await addNetworkToWallet();
+        } else {
+            throw error;
+        }
+    }
+}
+
+/**
+ * Add network to wallet if not present
+ */
+async function addNetworkToWallet() {
+    const network = mintState.networkConfig;
+    
+    try {
+        await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+                chainId: `0x${network.chainId.toString(16)}`,
+                chainName: network.name,
+                rpcUrls: [network.rpcUrl],
+                nativeCurrency: {
+                    name: network.currency,
+                    symbol: network.currency,
+                    decimals: 18
+                },
+                blockExplorerUrls: [network.explorerUrl]
+            }]
+        });
+    } catch (error) {
+        console.error('Failed to add network:', error);
+        throw new Error(`Failed to add ${network.name} to wallet`);
+    }
+}
+
+/**
+ * Update network display elements
+ */
+function updateNetworkDisplay() {
+    const network = mintState.networkConfig;
+    if (!network) return;
+    
+    // Update any network status displays
+    const networkStatus = document.querySelector('.network-status');
+    if (networkStatus) {
+        networkStatus.innerHTML = `
+            <span class="network-indicator ${mintState.selectedNetwork}"></span>
+            <span class="network-name">${network.name}</span>
+            <span class="network-currency">${network.currency}</span>
+        `;
+    }
+    
+    // Update cost estimates based on network
+    updateCostEstimates();
+}
+
+/**
+ * Update cost estimates for selected network
+ */
+function updateCostEstimates() {
+    const network = mintState.networkConfig;
+    if (!network) return;
+    
+    const costElements = document.querySelectorAll('.mint-cost');
+    const estimatedCost = network.type === 'personal' ? '$0.05 - $0.50' : '$15 - $50';
+    
+    costElements.forEach(element => {
+        element.textContent = `Est. ${estimatedCost} ${network.currency}`;
+    });
+}

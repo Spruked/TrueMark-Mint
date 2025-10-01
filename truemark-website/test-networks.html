@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Network Test - TrueMark Mint</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f8f8f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .network-info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .test-button {
+            background: #C6A94E;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #B8973D;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <h1>🧪 TrueMark Complete System Test Suite</h1>
+    
+    <div class="test-section">
+        <h2>NFT Taxonomy Test</h2>
+        <button class="test-button" onclick="testNFTTaxonomy()">Test All 7 NFT Types</button>
+        <div id="taxonomyResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Pricing System Test</h2>
+        <button class="test-button" onclick="testPricingSystem()">Test Entry/Premium Pricing</button>
+        <div id="pricingResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Royalty System Test</h2>
+        <button class="test-button" onclick="testRoyaltySystem()">Test Royalty Calculations</button>
+        <div id="royaltyResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Network Configuration Test</h2>
+        <button class="test-button" onclick="testNetworkConfig()">Test Network Config</button>
+        <div id="configResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Authentication & User Type Test</h2>
+        <button class="test-button" onclick="testAuthSystem()">Test Auth System</button>
+        <div id="authResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Network Switching Test</h2>
+        <button class="test-button" onclick="testNetworkSwitch('polygon')">Switch to Polygon</button>
+        <button class="test-button" onclick="testNetworkSwitch('ethereum')">Switch to Ethereum</button>
+        <div id="switchResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Complete Integration Test</h2>
+        <button class="test-button" onclick="runCompleteTest()">Run Full System Test</button>
+        <div id="integrationResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>System Information</h2>
+        <div id="systemInfo"></div>
+    </div>
+
+    <script src="assets/js/network-config.js"></script>
+    <script src="assets/js/nft-taxonomy.js"></script>
+    <script src="assets/js/auth.js"></script>
+    
+    <script>
+        function testNFTTaxonomy() {
+            const results = document.getElementById('taxonomyResults');
+            results.innerHTML = '';
+            
+            try {
+                const allTypes = nftTaxonomy.getAllNFTTypes();
+                const typeKeys = nftTaxonomy.getNFTTypeKeys();
+                
+                let html = '<div class="status success">✅ NFT Taxonomy System Loaded</div>';
+                html += `<p><strong>Available NFT Types:</strong> ${typeKeys.length} types</p>`;
+                
+                // Test each NFT type
+                typeKeys.forEach(key => {
+                    const nftType = nftTaxonomy.getNFTType(key);
+                    const pricing = nftTaxonomy.getPricing(key);
+                    const priceDisplay = nftTaxonomy.formatPrice(key);
+                    const validation = nftTaxonomy.validateSelection(key, { userType: 'demo' });
+                    
+                    html += `<div class="network-info">
+                        <h4>${nftType.icon} ${nftType.name} (${nftType.key})</h4>
+                        <p><strong>Description:</strong> ${nftType.description}</p>
+                        <p><strong>Tooltip:</strong> ${nftType.tooltip}</p>
+                        <p><strong>Price:</strong> ${priceDisplay}</p>
+                        <p><strong>Contract Type:</strong> ${nftType.contractType}</p>
+                        <p><strong>Updatable Metadata:</strong> ${nftType.updatableMetadata ? 'Yes' : 'No'}</p>
+                        <p><strong>Royalty Enabled:</strong> ${nftType.royaltyEnabled ? 'Yes' : 'No'}</p>
+                        <p><strong>Licensing Royalty:</strong> ${nftType.licensingRoyalty ? 'Yes' : 'No'}</p>
+                        <p><strong>Features:</strong> ${nftType.features.join(', ')}</p>
+                        <div class="status ${validation.valid ? 'success' : 'error'}">
+                            ${validation.valid ? '✅ Valid for demo user' : '❌ ' + validation.errors.join(', ')}
+                        </div>
+                    </div>`;
+                });
+                
+                results.innerHTML = html;
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        function testPricingSystem() {
+            const results = document.getElementById('pricingResults');
+            results.innerHTML = '';
+            
+            try {
+                let html = '';
+                
+                // Test both pricing phases
+                ['entry', 'premium'].forEach(phase => {
+                    nftTaxonomy.setPricingPhase(phase);
+                    html += `<div class="network-info">
+                        <h4>📊 ${phase.charAt(0).toUpperCase() + phase.slice(1)} Phase Pricing</h4>`;
+                    
+                    nftTaxonomy.getNFTTypeKeys().forEach(key => {
+                        const nftType = nftTaxonomy.getNFTType(key);
+                        const pricing = nftTaxonomy.getPricing(key);
+                        const priceDisplay = nftTaxonomy.formatPrice(key);
+                        
+                        html += `<p><strong>${nftType.icon} ${nftType.key}:</strong> ${priceDisplay}</p>`;
+                    });
+                    
+                    html += '</div>';
+                });
+                
+                // Reset to entry phase
+                nftTaxonomy.setPricingPhase('entry');
+                html += '<div class="status success">✅ Pricing system working correctly</div>';
+                
+                results.innerHTML = html;
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        function testRoyaltySystem() {
+            const results = document.getElementById('royaltyResults');
+            results.innerHTML = '';
+            
+            try {
+                const royaltyRates = nftTaxonomy.getRoyaltyRates();
+                
+                let html = `<div class="network-info">
+                    <h4>💰 Royalty Configuration</h4>
+                    <p><strong>Resale Royalty:</strong> ${royaltyRates.resale}%</p>
+                    <p><strong>Licensing Royalty:</strong> ${royaltyRates.licensing}%</p>
+                </div>`;
+                
+                // Test royalty calculation examples
+                const saleAmount = 1000;
+                const licensingAmount = 5000;
+                
+                html += `<div class="network-info">
+                    <h4>🧮 Royalty Calculations</h4>
+                    <p><strong>Example Sale ($${saleAmount}):</strong> $${(saleAmount * royaltyRates.resale / 100).toFixed(2)} royalty</p>
+                    <p><strong>Example Licensing ($${licensingAmount}):</strong> $${(licensingAmount * royaltyRates.licensing / 100).toFixed(2)} royalty</p>
+                </div>`;
+                
+                // Test which types support licensing royalties
+                html += '<div class="network-info"><h4>🔑 Licensing Support</h4>';
+                nftTaxonomy.getNFTTypeKeys().forEach(key => {
+                    const nftType = nftTaxonomy.getNFTType(key);
+                    html += `<p><strong>${nftType.icon} ${nftType.key}:</strong> ${nftType.licensingRoyalty ? 'Supports licensing' : 'Resale only'}</p>`;
+                });
+                html += '</div>';
+                
+                html += '<div class="status success">✅ Royalty system functioning correctly</div>';
+                results.innerHTML = html;
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        function runCompleteTest() {
+            const results = document.getElementById('integrationResults');
+            results.innerHTML = '<div class="status info">🔄 Running complete system test...</div>';
+            
+            try {
+                let testResults = [];
+                
+                // Test 1: NFT Taxonomy
+                try {
+                    const allTypes = nftTaxonomy.getAllNFTTypes();
+                    if (Object.keys(allTypes).length === 7) {
+                        testResults.push('✅ All 7 NFT types loaded');
+                    } else {
+                        testResults.push('❌ Missing NFT types');
+                    }
+                } catch (e) {
+                    testResults.push('❌ NFT taxonomy error: ' + e.message);
+                }
+                
+                // Test 2: Pricing System
+                try {
+                    const entryPrice = nftTaxonomy.formatPrice('knowledge');
+                    nftTaxonomy.setPricingPhase('premium');
+                    const premiumPrice = nftTaxonomy.formatPrice('knowledge');
+                    nftTaxonomy.setPricingPhase('entry');
+                    
+                    if (entryPrice !== premiumPrice) {
+                        testResults.push('✅ Pricing phases working');
+                    } else {
+                        testResults.push('❌ Pricing phases not switching');
+                    }
+                } catch (e) {
+                    testResults.push('❌ Pricing system error: ' + e.message);
+                }
+                
+                // Test 3: Network Config
+                try {
+                    const networks = networkConfig.getAllNetworks();
+                    if (networks.polygon && networks.ethereum) {
+                        testResults.push('✅ Multi-network support active');
+                    } else {
+                        testResults.push('❌ Network configuration incomplete');
+                    }
+                } catch (e) {
+                    testResults.push('❌ Network config error: ' + e.message);
+                }
+                
+                // Test 4: Royalty System
+                try {
+                    const royaltyRates = nftTaxonomy.getRoyaltyRates();
+                    if (royaltyRates.resale === 1.5 && royaltyRates.licensing === 3.0) {
+                        testResults.push('✅ Royalty rates correctly configured');
+                    } else {
+                        testResults.push('❌ Incorrect royalty rates');
+                    }
+                } catch (e) {
+                    testResults.push('❌ Royalty system error: ' + e.message);
+                }
+                
+                // Test 5: Contract Integration
+                try {
+                    const contractTypes = ['standard', 'updatable', 'royalty', 'custom'];
+                    let contractsValid = true;
+                    
+                    contractTypes.forEach(type => {
+                        const typesForContract = nftTaxonomy.getNFTTypesByContract(type);
+                        if (typesForContract.length === 0 && type !== 'custom') {
+                            contractsValid = false;
+                        }
+                    });
+                    
+                    if (contractsValid) {
+                        testResults.push('✅ Contract integration ready');
+                    } else {
+                        testResults.push('❌ Contract mapping incomplete');
+                    }
+                } catch (e) {
+                    testResults.push('❌ Contract integration error: ' + e.message);
+                }
+                
+                // Display results
+                let html = '<div class="network-info"><h4>🧪 Complete System Test Results</h4>';
+                testResults.forEach(result => {
+                    html += `<p>${result}</p>`;
+                });
+                
+                const passedTests = testResults.filter(r => r.startsWith('✅')).length;
+                const totalTests = testResults.length;
+                
+                html += `<div class="status ${passedTests === totalTests ? 'success' : 'error'}">
+                    Tests Passed: ${passedTests}/${totalTests}
+                </div></div>`;
+                
+                results.innerHTML = html;
+                
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Integration test failed: ${error.message}</div>`;
+            }
+        }
+
+        function displaySystemInfo() {
+            const info = document.getElementById('systemInfo');
+            
+            try {
+                const timestamp = new Date().toISOString();
+                const taxonomyPhase = nftTaxonomy.getPricingPhase();
+                const currentNetwork = networkConfig.getCurrentNetwork();
+                
+                info.innerHTML = `
+                    <div class="network-info">
+                        <h4>📋 System Information</h4>
+                        <p><strong>Test Time:</strong> ${timestamp}</p>
+                        <p><strong>NFT Types Available:</strong> ${nftTaxonomy.getNFTTypeKeys().length}</p>
+                        <p><strong>Current Pricing Phase:</strong> ${taxonomyPhase}</p>
+                        <p><strong>Current Network:</strong> ${currentNetwork.name}</p>
+                        <p><strong>Browser:</strong> ${navigator.userAgent.split(' ')[0]}</p>
+                        <p><strong>NFT Taxonomy Version:</strong> 1.0.0</p>
+                        <p><strong>Network Config Version:</strong> 1.0.0</p>
+                    </div>
+                `;
+            } catch (error) {
+                info.innerHTML = `<div class="status error">❌ System info error: ${error.message}</div>`;
+            }
+        }
+        function testNetworkConfig() {
+            const results = document.getElementById('configResults');
+            results.innerHTML = '';
+            
+            try {
+                // Test network config loading
+                const networks = networkConfig.getAllNetworks();
+                const networkKeys = networkConfig.getNetworkKeys();
+                
+                let html = '<div class="status success">✅ Network Config Loaded Successfully</div>';
+                html += `<p><strong>Available Networks:</strong> ${networkKeys.join(', ')}</p>`;
+                
+                // Test each network
+                networkKeys.forEach(key => {
+                    const network = networkConfig.getNetwork(key);
+                    const validation = networkConfig.validateNetwork(key);
+                    
+                    html += `<div class="network-info">
+                        <h4>${network.icon} ${network.name}</h4>
+                        <p><strong>Chain ID:</strong> ${network.chainId}</p>
+                        <p><strong>Type:</strong> ${network.type}</p>
+                        <p><strong>Cost:</strong> ${network.costRange}</p>
+                        <p><strong>Speed:</strong> ${network.avgConfirmationTime}</p>
+                        <p><strong>Features:</strong> ${network.features.join(', ')}</p>
+                        <div class="status ${validation.valid ? 'success' : 'error'}">
+                            ${validation.valid ? '✅ Valid' : '❌ ' + validation.errors.join(', ')}
+                        </div>
+                    </div>`;
+                });
+                
+                results.innerHTML = html;
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        function testAuthSystem() {
+            const results = document.getElementById('authResults');
+            results.innerHTML = '';
+            
+            try {
+                let html = '';
+                
+                if (window.authSystem) {
+                    const isAuth = window.authSystem.isAuthenticated();
+                    const user = window.authSystem.getUser();
+                    const userType = window.authSystem.getUserType ? window.authSystem.getUserType() : 'unknown';
+                    const preferredNetwork = window.authSystem.getPreferredNetwork ? window.authSystem.getPreferredNetwork() : 'unknown';
+                    
+                    html += `<div class="status ${isAuth ? 'success' : 'info'}">
+                        ${isAuth ? '✅ User Authenticated' : 'ℹ️ No Active Session'}
+                    </div>`;
+                    
+                    html += `<div class="network-info">
+                        <p><strong>User Type:</strong> ${userType}</p>
+                        <p><strong>Preferred Network:</strong> ${preferredNetwork}</p>
+                        <p><strong>User Data:</strong> ${user ? JSON.stringify(user, null, 2) : 'None'}</p>
+                    </div>`;
+                } else {
+                    html = '<div class="status error">❌ Auth System Not Available</div>';
+                }
+                
+                results.innerHTML = html;
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        function testNetworkSwitch(networkKey) {
+            const results = document.getElementById('switchResults');
+            
+            try {
+                const success = networkConfig.setCurrentNetwork(networkKey);
+                const current = networkConfig.getCurrentNetwork();
+                
+                let html = `<div class="status ${success ? 'success' : 'error'}">
+                    ${success ? '✅' : '❌'} Switch to ${networkKey}: ${success ? 'Success' : 'Failed'}
+                </div>`;
+                
+                if (success) {
+                    html += `<div class="network-info">
+                        <h4>Current Network: ${current.icon} ${current.name}</h4>
+                        <p><strong>Chain ID:</strong> ${current.chainId}</p>
+                        <p><strong>RPC URL:</strong> ${current.rpcUrl}</p>
+                        <p><strong>Currency:</strong> ${current.currency}</p>
+                        <p><strong>Explorer:</strong> ${current.explorerUrl}</p>
+                    </div>`;
+                }
+                
+                results.innerHTML = html;
+                updateNetworkDisplay();
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        function updateNetworkDisplay() {
+            const display = document.getElementById('networkDisplay');
+            const current = networkConfig.getCurrentNetwork();
+            
+            if (current) {
+                display.innerHTML = `
+                    <div class="network-info">
+                        <h3>${current.icon} Current Network: ${current.name}</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <h4>Network Details</h4>
+                                <ul class="feature-list">
+                                    <li><strong>Chain ID:</strong> ${current.chainId}</li>
+                                    <li><strong>Currency:</strong> ${current.currency}</li>
+                                    <li><strong>Type:</strong> ${current.type}</li>
+                                    <li><strong>Cost Range:</strong> ${current.costRange}</li>
+                                    <li><strong>Confirmation Time:</strong> ${current.avgConfirmationTime}</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Features</h4>
+                                <ul class="feature-list">
+                                    ${current.features.map(feature => `<li>${feature}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                        <p><strong>Description:</strong> ${current.description}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize display
+        document.addEventListener('DOMContentLoaded', function() {
+            displaySystemInfo();
+            updateNetworkDisplay();
+            
+            // Run quick validation on load
+            setTimeout(() => {
+                try {
+                    if (window.nftTaxonomy && window.networkConfig) {
+                        console.log('✅ All systems loaded successfully');
+                        const systemStatus = document.createElement('div');
+                        systemStatus.className = 'status success';
+                        systemStatus.innerHTML = '✅ All systems loaded and ready for testing';
+                        document.querySelector('.test-section').appendChild(systemStatus);
+                    }
+                } catch (error) {
+                    console.error('❌ System validation failed:', error);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

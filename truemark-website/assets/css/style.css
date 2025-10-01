@@ -2333,3 +2333,444 @@ p {
 
 .hidden { display: none; }
 .visible { display: block; }
+
+/* Demo Credentials Section */
+.demo-credentials {
+    background: linear-gradient(135deg, rgba(198, 169, 78, 0.05) 0%, rgba(15, 39, 65, 0.05) 100%);
+    border: 1px solid rgba(198, 169, 78, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.demo-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    color: var(--navy);
+    font-weight: 600;
+}
+
+.demo-icon {
+    font-size: 1.2rem;
+}
+
+.demo-accounts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.demo-account {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(198, 169, 78, 0.3);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.demo-account:hover {
+    background: rgba(198, 169, 78, 0.1);
+    border-color: var(--gold);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.demo-account .role {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 0.9rem;
+}
+
+.demo-account .creds {
+    font-family: 'Courier New', monospace;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    background: rgba(15, 39, 65, 0.05);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+@media (min-width: 768px) {
+    .demo-accounts {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ==========================================================================
+   Network Selection Styles
+   ========================================================================== */
+
+.network-selection {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(198, 169, 78, 0.05) 0%, rgba(15, 39, 65, 0.05) 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(198, 169, 78, 0.2);
+}
+
+.network-selection h3 {
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+
+.network-selection p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.network-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .network-options {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.network-option {
+    background: white;
+    border: 2px solid rgba(198, 169, 78, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.network-option:hover {
+    border-color: var(--gold);
+    box-shadow: 0 8px 25px rgba(198, 169, 78, 0.15);
+    transform: translateY(-2px);
+}
+
+.network-option input[type="radio"] {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 20px;
+    height: 20px;
+    accent-color: var(--gold);
+}
+
+.network-option input[type="radio"]:checked {
+    accent-color: var(--gold);
+}
+
+.network-option[data-network="polygon"] input[type="radio"]:checked ~ .network-header,
+.network-option[data-network="polygon"]:has(input[type="radio"]:checked) {
+    border-color: #8247e5;
+}
+
+.network-option[data-network="ethereum"] input[type="radio"]:checked ~ .network-header,
+.network-option[data-network="ethereum"]:has(input[type="radio"]:checked) {
+    border-color: #627eea;
+}
+
+.network-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.network-icon {
+    font-size: 2rem;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(198, 169, 78, 0.1);
+    border-radius: 50%;
+}
+
+.network-info h4 {
+    color: var(--navy);
+    margin-bottom: 0.25rem;
+    font-size: 1.1rem;
+}
+
+.network-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.network-badge.personal {
+    background: linear-gradient(135deg, #8247e5, #a855f7);
+    color: white;
+}
+
+.network-badge.enterprise {
+    background: linear-gradient(135deg, #627eea, #3b82f6);
+    color: white;
+}
+
+.network-details ul {
+    list-style: none;
+    padding: 0;
+}
+
+.network-details li {
+    padding: 0.5rem 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.network-details li:before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   NFT Type Selection Styles
+   ========================================================================== */
+
+.nft-type-selection {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(198, 169, 78, 0.05) 0%, rgba(15, 39, 65, 0.05) 100%);
+    border-radius: 16px;
+    border: 1px solid rgba(198, 169, 78, 0.2);
+}
+
+.nft-type-selection h3 {
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.nft-type-selection .subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.nft-types-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .nft-types-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .nft-types-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.nft-type-card {
+    background: white;
+    border: 2px solid rgba(198, 169, 78, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.nft-type-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 8px 25px rgba(198, 169, 78, 0.15);
+    transform: translateY(-2px);
+}
+
+.nft-type-card.selected {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, rgba(198, 169, 78, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+    box-shadow: 0 8px 25px rgba(198, 169, 78, 0.2);
+}
+
+.nft-type-card input[type="radio"] {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 20px;
+    height: 20px;
+    accent-color: var(--gold);
+}
+
+.nft-type-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.nft-type-icon {
+    font-size: 2.5rem;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(198, 169, 78, 0.1);
+}
+
+.nft-type-info h4 {
+    color: var(--navy);
+    margin-bottom: 0.25rem;
+    font-size: 1.2rem;
+}
+
+.nft-type-key {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background: var(--gold);
+    color: white;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.nft-type-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.nft-type-footer {
+    margin-top: auto;
+}
+
+.nft-type-price {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+}
+
+.nft-type-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.nft-feature-tag {
+    padding: 0.25rem 0.5rem;
+    background: rgba(15, 39, 65, 0.1);
+    color: var(--navy);
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* NFT Type Color Variants */
+.nft-type-card.knowledge .nft-type-icon {
+    background: rgba(37, 99, 235, 0.1);
+    color: #2563eb;
+}
+
+.nft-type-card.legacy .nft-type-icon {
+    background: rgba(30, 58, 138, 0.1);
+    color: #1e3a8a;
+}
+
+.nft-type-card.heirloom .nft-type-icon {
+    background: rgba(198, 169, 78, 0.1);
+    color: #c6a94e;
+}
+
+.nft-type-card.academic .nft-type-icon {
+    background: rgba(22, 163, 74, 0.1);
+    color: #16a34a;
+}
+
+.nft-type-card.enterprise .nft-type-icon {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+}
+
+.nft-type-card.custom .nft-type-icon {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+}
+
+.nft-type-card.licensable .nft-type-icon {
+    background: rgba(124, 58, 237, 0.1);
+    color: #7c3aed;
+}
+
+/* Special styling for premium features */
+.nft-type-card.has-royalty::before {
+    content: '💰';
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.nft-type-card.has-updatable::before {
+    content: '🔄';
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.nft-type-card.licensable::before {
+    content: '🔑💰';
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    font-size: 1rem;
+}
+
+/* Pricing phase indicator */
+.pricing-phase-indicator {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--gold);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pricing-phase-indicator.entry {
+    background: #16a34a;
+}
+
+.pricing-phase-indicator.premium {
+    background: #7c3aed;
+}

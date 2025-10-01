@@ -9,7 +9,9 @@ const AUTH_CONFIG = {
     session_duration: 24 * 60 * 60 * 1000, // 24 hours
     remember_duration: 30 * 24 * 60 * 60 * 1000, // 30 days
     max_login_attempts: 3,
-    lockout_duration: 15 * 60 * 1000 // 15 minutes
+    lockout_duration: 15 * 60 * 1000, // 15 minutes
+    demo_mode: true, // Enable demo mode by default for development
+    connection_timeout: 5000 // 5 seconds timeout for backend connection
 };
 
 // Authentication state
@@ -242,7 +244,17 @@ async function authenticateUser(username, password) {
         throw new Error(`Account temporarily locked. Try again in ${minutes} minutes.`);
     }
 
+    // If demo mode is enabled or no backend is available, use demo authentication
+    if (AUTH_CONFIG.demo_mode) {
+        console.info('Using demo mode for authentication');
+        return authenticateUserDemo(username, password);
+    }
+
     try {
+        // Test backend connectivity first
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), AUTH_CONFIG.connection_timeout);
+
         // Generate secure hash for password (client-side pre-processing)
         const salt = SecurityUtils.generateSalt();
         const hashedPassword = await SecurityUtils.hashPassword(password, salt);
@@ -268,9 +280,11 @@ async function authenticateUser(username, password) {
                 'X-Client-Version': '1.0.0',
                 'X-Request-ID': crypto.randomUUID()
             },
-            body: JSON.stringify(authRequest)
+            body: JSON.stringify(authRequest),
+            signal: controller.signal
         });
 
+        clearTimeout(timeoutId);
         const result = await response.json();
 
         if (response.ok && result.success) {
@@ -298,8 +312,13 @@ async function authenticateUser(username, password) {
         }
     } catch (error) {
         // If backend is not available, fall back to demo mode for development
-        if (error.message.includes('fetch')) {
-            console.warn('Backend not available, using demo mode');
+        if (error.name === 'AbortError' ||
+            error.message.includes('fetch') || 
+            error.message.includes('NetworkError') || 
+            error.message.includes('Failed to fetch') ||
+            error.name === 'TypeError' ||
+            error.code === 'ECONNREFUSED') {
+            console.warn('Backend not available, falling back to demo mode');
             return authenticateUserDemo(username, password);
         }
         
@@ -763,11 +782,76 @@ function hasPermission(permission) {
     return authState.user?.permissions?.includes(permission) || false;
 }
 
+/**
+ * Fill login form with demo credentials
+ */
+function fillCredentials(username, password) {
+    const usernameField = document.getElementById('username');
+    const passwordField = document.getElementById('password');
+    
+    if (usernameField && passwordField) {
+        usernameField.value = username;
+        passwordField.value = password;
+        
+        // Add visual feedback
+        usernameField.style.background = 'rgba(198, 169, 78, 0.1)';
+        passwordField.style.background = 'rgba(198, 169, 78, 0.1)';
+        
+        // Clear the highlight after a moment
+        setTimeout(() => {
+            usernameField.style.background = '';
+            passwordField.style.background = '';
+        }, 1000);
+        
+        // Focus on login button
+        const loginBtn = document.getElementById('loginBtn');
+        if (loginBtn) {
+            loginBtn.focus();
+        }
+    }
+}
+
+// Make fillCredentials globally accessible
+window.fillCredentials = fillCredentials;
+
 // Export functions for use in other scripts
 window.authSystem = {
     isAuthenticated: () => authState.isAuthenticated,
     getUser: () => authState.user,
+    getUserType: getUserType,
+    getPreferredNetwork: getPreferredNetwork,
     getToken: getAuthToken,
     hasPermission: hasPermission,
     logout: logout
 };
+
+/**
+ * Get user type for network preference
+ */
+function getUserType() {
+    if (!authState.user) return 'demo';
+    
+    // Determine user type based on role/permissions
+    if (authState.user.role === 'admin') return 'admin';
+    if (authState.user.role === 'enterprise' || authState.user.permissions?.includes('enterprise')) return 'enterprise';
+    if (authState.user.role === 'minter') return 'minter';
+    return 'personal';
+}
+
+/**
+ * Get preferred network for user type
+ */
+function getPreferredNetwork() {
+    const userType = getUserType();
+    
+    switch (userType) {
+        case 'admin':
+        case 'enterprise':
+            return 'ethereum';
+        case 'minter':
+        case 'personal':
+        case 'demo':
+        default:
+            return 'polygon';
+    }
+}

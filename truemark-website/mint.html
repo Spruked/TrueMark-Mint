@@ -79,6 +79,25 @@
                 <!-- Step 1: File Upload -->
                 <div class="form-step active" id="step-1">
                     <div class="step-content">
+                        <h2>Select Your NFT Type</h2>
+                        <p>Choose the type of NFT certificate that best fits your needs</p>
+                        
+                        <div class="nft-type-selection">
+                            <div class="pricing-phase-indicator entry">Entry Phase Pricing</div>
+                            
+                            <div class="nft-types-grid" id="nftTypesGrid">
+                                <!-- NFT type cards will be dynamically generated -->
+                            </div>
+                        </div>
+
+                        <div class="step-actions">
+                            <button class="btn btn-primary" id="nextStep1" disabled>Continue to Upload</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-step" id="step-2">
+                    <div class="step-content">
                         <h2>Upload Your Digital Asset</h2>
                         <p>Select the file you want to authenticate. We support all major file formats.</p>
                         
@@ -116,13 +135,14 @@
                         </div>
 
                         <div class="step-actions">
-                            <button class="btn btn-primary" id="nextStep1" disabled>Continue to Details</button>
+                            <button class="btn btn-secondary" id="prevStep2">Back to NFT Type</button>
+                            <button class="btn btn-primary" id="nextStep2" disabled>Continue to Details</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 2: Asset Details -->
-                <div class="form-step" id="step-2">
+                <!-- Step 3: Asset Details -->
+                <div class="form-step" id="step-3">
                     <div class="step-content">
                         <h2>Add Asset Details</h2>
                         <p>Provide information about your digital asset for the certificate.</p>
@@ -179,6 +199,51 @@
                                         <option value="gpl">GNU General Public License</option>
                                         <option value="custom">Custom License</option>
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="form-section network-selection">
+                                <h3>Blockchain Network</h3>
+                                <p>Choose the blockchain network for your NFT certificate</p>
+                                
+                                <div class="network-options">
+                                    <div class="network-option" data-network="polygon">
+                                        <div class="network-header">
+                                            <div class="network-icon">🟣</div>
+                                            <div class="network-info">
+                                                <h4>Polygon Network</h4>
+                                                <span class="network-badge personal">Personal Use</span>
+                                            </div>
+                                            <input type="radio" name="network" value="polygon" id="networkPolygon" checked>
+                                        </div>
+                                        <div class="network-details">
+                                            <ul>
+                                                <li>💰 Lower gas fees (~$0.01-0.10)</li>
+                                                <li>⚡ Fast transactions (2-3 seconds)</li>
+                                                <li>🌱 Eco-friendly (99% less energy)</li>
+                                                <li>👤 Perfect for personal projects</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="network-option" data-network="ethereum">
+                                        <div class="network-header">
+                                            <div class="network-icon">💎</div>
+                                            <div class="network-info">
+                                                <h4>Ethereum Network</h4>
+                                                <span class="network-badge enterprise">Enterprise</span>
+                                            </div>
+                                            <input type="radio" name="network" value="ethereum" id="networkEthereum">
+                                        </div>
+                                        <div class="network-details">
+                                            <ul>
+                                                <li>🏛️ Maximum security & decentralization</li>
+                                                <li>🌐 Largest NFT ecosystem</li>
+                                                <li>📈 Higher resale value potential</li>
+                                                <li>🏢 Ideal for enterprise & commercial use</li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -430,6 +495,9 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <script src="assets/js/network-config.js"></script>
+    <script src="assets/js/nft-taxonomy.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/mint.js"></script>

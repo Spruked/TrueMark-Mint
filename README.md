@@ -87,15 +87,36 @@ docker-compose logs -f
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Frontend      │    │     Backend      │    │   Blockchain    │
-│   (Website)     │◄──►│  (Alpha Engine)  │◄──►│   (Ethereum)    │
+│   Frontend      │    │     Backend      │    │   Multi-Network │
+│   (Website)     │◄──►│  (Alpha Engine)  │◄──►│   Blockchain    │
 │                 │    │                  │    │                 │
-│ • Authentication│    │ • NFT Minting    │    │ • Smart Contract│
-│ • File Upload   │    │ • IPFS Storage   │    │ • Token Registry│
-│ • Certificate   │    │ • Security       │    │ • Verification  │
-│   Preview       │    │ • API Endpoints  │    │                 │
+│ • Authentication│    │ • NFT Minting    │    │ 🟣 Polygon      │
+│ • File Upload   │    │ • IPFS Storage   │    │   (Personal)    │
+│ • Network Select│    │ • Security       │    │                 │
+│ • Certificate   │    │ • API Endpoints  │    │ 💎 Ethereum     │
+│   Preview       │    │                  │    │   (Enterprise)  │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
+
+### **Multi-Network Features**
+
+#### **🟣 Polygon Network (Personal)**
+- **Cost**: $0.01 - $0.50 per mint
+- **Speed**: 2-3 second confirmations
+- **Use Case**: Personal projects, portfolios, small creators
+- **Benefits**: Eco-friendly, affordable, fast
+
+#### **💎 Ethereum Network (Enterprise)**
+- **Cost**: $15 - $50 per mint
+- **Speed**: 15-30 second confirmations  
+- **Use Case**: Commercial use, enterprise clients, high-value assets
+- **Benefits**: Maximum security, largest ecosystem, premium brand
+
+#### **Smart Network Selection**
+- **Admin/Enterprise Users**: Auto-default to Ethereum
+- **Personal/Minter Users**: Auto-default to Polygon
+- **Manual Override**: Users can switch networks anytime
+- **Context Awareness**: System suggests optimal network based on user type
 
 ### **Technology Stack**
 
@@ -136,14 +157,37 @@ docker-compose logs -f
 
 ### **Blockchain Configuration**
 
-```bash
-# Ethereum Mainnet (Production)
-WEB3_PROVIDER_URL=https://mainnet.infura.io/v3/YOUR_PROJECT_ID
-WEB3_NETWORK=mainnet
+The system supports dual-network deployment for different use cases:
 
-# Ethereum Testnet (Development)
-WEB3_PROVIDER_URL=https://goerli.infura.io/v3/YOUR_PROJECT_ID
-WEB3_NETWORK=goerli
+#### **Multi-Network Support**
+- **Polygon Network**: Personal use, low-cost minting (~$0.01-0.50)
+- **Ethereum Network**: Enterprise use, maximum security (~$15-50)
+
+```bash
+# Polygon Network (Personal/Default)
+POLYGON_RPC_URL=https://polygon-rpc.com
+POLYGON_CHAIN_ID=137
+POLYGON_TRUEMARK_CONTRACT=0x...
+POLYGON_MARKETPLACE_CONTRACT=0x...
+
+# Ethereum Network (Enterprise)
+ETHEREUM_RPC_URL=https://mainnet.infura.io/v3/YOUR_PROJECT_ID
+ETHEREUM_CHAIN_ID=1
+ETHEREUM_TRUEMARK_CONTRACT=0x...
+ETHEREUM_MARKETPLACE_CONTRACT=0x...
+```
+
+#### **Network Selection Logic**
+- **Admin/Enterprise Users**: Default to Ethereum
+- **Personal/Demo Users**: Default to Polygon
+- **Runtime Switching**: Users can switch networks in the mint form
+
+#### **Smart Contract Addresses**
+Update the contract addresses in `.env` file:
+```bash
+# Replace with your deployed contract addresses
+POLYGON_TRUEMARK_CONTRACT=0xYourPolygonContractAddress
+ETHEREUM_TRUEMARK_CONTRACT=0xYourEthereumContractAddress
 ```
 
 ---
