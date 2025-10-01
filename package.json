@@ -1,0 +1,56 @@
+{
+  "name": "truemark-mint",
+  "version": "1.0.0",
+  "description": "Premium Digital Certificate Platform with Blockchain Authentication",
+  "keywords": [
+    "blockchain",
+    "nft",
+    "certificates",
+    "ethereum",
+    "ipfs",
+    "digital-assets",
+    "authentication",
+    "premium"
+  ],
+  "homepage": "https://truemarkmint.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/truemark-mint.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "TrueMark LLC",
+    "email": "support@truemarkmint.com",
+    "url": "https://truemarkmint.com"
+  },
+  "scripts": {
+    "start": "http-server truemark-website -p 8080 -c-1",
+    "dev": "http-server truemark-website -p 8080 -c-1 --cors",
+    "build": "echo 'Build process completed'",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "deploy:prod": "docker-compose -f docker-compose.prod.yml up -d",
+    "test": "echo 'Tests will be implemented'",
+    "lint": "echo 'Linting will be implemented'",
+    "setup": "npm run setup:env && npm run docker:build",
+    "setup:env": "cp .env.example .env && echo 'Please edit .env file with your configuration'"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "prettier": "^2.8.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

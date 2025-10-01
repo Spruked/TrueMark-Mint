@@ -1,0 +1,179 @@
+# =============================================================================
+# TrueMark Mint - .gitignore
+# Excludes sensitive and generated files from version control
+# =============================================================================
+
+# Environment and Configuration
+.env
+.env.local
+.env.production
+.env.development
+config/local.py
+config/production.py
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage and testing
+coverage/
+.nyc_output
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+htmlcov/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+.tox/
+
+# Environments
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+data/
+
+# Uploads and temporary files
+uploads/
+temp/
+tmp/
+*.tmp
+
+# SSL certificates and keys
+ssl/
+*.pem
+*.key
+*.crt
+*.csr
+
+# Blockchain private keys (CRITICAL - never commit)
+private_keys/
+*.private
+*.wallet
+keystore/
+
+# Docker volumes
+.docker/
+
+# Backup files
+*.bak
+*.backup
+backup/
+
+# Local development
+.local/
+.cache/
+
+# Production builds
+build/
+dist/
+
+# Generated documentation
+docs/_build/
+site/
+
+# Terraform (if used for infrastructure)
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Kubernetes secrets (if used)
+secrets.yaml
+*-secret.yaml
+
+# Package files
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Application specific
+user_uploads/
+certificates/
+invoices/

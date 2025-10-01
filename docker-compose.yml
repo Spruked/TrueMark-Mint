@@ -1,0 +1,84 @@
+# TrueMark Mint - Complete Docker Compose Setup
+# Orchestrates frontend and backend services
+
+version: '3.8'
+
+services:
+  # Frontend Service - TrueMark Mint Website
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: truemark-frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./truemark-website:/app
+    environment:
+      - NODE_ENV=production
+      - BACKEND_URL=http://backend:5000
+    depends_on:
+      - backend
+    networks:
+      - truemark-network
+    restart: unless-stopped
+
+  # Backend Service - Alpha CertSig Mint Engine
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: truemark-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./Alpha-mint-engine:/app
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=sqlite:///data/truemark.db
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-here}
+      - JWT_SECRET=${JWT_SECRET:-your-jwt-secret-here}
+      - IPFS_NODE_URL=${IPFS_NODE_URL:-https://ipfs.infura.io:5001}
+      - WEB3_PROVIDER_URL=${WEB3_PROVIDER_URL:-https://mainnet.infura.io/v3/your-project-id}
+    networks:
+      - truemark-network
+    restart: unless-stopped
+
+  # Redis for session management (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: truemark-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - truemark-network
+    restart: unless-stopped
+
+  # NGINX Reverse Proxy (production)
+  nginx:
+    image: nginx:alpine
+    container_name: truemark-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - truemark-network
+    restart: unless-stopped
+
+networks:
+  truemark-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local

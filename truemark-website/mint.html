@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mint Certificate - TrueMark Mint</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/truemark.ico">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/img/truemarklogo.png" alt="TrueMark Mint Logo">
+                <span>TrueMark Mint</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="how.html" class="nav-link">How It Works</a>
+                </li>
+                <li class="nav-item">
+                    <a href="mint.html" class="nav-link active">Mint</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Create Your Digital Certificate</h1>
+            <p>Secure your digital assets with blockchain-powered authentication</p>
+        </div>
+    </section>
+
+    <!-- Mint Form Section -->
+    <section class="mint-form-section">
+        <div class="container">
+            <div class="mint-container">
+                <!-- Progress Steps -->
+                <div class="progress-steps">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Upload File</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Add Details</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Review & Mint</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Certificate</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: File Upload -->
+                <div class="form-step active" id="step-1">
+                    <div class="step-content">
+                        <h2>Upload Your Digital Asset</h2>
+                        <p>Select the file you want to authenticate. We support all major file formats.</p>
+                        
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <div class="upload-icon">📁</div>
+                            <div class="upload-text">
+                                <h3>Drag and drop your file here</h3>
+                                <p>or <span class="upload-link">click to browse</span></p>
+                            </div>
+                            <input type="file" id="fileInput" accept="*/*" style="display: none;">
+                        </div>
+
+                        <div class="file-info" id="fileInfo" style="display: none;">
+                            <div class="file-details">
+                                <div class="file-icon">📄</div>
+                                <div class="file-meta">
+                                    <div class="file-name" id="fileName"></div>
+                                    <div class="file-size" id="fileSize"></div>
+                                    <div class="file-type" id="fileType"></div>
+                                </div>
+                                <button class="remove-file" id="removeFile">×</button>
+                            </div>
+                        </div>
+
+                        <div class="supported-formats">
+                            <h4>Supported Formats:</h4>
+                            <div class="format-tags">
+                                <span class="format-tag">Images (JPG, PNG, GIF, SVG)</span>
+                                <span class="format-tag">Documents (PDF, DOC, TXT)</span>
+                                <span class="format-tag">Videos (MP4, AVI, MOV)</span>
+                                <span class="format-tag">Audio (MP3, WAV, FLAC)</span>
+                                <span class="format-tag">Code (JS, HTML, CSS, PY)</span>
+                                <span class="format-tag">Archives (ZIP, RAR, 7Z)</span>
+                            </div>
+                        </div>
+
+                        <div class="step-actions">
+                            <button class="btn btn-primary" id="nextStep1" disabled>Continue to Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Asset Details -->
+                <div class="form-step" id="step-2">
+                    <div class="step-content">
+                        <h2>Add Asset Details</h2>
+                        <p>Provide information about your digital asset for the certificate.</p>
+                        
+                        <form class="asset-form" id="assetForm">
+                            <div class="form-group">
+                                <label for="assetTitle">Asset Title *</label>
+                                <input type="text" id="assetTitle" name="assetTitle" required 
+                                       placeholder="Enter a descriptive title for your asset">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="assetDescription">Description</label>
+                                <textarea id="assetDescription" name="assetDescription" rows="4"
+                                         placeholder="Describe your digital asset (optional)"></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="creatorName">Creator Name *</label>
+                                    <input type="text" id="creatorName" name="creatorName" required
+                                           placeholder="Your name or organization">
+                                </div>
+                                <div class="form-group">
+                                    <label for="creatorEmail">Email Address *</label>
+                                    <input type="email" id="creatorEmail" name="creatorEmail" required
+                                           placeholder="your@email.com">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="assetCategory">Category</label>
+                                    <select id="assetCategory" name="assetCategory">
+                                        <option value="">Select category</option>
+                                        <option value="art">Digital Art</option>
+                                        <option value="document">Document</option>
+                                        <option value="music">Music/Audio</option>
+                                        <option value="video">Video</option>
+                                        <option value="software">Software/Code</option>
+                                        <option value="research">Research/Academic</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="assetLicense">License Type</label>
+                                    <select id="assetLicense" name="assetLicense">
+                                        <option value="">Select license</option>
+                                        <option value="copyright">All Rights Reserved</option>
+                                        <option value="cc-by">Creative Commons - Attribution</option>
+                                        <option value="cc-by-sa">Creative Commons - Attribution-ShareAlike</option>
+                                        <option value="cc-by-nc">Creative Commons - Attribution-NonCommercial</option>
+                                        <option value="mit">MIT License</option>
+                                        <option value="gpl">GNU General Public License</option>
+                                        <option value="custom">Custom License</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="additionalNotes">Additional Notes</label>
+                                <textarea id="additionalNotes" name="additionalNotes" rows="3"
+                                         placeholder="Any additional information about this asset"></textarea>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="termsAccept" name="termsAccept" required>
+                                    <span class="checkmark"></span>
+                                    I confirm that I own the rights to this digital asset and agree to the 
+                                    <a href="#" target="_blank">Terms of Service</a>
+                                </label>
+                            </div>
+                        </form>
+
+                        <div class="step-actions">
+                            <button class="btn btn-secondary" id="prevStep2">Back</button>
+                            <button class="btn btn-primary" id="nextStep2" disabled>Review & Mint</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Review & Mint -->
+                <div class="form-step" id="step-3">
+                    <div class="step-content">
+                        <h2>Review Your Information</h2>
+                        <p>Please review all details before creating your certificate.</p>
+                        
+                        <div class="review-sections">
+                            <div class="review-section">
+                                <h3>File Information</h3>
+                                <div class="review-grid">
+                                    <div class="review-item">
+                                        <span class="review-label">File Name:</span>
+                                        <span class="review-value" id="reviewFileName"></span>
+                                    </div>
+                                    <div class="review-item">
+                                        <span class="review-label">File Size:</span>
+                                        <span class="review-value" id="reviewFileSize"></span>
+                                    </div>
+                                    <div class="review-item">
+                                        <span class="review-label">File Type:</span>
+                                        <span class="review-value" id="reviewFileType"></span>
+                                    </div>
+                                    <div class="review-item">
+                                        <span class="review-label">File Hash:</span>
+                                        <span class="review-value hash" id="reviewFileHash">Calculating...</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="review-section">
+                                <h3>Asset Details</h3>
+                                <div class="review-grid">
+                                    <div class="review-item">
+                                        <span class="review-label">Title:</span>
+                                        <span class="review-value" id="reviewTitle"></span>
+                                    </div>
+                                    <div class="review-item">
+                                        <span class="review-label">Creator:</span>
+                                        <span class="review-value" id="reviewCreator"></span>
+                                    </div>
+                                    <div class="review-item">
+                                        <span class="review-label">Email:</span>
+                                        <span class="review-value" id="reviewEmail"></span>
+                                    </div>
+                                    <div class="review-item">
+                                        <span class="review-label">Category:</span>
+                                        <span class="review-value" id="reviewCategory"></span>
+                                    </div>
+                                    <div class="review-item">
+                                        <span class="review-label">License:</span>
+                                        <span class="review-value" id="reviewLicense"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pricing-section">
+                                <h3>Pricing</h3>
+                                <div class="price-breakdown">
+                                    <div class="price-item">
+                                        <span>Certificate Generation</span>
+                                        <span>$5.00</span>
+                                    </div>
+                                    <div class="price-item">
+                                        <span>Blockchain Recording</span>
+                                        <span>$2.00</span>
+                                    </div>
+                                    <div class="price-item total">
+                                        <span>Total</span>
+                                        <span>$7.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-actions">
+                            <button class="btn btn-secondary" id="prevStep3">Back</button>
+                            <button class="btn btn-primary btn-large" id="mintCertificate">
+                                <span class="mint-text">Mint Certificate - $7.00</span>
+                                <span class="loading-text" style="display: none;">Processing...</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Certificate Complete -->
+                <div class="form-step" id="step-4">
+                    <div class="step-content">
+                        <div class="success-animation">
+                            <div class="success-icon">✅</div>
+                            <h2>Certificate Created Successfully!</h2>
+                            <p>Your digital asset has been authenticated and recorded on the blockchain.</p>
+                        </div>
+
+                        <div class="certificate-preview">
+                            <div class="cert-header">
+                                <img src="assets/img/truemarklogo.png" alt="TrueMark Logo" class="cert-logo">
+                                <h3>TrueMark Digital Certificate</h3>
+                            </div>
+                            <div class="cert-body">
+                                <div class="cert-field">
+                                    <label>Certificate ID:</label>
+                                    <span id="certificateId">TM-2025-001234567</span>
+                                </div>
+                                <div class="cert-field">
+                                    <label>Asset Title:</label>
+                                    <span id="certAssetTitle"></span>
+                                </div>
+                                <div class="cert-field">
+                                    <label>Creator:</label>
+                                    <span id="certCreator"></span>
+                                </div>
+                                <div class="cert-field">
+                                    <label>Timestamp:</label>
+                                    <span id="certTimestamp"></span>
+                                </div>
+                                <div class="cert-field">
+                                    <label>Blockchain Transaction:</label>
+                                    <span id="certTransaction" class="hash">0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d</span>
+                                </div>
+                                <div class="cert-qr">
+                                    <div class="qr-code" id="qrCode">
+                                        <div class="qr-placeholder">📱 QR Code</div>
+                                    </div>
+                                    <p>Scan to verify certificate</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="certificate-actions">
+                            <button class="btn btn-primary" id="downloadCert">Download Certificate</button>
+                            <button class="btn btn-secondary" id="shareCert">Share Certificate</button>
+                            <button class="btn btn-outline" id="verifyCert">Verify Certificate</button>
+                        </div>
+
+                        <div class="next-steps">
+                            <h3>What's Next?</h3>
+                            <ul>
+                                <li>✅ Your certificate is now available in your dashboard</li>
+                                <li>📧 A copy has been sent to your email address</li>
+                                <li>🔗 Use the verification link to prove authenticity</li>
+                                <li>📱 Share the QR code for quick verification</li>
+                            </ul>
+                        </div>
+
+                        <div class="step-actions">
+                            <button class="btn btn-primary" onclick="window.location.href='mint.html'">Create Another Certificate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Indicators -->
+    <section class="trust-indicators">
+        <div class="container">
+            <div class="trust-grid">
+                <div class="trust-item">
+                    <div class="trust-icon">🔒</div>
+                    <h4>Bank-Level Security</h4>
+                    <p>256-bit encryption protects your data</p>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">⚡</div>
+                    <h4>Instant Processing</h4>
+                    <p>Certificates generated in under 5 minutes</p>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">🌍</div>
+                    <h4>Global Verification</h4>
+                    <p>Recognized worldwide on public blockchain</p>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">💰</div>
+                    <h4>No Hidden Fees</h4>
+                    <p>Transparent pricing with no surprises</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="assets/img/truemarklogo.png" alt="TrueMark Mint Logo">
+                        <span>TrueMark Mint</span>
+                    </div>
+                    <p>Securing digital assets with blockchain technology</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="how.html">How It Works</a></li>
+                        <li><a href="mint.html">Mint</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Certified by Alpha CertSig Mint</p>
+                <p>&copy; 2025 TrueMark LLC, an affiliate of Pro Prime Holdings.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/mint.js"></script>
+</body>
+</html>

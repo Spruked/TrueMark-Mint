@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TrueMark Mint</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/truemark.ico">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/img/truemarklogo.png" alt="TrueMark Mint Logo">
+                <span>TrueMark Mint</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="how.html" class="nav-link">How It Works</a>
+                </li>
+                <li class="nav-item">
+                    <a href="mint.html" class="nav-link">Mint</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <section class="login-section">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="alpha-cert-seal">
+                        <div class="seal-icon">🏛️</div>
+                        <span class="heritage-text">Alpha CertSig Mint</span>
+                    </div>
+                    <h1>Secure Authentication</h1>
+                    <p class="heritage-text">Access your heritage certificate minting portal</p>
+                </div>
+
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required 
+                               placeholder="Enter your username"
+                               autocomplete="username">
+                        <div class="input-icon">👤</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required 
+                               placeholder="Enter your password"
+                               autocomplete="current-password">
+                        <div class="input-icon">🔒</div>
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            <span class="show-icon">👁️</span>
+                            <span class="hide-icon" style="display: none;">🙈</span>
+                        </button>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="rememberMe" name="rememberMe">
+                            <span class="checkmark"></span>
+                            Remember me for 30 days
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-large" id="loginBtn">
+                            <span class="login-text">Access Minting Portal</span>
+                            <span class="loading-text" style="display: none;">Authenticating...</span>
+                        </button>
+                    </div>
+
+                    <div class="login-links">
+                        <a href="#" class="forgot-password" id="forgotPassword">Forgot your password?</a>
+                        <div class="divider">or</div>
+                        <a href="#" class="create-account" id="createAccount">Request new account access</a>
+                    </div>
+                </form>
+
+                <div class="login-success" id="loginSuccess" style="display: none;">
+                    <div class="success-icon">✅</div>
+                    <h3>Authentication Successful</h3>
+                    <p>Redirecting to minting portal...</p>
+                </div>
+
+                <div class="login-security">
+                    <div class="security-features">
+                        <div class="security-item">
+                            <span class="security-icon">🔐</span>
+                            <span>256-bit SSL Encryption</span>
+                        </div>
+                        <div class="security-item">
+                            <span class="security-icon">🛡️</span>
+                            <span>Multi-factor Authentication</span>
+                        </div>
+                        <div class="security-item">
+                            <span class="security-icon">📊</span>
+                            <span>Audit Trail Logging</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-info">
+                <div class="info-section">
+                    <h3>Authorized Access Only</h3>
+                    <p>This portal provides access to the Alpha CertSig Mint engine for creating heirloom-grade digital certificates.</p>
+                    
+                    <div class="access-levels">
+                        <div class="access-level">
+                            <div class="level-icon">👑</div>
+                            <div class="level-details">
+                                <h4>Premium Minting</h4>
+                                <p>Create heritage-quality certificates with full blockchain verification</p>
+                            </div>
+                        </div>
+                        <div class="access-level">
+                            <div class="level-icon">🏛️</div>
+                            <div class="level-details">
+                                <h4>Institutional Grade</h4>
+                                <p>Enterprise-level security and compliance features</p>
+                            </div>
+                        </div>
+                        <div class="access-level">
+                            <div class="level-icon">💎</div>
+                            <div class="level-details">
+                                <h4>Vault Integration</h4>
+                                <p>Secure storage with multi-signature protection</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-support">
+                    <h4>Need Access?</h4>
+                    <p>Contact our authorization team for account setup and enterprise licensing.</p>
+                    <a href="contact.html" class="btn btn-outline">Contact Support</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Two-Factor Authentication Modal -->
+    <div class="modal" id="twoFactorModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Two-Factor Authentication</h3>
+                <button class="modal-close" id="closeTwoFactor">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Enter the 6-digit code from your authenticator app:</p>
+                <div class="two-factor-input">
+                    <input type="text" class="code-input" maxlength="1" data-index="0">
+                    <input type="text" class="code-input" maxlength="1" data-index="1">
+                    <input type="text" class="code-input" maxlength="1" data-index="2">
+                    <input type="text" class="code-input" maxlength="1" data-index="3">
+                    <input type="text" class="code-input" maxlength="1" data-index="4">
+                    <input type="text" class="code-input" maxlength="1" data-index="5">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="cancelTwoFactor">Cancel</button>
+                    <button class="btn btn-primary" id="verifyTwoFactor">Verify Code</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="assets/img/truemarklogo.png" alt="TrueMark Mint Logo">
+                        <span>TrueMark Mint</span>
+                    </div>
+                    <p>Where heritage meets modern proof</p>
+                    <div class="alpha-cert-seal">
+                        <div class="seal-icon">🏛️</div>
+                        <span class="heritage-text">Certified by Alpha CertSig Mint</span>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="how.html">How It Works</a></li>
+                        <li><a href="mint.html">Mint</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Certified by Alpha CertSig Mint</p>
+                <p>&copy; 2025 TrueMark LLC, an affiliate of Pro Prime Holdings.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>

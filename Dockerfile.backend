@@ -1,0 +1,38 @@
+# TrueMark Mint Backend - Alpha CertSig Mint Engine
+# Docker configuration for the backend API
+
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy backend files
+COPY Alpha-mint-engine/ ./
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt || \
+    pip install flask flask-cors python-dotenv web3 ipfshttpclient cryptography
+
+# Create necessary directories
+RUN mkdir -p logs temp uploads
+
+# Set environment variables
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=production
+ENV PYTHONPATH=/app
+
+# Expose port for backend API
+EXPOSE 5000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:5000/health || exit 1
+
+# Command to run the backend
+CMD ["python", "app.py"]

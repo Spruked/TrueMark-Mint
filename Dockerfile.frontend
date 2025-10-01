@@ -1,0 +1,19 @@
+# TrueMark Mint - Premium Digital Certificate Platform
+# Docker configuration for containerized deployment
+
+FROM node:18-alpine AS frontend-builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy frontend files
+COPY truemark-website/ ./
+
+# Install a simple HTTP server for serving static files
+RUN npm install -g http-server
+
+# Expose port for frontend
+EXPOSE 8080
+
+# Command to serve the frontend
+CMD ["http-server", ".", "-p", "8080", "-c-1"]
