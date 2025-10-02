@@ -194,6 +194,7 @@ function initializeLoginForm() {
  */
 async function handleLogin(e) {
     e.preventDefault();
+    console.log('Login form submitted');
     
     const form = e.target;
     const loginBtn = document.getElementById('loginBtn');
@@ -201,7 +202,10 @@ async function handleLogin(e) {
     const password = document.getElementById('password').value;
     const rememberMe = document.getElementById('rememberMe').checked;
     
+    console.log('Login attempt:', { username, password: '***', rememberMe });
+    
     if (!validateLoginForm(username, password)) {
+        console.log('Form validation failed');
         return;
     }
     
@@ -210,10 +214,13 @@ async function handleLogin(e) {
     loginBtn.disabled = true;
     
     try {
+        console.log('Attempting authentication...');
         // Simulate API call to Alpha CertSig Mint authentication
         const authResult = await authenticateUser(username, password);
+        console.log('Authentication result:', authResult);
         
         if (authResult.success) {
+            console.log('Authentication successful');
             if (authResult.requiresTwoFactor) {
                 // Show two-factor authentication modal
                 showTwoFactorModal(authResult.tempToken);
@@ -222,6 +229,7 @@ async function handleLogin(e) {
                 completeLogin(authResult, rememberMe);
             }
         } else {
+            console.log('Authentication failed:', authResult.error);
             showLoginError(authResult.error || 'Authentication failed');
         }
     } catch (error) {
@@ -329,10 +337,14 @@ async function authenticateUser(username, password) {
  * Demo authentication for development (when backend is not available)
  */
 async function authenticateUserDemo(username, password) {
+    console.log('Demo authentication mode');
+    console.log('Checking credentials:', { username, password: '***' });
+    
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             // Demo credentials
             if ((username === 'bryan@truemark.com' || username === 'admin') && password === 'admin123') {
+                console.log('Bryan/Admin credentials matched');
                 resolve({
                     success: true,
                     token: generateDemoToken(username, 'admin'),
@@ -347,6 +359,7 @@ async function authenticateUserDemo(username, password) {
                     requiresTwoFactor: false
                 });
             } else if (username === 'demo@truemark.com' && password === 'demo123') {
+                console.log('Demo credentials matched');
                 resolve({
                     success: true,
                     token: generateDemoToken(username, 'demo'),
@@ -361,6 +374,7 @@ async function authenticateUserDemo(username, password) {
                     requiresTwoFactor: false
                 });
             } else if (username === 'minter' && password === 'mint123') {
+                console.log('Minter credentials matched');
                 resolve({
                     success: true,
                     token: generateDemoToken(username, 'minter'),
@@ -375,6 +389,7 @@ async function authenticateUserDemo(username, password) {
                     tempToken: generateDemoTempToken(username)
                 });
             } else {
+                console.log('No credentials matched, authentication failed');
                 SecurityUtils.recordFailedAttempt();
                 reject(new Error('Invalid email or password'));
             }
