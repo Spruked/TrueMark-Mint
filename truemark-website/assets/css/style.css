@@ -3322,3 +3322,128 @@ p {
         gap: 0.25rem;
     }
 }
+
+/* ==========================================================================
+   Legal Pages Styling (Privacy Policy, Terms of Service)
+   ========================================================================== */
+
+.legal-content {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(15, 39, 65, 0.1);
+    line-height: 1.7;
+}
+
+.legal-content h1 {
+    color: var(--navy);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+    padding-bottom: 1rem;
+}
+
+.last-updated {
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.legal-section {
+    margin-bottom: 2.5rem;
+}
+
+.legal-section h2 {
+    color: var(--navy);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+    border-left: 4px solid var(--gold);
+}
+
+.legal-section h3 {
+    color: var(--navy-light);
+    font-size: 1.2rem;
+    margin: 1.5rem 0 0.75rem 0;
+}
+
+.legal-section p {
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+.legal-section ul,
+.legal-section ol {
+    margin: 1rem 0 1rem 2rem;
+}
+
+.legal-section li {
+    margin-bottom: 0.5rem;
+}
+
+.legal-section li strong {
+    color: var(--navy);
+}
+
+.contact-info {
+    background: var(--pearl);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    border-left: 4px solid var(--gold);
+}
+
+.contact-info p {
+    margin-bottom: 0.5rem;
+}
+
+.legal-footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--navy);
+    color: white;
+    border-radius: 8px;
+}
+
+.legal-footer p {
+    margin-bottom: 0.5rem;
+}
+
+.legal-footer .acknowledgment {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(198, 169, 78, 0.2);
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Legal page responsive design */
+@media (max-width: 768px) {
+    .legal-content {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .legal-content h1 {
+        font-size: 2rem;
+    }
+    
+    .legal-section h2 {
+        font-size: 1.3rem;
+    }
+    
+    .legal-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .legal-section ul,
+    .legal-section ol {
+        margin-left: 1.5rem;
+    }
+}
