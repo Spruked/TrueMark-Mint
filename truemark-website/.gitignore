@@ -1,0 +1,102 @@
+# TrueMark Mint - Git Ignore File
+# Keep sensitive information and credentials private
+
+# Environment variables with sensitive data
+.env
+.env.local
+.env.production
+.env.staging
+env-config.js
+
+# Square payment credentials
+square-config.json
+payment-secrets.json
+
+# Wallet private keys and seeds (NEVER commit these!)
+wallet-config.json
+private-keys.txt
+seed-phrases.txt
+*.key
+*.pem
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build outputs
+dist/
+build/
+*.min.js
+*.min.css
+
+# Backup files
+*.bak
+*.backup
+
+# API keys and secrets
+api-keys.json
+secrets.json
+config/secrets/
+
+# User-specific files
+user-config.json
+local-settings.json

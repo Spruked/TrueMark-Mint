@@ -83,7 +83,91 @@
                         <p>Choose the type of NFT certificate that best fits your needs</p>
                         
                         <div class="nft-type-selection">
+                                                    <div class="minting-options">
                             <div class="pricing-phase-indicator entry">Entry Phase Pricing</div>
+                            
+                            <!-- Payment Method Selection -->
+                            <div class="payment-method-selector">
+                                <h3>Choose Payment Method</h3>
+                                <div class="payment-methods">
+                                    <button class="payment-method active" data-method="crypto" onclick="selectPaymentMethod('crypto')">
+                                        <div class="method-icon">🏦</div>
+                                        <div class="method-info">
+                                            <h4>Cryptocurrency</h4>
+                                            <p>Pay with MATIC or ETH via MetaMask</p>
+                                        </div>
+                                    </button>
+                                    <button class="payment-method" data-method="card" onclick="selectPaymentMethod('card')">
+                                        <div class="method-icon">💳</div>
+                                        <div class="method-info">
+                                            <h4>Credit/Debit Card</h4>
+                                            <p>Pay with card via Square</p>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Crypto Payment Options -->
+                            <div class="crypto-payment-section" id="cryptoPaymentSection">
+                                <div class="wallet-connection">
+                                    <button class="btn btn-wallet" id="connectWallet" onclick="connectWallet()">
+                                        Connect MetaMask Wallet
+                                    </button>
+                                    <div class="wallet-info" id="walletInfo" style="display: none;"></div>
+                                </div>
+
+                                <div class="network-selection">
+                                    <h4>Select Network</h4>
+                                    <div class="network-options">
+                                        <button class="network-selector active" data-network="polygon" onclick="switchNetwork('polygon')">
+                                            <span class="network-icon">🟣</span>
+                                            <div class="network-details">
+                                                <strong>Polygon</strong>
+                                                <small>Lower fees, recommended for personal use</small>
+                                            </div>
+                                        </button>
+                                        <button class="network-selector" data-network="ethereum" onclick="switchNetwork('ethereum')">
+                                            <span class="network-icon">💎</span>
+                                            <div class="network-details">
+                                                <strong>Ethereum</strong>
+                                                <small>Higher security, recommended for enterprise</small>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="pricing-phase-selection">
+                                    <h4>Select Pricing Phase</h4>
+                                    <div class="phase-options">
+                                        <button class="phase-selector active" data-phase="entry" onclick="switchPhase('entry')">
+                                            <div class="phase-info">
+                                                <strong>Entry Phase</strong>
+                                                <small>Basic NFT features</small>
+                                                <div class="phase-price">0.01 ETH / 15 MATIC</div>
+                                            </div>
+                                        </button>
+                                        <button class="phase-selector" data-phase="premium" onclick="switchPhase('premium')">
+                                            <div class="phase-info">
+                                                <strong>Premium Phase</strong>
+                                                <small>Enhanced features + royalty benefits</small>
+                                                <div class="phase-price">0.05 ETH / 75 MATIC</div>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Payment Section -->
+                            <div class="card-payment-section" id="cardPaymentSection" style="display: none;">
+                                <div class="square-payment-form">
+                                    <h4>Credit/Debit Card Payment</h4>
+                                    <div id="card-container"></div>
+                                    <div class="payment-security">
+                                        <small>🔒 Secured by Square - Your payment information is encrypted and secure</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                             
                             <div class="nft-types-grid" id="nftTypesGrid">
                                 <!-- NFT type cards will be dynamically generated -->
@@ -326,28 +410,37 @@
                             </div>
 
                             <div class="pricing-section">
-                                <h3>Pricing</h3>
+                                <h3>Alpha CertSig Pricing</h3>
                                 <div class="price-breakdown">
                                     <div class="price-item">
-                                        <span>Certificate Generation</span>
-                                        <span>$5.00</span>
+                                        <span>NFT Minting (Entry Phase)</span>
+                                        <span>15 MATIC</span>
                                     </div>
                                     <div class="price-item">
-                                        <span>Blockchain Recording</span>
-                                        <span>$2.00</span>
+                                        <span>Network Fees (Polygon)</span>
+                                        <span>~0.01 MATIC</span>
+                                    </div>
+                                    <div class="price-item royalty-info">
+                                        <span>Future Royalties</span>
+                                        <span>1.5% resale / 3% licensing</span>
                                     </div>
                                     <div class="price-item total">
                                         <span>Total</span>
-                                        <span>$7.00</span>
+                                        <span>15 MATIC (~$7)</span>
                                     </div>
+                                </div>
+                                <div class="pricing-note">
+                                    <small>💡 <strong>Alpha CertSig Benefits:</strong> Your NFT includes resale royalties (1.5%) and licensing royalties (3%) that provide ongoing value from your digital assets.</small>
                                 </div>
                             </div>
                         </div>
 
                         <div class="step-actions">
                             <button class="btn btn-secondary" id="prevStep3">Back</button>
-                            <button class="btn btn-primary btn-large" id="mintCertificate">
-                                <span class="mint-text">Mint Certificate - $7.00</span>
+                            <button class="btn btn-primary btn-large" id="mintCertificate" onclick="processPayment('crypto')">
+                                <span class="mint-text">Mint Certificate - 15 MATIC (~$7)</span>
+                                <span class="network-badge">Polygon</span>
+                            </button>
                                 <span class="loading-text" style="display: none;">Processing...</span>
                             </button>
                         </div>
@@ -496,10 +589,223 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <script src="assets/js/error-handler.js"></script>
+    <script src="assets/js/env-config.js"></script>
+    <script src="assets/js/config-loader.js"></script>
+    <script src="assets/js/payment-config.js"></script>
     <script src="assets/js/network-config.js"></script>
     <script src="assets/js/nft-taxonomy.js"></script>
+    <script src="assets/js/integrations.js"></script>
+    <script src="assets/js/usd-crypto-pricing.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/mint.js"></script>
+    
+    <script>
+        // Initialize USD-based crypto pricing system
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 Initializing USD-based payment system...');
+            
+            // Wait for payment manager to be ready
+            if (window.usdPaymentManager) {
+                await window.usdPaymentManager.initialize();
+                console.log('✅ USD Payment Manager ready');
+                
+                // Setup enhanced pricing display
+                setupEnhancedPricing();
+            }
+        });
+        
+        function setupEnhancedPricing() {
+            // Listen for real-time price updates
+            document.addEventListener('pricesUpdated', () => {
+                console.log('💰 Crypto prices updated, refreshing displays...');
+                updateAllPricingDisplays();
+            });
+            
+            // Listen for network/phase changes
+            document.addEventListener('paymentConfigChanged', updateAllPricingDisplays);
+            
+            // Initial update
+            updateAllPricingDisplays();
+        }
+        
+        function updateAllPricingDisplays() {
+            if (!window.usdPaymentManager) return;
+            
+            try {
+                const network = paymentState.selectedNetwork || 'polygon';
+                const isBasic = paymentState.selectedPhase !== 'premium';
+                const productType = isBasic ? 'nft_basic' : 'nft_premium';
+                
+                // Get current pricing
+                const pricing = window.usdPaymentManager.getProductPricing(productType, network);
+                
+                // Update pricing breakdown display
+                updatePricingBreakdown(pricing);
+                
+                // Update mint button
+                updateMintButton(pricing, network);
+                
+                // Update phase indicator
+                updatePhaseIndicator(pricing);
+                
+            } catch (error) {
+                console.error('❌ Error updating pricing displays:', error);
+                showFallbackPricing();
+            }
+        }
+        
+        function updatePricingBreakdown(pricing) {
+            const priceDisplay = document.querySelector('.price-breakdown');
+            if (!priceDisplay) return;
+            
+            const lastUpdate = new Date(pricing.lastUpdate).toLocaleTimeString();
+            
+            priceDisplay.innerHTML = `
+                <div class="price-item">
+                    <span>🎯 NFT Certificate (${pricing.productType.replace('nft_', '').toUpperCase()})</span>
+                    <span><strong>$${pricing.usdPrice}</strong></span>
+                </div>
+                <div class="price-item">
+                    <span>💎 Crypto Amount (${pricing.cryptoSymbol})</span>
+                    <span>${pricing.cryptoAmount} ${pricing.cryptoSymbol}</span>
+                </div>
+                <div class="price-item">
+                    <span>📈 Current ${pricing.cryptoSymbol} Rate</span>
+                    <span>$${pricing.pricePerToken} <small>(${lastUpdate})</small></span>
+                </div>
+                <div class="price-item">
+                    <span>⛽ Estimated Gas Fee</span>
+                    <span>~${pricing.gasFeeEstimate.amount} ${pricing.gasFeeEstimate.symbol} (~$${pricing.gasFeeEstimate.usd})</span>
+                </div>
+                <div class="price-item royalty-info">
+                    <span>💰 Future Royalties</span>
+                    <span>1.5% resale / 3% licensing</span>
+                </div>
+                <div class="price-item total">
+                    <span><strong>Total Payment</strong></span>
+                    <span><strong>${pricing.cryptoAmount} ${pricing.cryptoSymbol} ($${pricing.usdPrice})</strong></span>
+                </div>
+                <div class="pricing-note">
+                    <small>💡 <strong>How you get paid:</strong> Customer pays ${pricing.cryptoAmount} ${pricing.cryptoSymbol} (worth exactly $${pricing.usdPrice}) directly to your wallet. No gas fees for you!</small>
+                </div>
+            `;
+        }
+        
+        function updateMintButton(pricing, network) {
+            const mintButton = document.getElementById('mintCertificate');
+            if (!mintButton) return;
+            
+            mintButton.innerHTML = `
+                <span class="mint-text">💳 Pay ${pricing.cryptoAmount} ${pricing.cryptoSymbol} ($${pricing.usdPrice})</span>
+                <span class="network-badge">${network.toUpperCase()}</span>
+            `;
+        }
+        
+        function updatePhaseIndicator(pricing) {
+            const indicator = document.querySelector('.pricing-phase-indicator');
+            if (!indicator) return;
+            
+            const phase = pricing.productType.includes('premium') ? 'premium' : 'basic';
+            indicator.className = `pricing-phase-indicator ${phase}`;
+            indicator.textContent = `${phase.toUpperCase()} - $${pricing.usdPrice} USD`;
+        }
+        
+        function showFallbackPricing() {
+            const priceDisplay = document.querySelector('.price-breakdown');
+            if (priceDisplay) {
+                priceDisplay.innerHTML = `
+                    <div class="price-item total">
+                        <span>⚠️ Pricing Unavailable</span>
+                        <span>Please refresh page</span>
+                    </div>
+                `;
+            }
+        }
+        
+        // Enhanced mint function with real USD conversion
+        async function mintWithUSDConversion() {
+            if (!window.usdPaymentManager) {
+                alert('💸 Payment system loading... Please wait a moment and try again.');
+                return;
+            }
+            
+            const paymentMethod = paymentState.selectedMethod;
+            const network = paymentState.selectedNetwork || 'polygon';
+            const productType = paymentState.selectedPhase === 'premium' ? 'nft_premium' : 'nft_basic';
+            
+            try {
+                const pricing = window.usdPaymentManager.getProductPricing(productType, network);
+                
+                // Show detailed pricing confirmation
+                const confirmed = confirm(
+                    `💰 PAYMENT CONFIRMATION\n\n` +
+                    `📦 Product: ${productType.replace('nft_', '').toUpperCase()} NFT Certificate\n` +
+                    `💵 USD Price: $${pricing.usdPrice}\n` +
+                    `💎 You Pay: ${pricing.cryptoAmount} ${pricing.cryptoSymbol}\n` +
+                    `🌐 Network: ${network.toUpperCase()}\n` +
+                    `⛽ Gas Fee: ~$${pricing.gasFeeEstimate.usd}\n` +
+                    `📈 ${pricing.cryptoSymbol} Rate: $${pricing.pricePerToken}\n\n` +
+                    `🎯 Your wallet receives exactly $${pricing.usdPrice} worth of crypto!\n\n` +
+                    `Continue with payment?`
+                );
+                
+                if (!confirmed) return;
+                
+                if (paymentMethod === 'crypto') {
+                    // Process crypto payment
+                    showPaymentProcessing();
+                    
+                    const result = await window.usdPaymentManager.processCryptoPayment(
+                        productType,
+                        network,
+                        paymentState.walletAddress
+                    );
+                    
+                    hidePaymentProcessing();
+                    
+                    if (result.success) {
+                        showPaymentSuccess(result);
+                    } else {
+                        showPaymentError(result.error);
+                    }
+                } else {
+                    // Card payment - always charges exact USD amount
+                    alert(`💳 Card Payment: $${pricing.usdPrice}\n\nYou'll be charged exactly $${pricing.usdPrice} via Square payment processor.`);
+                    // Process Square payment with exact USD amount
+                }
+                
+            } catch (error) {
+                console.error('❌ Payment error:', error);
+                alert('🚫 Payment Error: ' + error.message);
+            }
+        }
+        
+        function showPaymentProcessing() {
+            const notification = document.createElement('div');
+            notification.className = 'payment-notification processing';
+            notification.innerHTML = '⏳ Processing payment...';
+            document.body.appendChild(notification);
+        }
+        
+        function hidePaymentProcessing() {
+            document.querySelector('.payment-notification.processing')?.remove();
+        }
+        
+        function showPaymentSuccess(result) {
+            alert(
+                `✅ PAYMENT SUCCESSFUL!\n\n` +
+                `🎯 Transaction Hash: ${result.transactionHash}\n` +
+                `💎 Amount Paid: ${result.pricing.cryptoAmount} ${result.pricing.cryptoSymbol}\n` +
+                `💵 USD Value: $${result.pricing.usdPrice}\n\n` +
+                `Your NFT certificate is being minted! 🚀`
+            );
+        }
+        
+        function showPaymentError(error) {
+            alert(`❌ Payment Failed: ${error}\n\nPlease try again or contact support.`);
+        }
+    </script>
 </body>
 </html>

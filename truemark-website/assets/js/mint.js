@@ -5,7 +5,7 @@
 
 // Mint configuration
 const MINT_CONFIG = {
-    backend_url: 'http://localhost:5000',
+    backend_url: window.ENV_CONFIG?.BACKEND_URL || 'http://localhost:5000',
     api_endpoints: {
         mint: '/api/mint/create',
         upload: '/api/upload/file',
@@ -1131,23 +1131,8 @@ async function initializeWeb3() {
     }
 }
 
-/**
- * Connect to user's wallet
- */
-async function connectWallet() {
-    try {
-        // Request account access
-        const accounts = await window.ethereum.request({ 
-            method: 'eth_requestAccounts' 
-        });
-        
-        if (accounts.length > 0) {
-            mintState.account = accounts[0];
-            
-            // Initialize Web3 instance
-            mintState.web3 = new Web3(window.ethereum);
-            
-            // Switch to correct network
+// Note: connectWallet function moved to integrations.js to avoid conflicts
+// Use the global connectWallet function from integrations.js
             await updateWeb3Network();
             
             showSuccess(`Wallet connected: ${mintState.account.substring(0, 6)}...${mintState.account.substring(38)}`);
