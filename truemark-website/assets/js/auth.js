@@ -261,9 +261,8 @@ async function authenticateUser(username, password) {
 
         // Prepare authentication request
         const authRequest = {
-            username: username.trim().toLowerCase(),
-            password: hashedPassword,
-            salt: salt,
+            email: username.trim().toLowerCase(),
+            password: password,
             timestamp: Date.now(),
             device_info: {
                 userAgent: navigator.userAgent,
@@ -333,17 +332,32 @@ async function authenticateUserDemo(username, password) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             // Demo credentials
-            if (username === 'admin' && password === 'truemark2025') {
+            if ((username === 'bryan@truemark.com' || username === 'admin') && password === 'admin123') {
                 resolve({
                     success: true,
                     token: generateDemoToken(username, 'admin'),
                     user: {
                         username: username,
-                        role: 'admin',
-                        email: 'admin@truemarkmint.com',
+                        email: username === 'bryan@truemark.com' ? username : 'admin@truemarkmint.com',
+                        name: username === 'bryan@truemark.com' ? 'Bryan Anthony Spruk' : 'Admin User',
+                        role: 'Founder & CEO',
                         permissions: ['mint', 'verify', 'manage', 'admin']
                     },
                     permissions: ['mint', 'verify', 'manage', 'admin'],
+                    requiresTwoFactor: false
+                });
+            } else if (username === 'demo@truemark.com' && password === 'demo123') {
+                resolve({
+                    success: true,
+                    token: generateDemoToken(username, 'demo'),
+                    user: {
+                        username: username,
+                        email: username,
+                        name: 'Demo User',
+                        role: 'User',
+                        permissions: ['mint']
+                    },
+                    permissions: ['mint'],
                     requiresTwoFactor: false
                 });
             } else if (username === 'minter' && password === 'mint123') {
@@ -360,22 +374,9 @@ async function authenticateUserDemo(username, password) {
                     requiresTwoFactor: true,
                     tempToken: generateDemoTempToken(username)
                 });
-            } else if (username === 'demo' && password === 'demo123') {
-                resolve({
-                    success: true,
-                    token: generateDemoToken(username, 'demo'),
-                    user: {
-                        username: username,
-                        role: 'viewer',
-                        email: 'demo@truemarkmint.com',
-                        permissions: ['mint']
-                    },
-                    permissions: ['mint'],
-                    requiresTwoFactor: false
-                });
             } else {
                 SecurityUtils.recordFailedAttempt();
-                reject(new Error('Invalid username or password'));
+                reject(new Error('Invalid email or password'));
             }
         }, 1200); // Simulate network delay
     });
