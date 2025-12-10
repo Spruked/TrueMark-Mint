@@ -10,6 +10,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
@@ -18,8 +19,10 @@ COPY Alpha-mint-engine/requirements.txt ./
 # Install Python dependencies with fallback
 RUN pip install --no-cache-dir -r requirements.txt || \
     pip install flask==3.0.0 web3==6.15.1 requests==2.31.0 python-dotenv==1.0.0 \
-    cryptography==41.0.8 flask-limiter==3.5.0 marshmallow==3.20.2 \
-    python-json-logger==2.0.7 psutil==5.9.6 pyjwt==2.8.0 bcrypt==4.1.2
+    cryptography==42.0.8 flask-limiter==3.5.0 marshmallow==3.20.2 \
+    python-json-logger==2.0.7 psutil==5.9.6 pyjwt==2.8.0 bcrypt==4.1.2 \
+    pillow==10.1.0 qrcode==7.4.2 reportlab==4.0.7 ipfshttpclient==0.8.0a2 \
+    chacha20poly1305==0.0.3 gunicorn==21.2.0
 
 # Copy rest of backend files
 COPY Alpha-mint-engine/ ./

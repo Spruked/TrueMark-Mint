@@ -1,0 +1,63 @@
+#! backend-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: backend
+    namespace: truemark-mint
+    labels:
+        com.docker.compose.project: truemark-mint
+        com.docker.compose.service: backend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: truemark-mint
+            com.docker.compose.service: backend
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: truemark-mint
+                com.docker.compose.service: backend
+                com.docker.compose.network.truemark-network: "true"
+        spec:
+            restartPolicy: unless-stopped
+            containers:
+                - name: truemark-backend
+                  image: truemark-mint-backend
+                  imagePullPolicy: IfNotPresent
+                  env:
+                    - name: DATABASE_URL
+                      value: "sqlite:///data/truemark.db"
+                    - name: FLASK_ENV
+                      value: "production"
+                    - name: IPFS_NODE_URL
+                      value: "https://ipfs.infura.io:5001"
+                    - name: JWT_SECRET
+                      value: "your-jwt-secret-here"
+                    - name: SECRET_KEY
+                      value: "your-secret-key-here"
+                    - name: WEB3_PROVIDER_URL
+                      value: "https://mainnet.infura.io/v3/your-project-id"
+                  ports:
+                    - name: backend-5000
+                      containerPort: 5000
+                  volumeMounts:
+                    - name: app
+                      mountPath: /app
+                    - name: app-data
+                      mountPath: /app/data
+                    - name: app-logs
+                      mountPath: /app/logs
+            volumes:
+                - name: app
+                  hostPath:
+                    path: T:\truemark-mint\Alpha-mint-engine
+                - name: app-data
+                  hostPath:
+                    path: T:\truemark-mint\data
+                - name: app-logs
+                  hostPath:
+                    path: T:\truemark-mint\logs

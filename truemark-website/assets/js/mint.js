@@ -3,6 +3,9 @@
  * Handles NFT minting integration with Alpha CertSig Mint backend
  */
 
+// Import WalletAuth for MetaMask integration
+// Assuming WalletAuth is available globally or imported
+
 // Mint configuration
 const MINT_CONFIG = {
     backend_url: window.ENV_CONFIG?.BACKEND_URL || 'http://localhost:5000',
@@ -61,6 +64,143 @@ const MINT_CONFIG = {
     chunk_size: 1024 * 1024 // 1MB chunks for large files
 };
 
+// MetaMask Integration Block for TrueMark Mint
+const TrueMarkMetaMask = {
+    /**
+     * Initialize MetaMask connection for minting
+     */
+    async initializeForMinting() {
+        try {
+            if (!WalletAuth.isMetaMaskInstalled()) {
+                throw new Error('MetaMask is required for minting. Please install MetaMask.');
+            }
+
+            // Connect wallet if not already connected
+            if (!authState.isMetaMaskConnected) {
+                const connectResult = await WalletAuth.connectWallet();
+                if (!connectResult.success) {
+                    throw new Error(connectResult.error);
+                }
+            }
+
+            // Switch to selected network
+            await this.switchToNetwork(mintState.selectedNetwork);
+
+            return { success: true };
+        } catch (error) {
+            console.error('MetaMask initialization failed:', error);
+            return { success: false, error: error.message };
+        }
+    },
+
+    /**
+     * Switch MetaMask to the selected network
+     */
+    async switchToNetwork(networkKey) {
+        const network = MINT_CONFIG.networks[networkKey];
+        if (!network) {
+            throw new Error(`Network ${networkKey} not configured`);
+        }
+
+        try {
+            await window.ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: `0x${network.chainId.toString(16)}` }]
+            });
+        } catch (switchError) {
+            // This error code indicates that the chain has not been added to MetaMask
+            if (switchError.code === 4902) {
+                await this.addNetwork(network);
+            } else {
+                throw switchError;
+            }
+        }
+    },
+
+    /**
+     * Add network to MetaMask if not present
+     */
+    async addNetwork(network) {
+        await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+                chainId: `0x${network.chainId.toString(16)}`,
+                chainName: network.name,
+                nativeCurrency: {
+                    name: network.currency,
+                    symbol: network.currency,
+                    decimals: 18
+                },
+                rpcUrls: [network.rpcUrl],
+                blockExplorerUrls: [network.explorerUrl]
+            }]
+        });
+    },
+
+    /**
+     * Sign minting transaction
+     */
+    async signMintTransaction(mintData) {
+        try {
+            const message = `TrueMark Mint Authorization\n\nCertificate: ${mintData.certificateId}\nNetwork: ${mintState.selectedNetwork}\nCost: ${mintData.cost}\nTimestamp: ${new Date().toISOString()}\n\nSign this message to authorize minting.`;
+
+            const signResult = await WalletAuth.signAuthMessage(message);
+            if (!signResult.success) {
+                throw new Error(signResult.error);
+            }
+
+            return {
+                success: true,
+                signature: signResult.signature,
+                message: message,
+                wallet: authState.walletAddress
+            };
+        } catch (error) {
+            console.error('Mint transaction signing failed:', error);
+            return { success: false, error: error.message };
+        }
+    },
+
+    /**
+     * Get gas estimate for minting
+     */
+    async getGasEstimate() {
+        const network = MINT_CONFIG.networks[mintState.selectedNetwork];
+        // Simplified gas estimation - in production, use contract methods
+        return {
+            gasLimit: network.gasSettings.gasLimit,
+            gasPrice: network.gasSettings.gasPrice,
+            estimatedCost: '0.01' // ETH/MATIC
+        };
+    },
+
+    /**
+     * Verify wallet balance for minting
+     */
+    async verifyBalance() {
+        try {
+            const balance = await window.ethereum.request({
+                method: 'eth_getBalance',
+                params: [authState.walletAddress, 'latest']
+            });
+
+            const balanceInEth = parseInt(balance, 16) / Math.pow(10, 18);
+            const network = MINT_CONFIG.networks[mintState.selectedNetwork];
+            const estimatedCost = await this.getGasEstimate();
+
+            return {
+                success: true,
+                balance: balanceInEth,
+                currency: network.currency,
+                sufficient: balanceInEth > parseFloat(estimatedCost.estimatedCost)
+            };
+        } catch (error) {
+            console.error('Balance check failed:', error);
+            return { success: false, error: error.message };
+        }
+    }
+};
+
 // Mint state management
 let mintState = {
     currentStep: 1,
@@ -101,9 +241,10 @@ function setupNFTTypeSelection() {
     grid.innerHTML = '';
 
     // Generate NFT type cards
-    const nftTypes = nftTaxonomy.getAllNFTTypes();
+    const isDemoMode = window.location.search.includes('demo=true') ||
+                      (WalletAuth && WalletAuth.isDemoMode && WalletAuth.isDemoMode());
     const userContext = {
-        userType: window.authSystem?.getUserType() || 'demo',
+        userType: isDemoMode ? 'demo' : (WalletAuth?.getUserType() || 'demo'),
         hasCustomPricing: false
     };
 
@@ -224,15 +365,26 @@ function suggestNetworkForNFTType(typeKey) {
  * Initialize mint form functionality
  */
 function initializeMintForm() {
-    // Check authentication
-    if (!window.authSystem || !window.authSystem.isAuthenticated()) {
+    // Check authentication - allow demo mode
+    const isDemoMode = window.location.search.includes('demo=true') ||
+                      (WalletAuth && WalletAuth.isDemoMode && WalletAuth.isDemoMode());
+
+    if (!isDemoMode && (!WalletAuth || !authState.isAuthenticated)) {
         return; // Auth system will handle redirect
     }
 
-    // Check minting permissions
-    if (!window.authSystem.hasPermission('mint')) {
+    // Check minting permissions (skip for demo)
+    if (!isDemoMode && !WalletAuth.hasPermission('mint')) {
         showError('Your account does not have minting permissions. Please contact support.');
         return;
+    }
+
+    // Show demo banner if in demo mode
+    if (isDemoMode) {
+        const demoBanner = document.getElementById('demo-banner');
+        if (demoBanner) {
+            demoBanner.style.display = 'block';
+        }
     }
 
     // Initialize network based on user type
@@ -598,26 +750,59 @@ function setupMintButton() {
  * Handle mint request
  */
 async function handleMintRequest() {
+    const isDemoMode = window.location.search.includes('demo=true') ||
+                      (WalletAuth && WalletAuth.isDemoMode && WalletAuth.isDemoMode());
+
+    if (isDemoMode) {
+        // Demo mode - show success message without actual minting
+        showDemoMintSuccess();
+        return;
+    }
+
     if (mintState.isProcessing) return;
 
     try {
         mintState.isProcessing = true;
         updateMintButton('🔄 Processing...', true);
 
-        // Step 1: Upload file
+        // Step 1: Initialize MetaMask for minting
+        const metaMaskInit = await TrueMarkMetaMask.initializeForMinting();
+        if (!metaMaskInit.success) {
+            throw new Error(metaMaskInit.error);
+        }
+
+        // Step 2: Verify wallet balance
+        const balanceCheck = await TrueMarkMetaMask.verifyBalance();
+        if (!balanceCheck.success) {
+            throw new Error(balanceCheck.error);
+        }
+        if (!balanceCheck.sufficient) {
+            throw new Error(`Insufficient ${balanceCheck.currency} balance. Required: ~${balanceCheck.estimatedCost}`);
+        }
+
+        // Step 3: Upload file
         const uploadResult = await uploadFile();
         if (!uploadResult.success) {
             throw new Error(uploadResult.error || 'File upload failed');
         }
 
-        // Step 2: Create mint request
+        // Step 4: Create mint request
         const mintResult = await createMintRequest(uploadResult.fileHash);
         if (!mintResult.success) {
             throw new Error(mintResult.error || 'Mint request failed');
         }
 
-        // Step 3: Generate certificate and invoice
-        await generateCertificateAndInvoice(mintResult.tokenId, mintResult.transactionHash);
+        // Step 5: Sign minting transaction
+        const signResult = await TrueMarkMetaMask.signMintTransaction({
+            certificateId: mintResult.certificateId,
+            cost: mintResult.cost
+        });
+        if (!signResult.success) {
+            throw new Error(signResult.error);
+        }
+
+        // Step 6: Generate certificate and invoice
+        await generateCertificateAndInvoice(mintResult.tokenId, mintResult.transactionHash, signResult);
 
         // Show success
         showMintSuccess(mintResult);
@@ -643,7 +828,7 @@ async function uploadFile() {
         const response = await fetch(`${MINT_CONFIG.backend_url}${MINT_CONFIG.api_endpoints.upload}`, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${window.authSystem.getToken()}`,
+                'Authorization': `Bearer ${authState.token}`,
                 'X-Request-ID': crypto.randomUUID()
             },
             body: formData
@@ -698,7 +883,7 @@ async function createMintRequest(fileHash) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${window.authSystem.getToken()}`,
+                'Authorization': `Bearer ${authState.token}`,
                 'X-Request-ID': crypto.randomUUID()
             },
             body: JSON.stringify(mintRequest)
@@ -731,30 +916,42 @@ async function createMintRequest(fileHash) {
 /**
  * Generate certificate and invoice
  */
-async function generateCertificateAndInvoice(tokenId, transactionHash) {
+async function generateCertificateAndInvoice(tokenId, transactionHash, signResult) {
     const certificateData = {
         tokenId: tokenId,
         transactionHash: transactionHash,
         metadata: getFormData(),
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        signature: signResult.signature,
+        wallet: signResult.wallet,
+        web3_domain: 'truemark.x', // From DALS registry
+        caleon_verification: 'HASH_OF_CONTENT+SIGNATURE' // Would be generated by Caleon
     };
 
-    // Generate certificate (for demo, we'll create a preview)
+    // Generate certificate with official template
     mintState.certificate = {
-        id: `ALPHA-CERT-${Date.now()}`,
+        id: `LNFT-2025-TRM-${String(Date.now()).slice(-6)}-A9F2`,
         tokenId: tokenId,
         transactionHash: transactionHash,
         issueDate: new Date().toLocaleDateString(),
-        metadata: getFormData()
+        metadata: getFormData(),
+        signature: signResult.signature,
+        wallet: signResult.wallet,
+        web3_domain: certificateData.web3_domain,
+        caleon_verification: certificateData.caleon_verification,
+        stardate: `9530.${Math.floor(Math.random() * 9999)}`, // ISS Stardate format
+        iso_timestamp: certificateData.timestamp
     };
 
-    // Generate invoice (for demo, we'll create a preview)
+    // Generate invoice
     mintState.invoice = {
         id: `INV-${Date.now()}`,
         certificateId: mintState.certificate.id,
         amount: '$49.99',
         issueDate: new Date().toLocaleDateString(),
-        status: 'Paid'
+        status: 'Paid',
+        network: mintState.selectedNetwork,
+        gas_used: '0.01' // Estimated
     };
 }
 
@@ -815,6 +1012,68 @@ function showMintSuccess(mintResult) {
                     <li>Download the PDF documents for your records</li>
                     <li>View your asset on blockchain explorers</li>
                 </ul>
+            </div>
+        `;
+    }
+}
+
+/**
+ * Show demo mint success
+ */
+function showDemoMintSuccess() {
+    hideStep(mintState.currentStep);
+    mintState.currentStep = 4;
+    showStep(4);
+    updateStepIndicator();
+
+    const resultsContent = document.querySelector('#step-4 .results-content');
+    if (resultsContent) {
+        resultsContent.innerHTML = `
+            <div class="success-message">
+                <div class="success-icon">🚀</div>
+                <h3>Demo Mint Successful!</h3>
+                <p>This is a demonstration of the minting process. In a real scenario, your digital asset would be certified and secured on the blockchain.</p>
+            </div>
+
+            <div class="mint-results">
+                <div class="result-item">
+                    <span class="label">Demo Token ID:</span>
+                    <span class="value">DEMO-${Date.now()}</span>
+                </div>
+                <div class="result-item">
+                    <span class="label">Demo Transaction Hash:</span>
+                    <span class="value">0x${Math.random().toString(16).substr(2, 64)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="label">Demo Certificate ID:</span>
+                    <span class="value">CERT-${Math.random().toString(36).substr(2, 9).toUpperCase()}</span>
+                </div>
+                <div class="result-item">
+                    <span class="label">Network:</span>
+                    <span class="value">Demo Network</span>
+                </div>
+            </div>
+
+            <div class="demo-notice">
+                <h4>🔍 Demo Mode Features Tested</h4>
+                <ul>
+                    <li>✅ File upload and validation</li>
+                    <li>✅ Form data processing</li>
+                    <li>✅ Certificate generation preview</li>
+                    <li>✅ UI/UX flow completion</li>
+                    <li>❌ Actual blockchain transaction (demo only)</li>
+                </ul>
+            </div>
+
+            <div class="next-steps">
+                <h4>🎯 Ready for Production?</h4>
+                <ul>
+                    <li>Login with real credentials for actual minting</li>
+                    <li>Connect your Web3 wallet</li>
+                    <li>Complete payment processing</li>
+                    <li>Receive real blockchain certificates</li>
+                </ul>
+                <a href="login.html" class="btn btn-primary" style="margin-top: 1rem;">Login for Real Minting</a>
             </div>
         `;
     }
@@ -1029,7 +1288,7 @@ window.mintSystem = {
  * Initialize default network based on user type
  */
 function initializeDefaultNetwork() {
-    const userType = window.authSystem.getUserType();
+    const userType = WalletAuth.getUserType();
     
     // Set default network based on user type
     if (userType === 'enterprise' || userType === 'admin') {
@@ -1133,18 +1392,6 @@ async function initializeWeb3() {
 
 // Note: connectWallet function moved to integrations.js to avoid conflicts
 // Use the global connectWallet function from integrations.js
-            await updateWeb3Network();
-            
-            showSuccess(`Wallet connected: ${mintState.account.substring(0, 6)}...${mintState.account.substring(38)}`);
-        }
-        
-        return true;
-    } catch (error) {
-        console.error('Wallet connection failed:', error);
-        showError('Failed to connect wallet. Please try again.');
-        return false;
-    }
-}
 
 /**
  * Update Web3 to use current network

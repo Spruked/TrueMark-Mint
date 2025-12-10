@@ -1,0 +1,9 @@
+#! backend-T:\truemark-mint\Alpha-mint-engine-persistentVolumeClaim.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: backend-t--truemark-mint-alpha-mint-engine
+    namespace: truemark-mint
+spec:
+    storageClassName: "hostpath" # see docker/desktop-storage-provisioner

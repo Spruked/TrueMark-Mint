@@ -1,0 +1,44 @@
+{
+  "name": "caleon-ucm-bubble-plugin",
+  "version": "1.0.0",
+  "description": "Bubble Host Assistant Plugin for Caleon UCM",
+  "author": "TrueMark Mint",
+  "type": "bubble-assistant",
+  "target": "caleon-ucm",
+  "capabilities": [
+    "certificate-management",
+    "user-authentication",
+    "data-validation",
+    "compliance-checking"
+  ],
+  "endpoints": {
+    "health": "/health",
+    "authenticate": "/api/auth",
+    "validate": "/api/validate",
+    "compliance": "/api/compliance"
+  },
+  "dependencies": {
+    "flask": "^3.0.0",
+    "flask-jwt-extended": "^4.6.0",
+    "cryptography": "^42.0.8",
+    "sqlalchemy": "^2.0.0"
+  },
+  "configuration": {
+    "database_url": "postgresql://user:password@localhost/truemark",
+    "jwt_secret": "${JWT_SECRET}",
+    "encryption_key": "${ENCRYPTION_KEY}",
+    "compliance_rules": "strict"
+  },
+  "permissions": [
+    "read:user-data",
+    "write:certificates",
+    "validate:compliance",
+    "manage:sessions"
+  ],
+  "hooks": {
+    "onUserLogin": "handleUserLogin",
+    "onCertificateCreate": "handleCertificateCreate",
+    "onComplianceCheck": "handleComplianceCheck",
+    "onDataValidation": "handleDataValidation"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "description": "DALS Web3 Domain Registry - Unified identity system for TrueMark Mint and Caleon integration",
+  "domains": [
+    {
+      "web3_domain": "truemark.x",
+      "wallet_address": "0xYOUR_METAMASK_WALLET_ADDRESS",
+      "mint_engine": "TrueMark",
+      "dals_service": "mint",
+      "ucm_authority": "Caleon",
+      "chain_id": 137,
+      "network": "polygon",
+      "registered_at": "2025-12-10T04:22:16Z",
+      "status": "active"
+    },
+    {
+      "web3_domain": "dals.ai",
+      "wallet_address": "0xDALS_WALLET_ADDRESS",
+      "mint_engine": "CertSig",
+      "dals_service": "certificate_authority",
+      "ucm_authority": "Caleon",
+      "chain_id": 1,
+      "network": "ethereum",
+      "registered_at": "2025-12-10T04:22:16Z",
+      "status": "active"
+    }
+  ],
+  "routing_rules": {
+    "truemark.x": {
+      "service_endpoints": {
+        "mint": "/api/mint/create",
+        "verify": "/api/certificate/verify",
+        "metadata": "/api/metadata/get"
+      },
+      "caleon_integration": {
+        "verification_hash": "HASH_OF_CONTENT+SIGNATURE",
+        "ai_validation": true
+      }
+    }
+  },
+  "metadata": {
+    "created_by": "TrueMark Mint System",
+    "last_updated": "2025-12-10T04:22:16Z",
+    "schema_version": "1.0"
+  }
+}

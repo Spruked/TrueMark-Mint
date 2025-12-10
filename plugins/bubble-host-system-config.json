@@ -1,0 +1,55 @@
+{
+  "name": "truemark-bubble-host-system",
+  "version": "1.0.0",
+  "description": "System-wide Bubble Host Configuration for TrueMark Mint",
+  "author": "TrueMark Mint",
+  "system": {
+    "host": "bubble-host-system",
+    "port": 8080,
+    "protocol": "http",
+    "timeout": 30000
+  },
+  "services": [
+    {
+      "name": "caleon-worker",
+      "type": "worker",
+      "endpoint": "http://caleon-worker:8080",
+      "plugin": "caleon-worker-plugin.json",
+      "capabilities": ["minting", "verification", "processing"]
+    },
+    {
+      "name": "caleon-ucm",
+      "type": "ucm",
+      "endpoint": "http://caleon-ucm:8080",
+      "plugin": "caleon-ucm-plugin.json",
+      "capabilities": ["authentication", "validation", "compliance"]
+    },
+    {
+      "name": "host-bubble-worker",
+      "type": "bubble-worker",
+      "endpoint": "http://host-bubble-worker:8080",
+      "capabilities": ["hosting", "orchestration", "monitoring"]
+    },
+    {
+      "name": "goat-system",
+      "type": "system",
+      "endpoint": "http://goat-system:8080",
+      "capabilities": ["system-management", "coordination"]
+    }
+  ],
+  "plugins": {
+    "directory": "/plugins",
+    "auto-load": true,
+    "hot-reload": true
+  },
+  "security": {
+    "authentication": "jwt",
+    "encryption": "aes-256",
+    "certificates": "auto-renew"
+  },
+  "monitoring": {
+    "health-checks": true,
+    "metrics": true,
+    "logging": "structured"
+  }
+}

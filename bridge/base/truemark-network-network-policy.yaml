@@ -1,0 +1,24 @@
+#! truemark-network-network-policy.yaml
+# Generated code, do not edit
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+    name: truemark-network-network-policy
+    namespace: truemark-mint
+spec:
+    podSelector:
+        matchLabels:
+            com.docker.compose.network.truemark-network: "true"
+    policyTypes:
+        - Ingress
+        - Egress
+    ingress:
+        - from:
+            - podSelector:
+                matchLabels:
+                    com.docker.compose.network.truemark-network: "true"
+    egress:
+        - to:
+            - podSelector:
+                matchLabels:
+                    com.docker.compose.network.truemark-network: "true"

@@ -1,13 +1,13 @@
 # 🚀 TrueMark Mint - Deployment Guide
 
-Complete deployment instructions for the **Alpha CertSig NFT Taxonomy Platform** with 7 specialized certificate types, pricing tiers, and royalty management.
+Complete deployment instructions for the **KEP-NFT Certificate Platform** with DALS integration, professional certificate generation, and institutional-quality design.
 
 ## 📋 **Prerequisites**
 
 - Docker & Docker Compose
-- Git with submodule support
-- Modern web browser
-- GitHub account (for repository access)
+- Git
+- MetaMask wallet (for testing)
+- API keys for IPFS, Web3 providers, and payment processing
 
 ---
 
@@ -39,10 +39,13 @@ nano .env
 **Required Environment Variables:**
 ```env
 SECRET_KEY=your-secure-secret-key-here
-JWT_SECRET=your-jwt-secret-key-here
+JWT_SECRET=your-jwt-secret-here
 IPFS_NODE_URL=https://ipfs.infura.io:5001
-WEB3_PROVIDER_URL=https://mainnet.infura.io/v3/your-project-id
+WEB3_PROVIDER_URL=https://polygon-rpc.com
 POLYGON_RPC_URL=https://polygon-rpc.com
+SQUARE_ACCESS_TOKEN=your-square-access-token
+SQUARE_APPLICATION_ID=your-square-app-id
+INFURA_PROJECT_ID=your-infura-project-id
 ```
 
 ---
@@ -62,8 +65,8 @@ docker-compose logs -f
 ```
 
 **Services Available:**
-- **Frontend**: http://localhost:8081 (Alpha CertSig Interface)
-- **Backend**: http://localhost:5000 (Alpha Mint Engine API)
+- **Frontend**: http://localhost:8081 (KEP-NFT Certificate Interface)
+- **Backend**: http://localhost:5000 (Mint Engine API)
 - **Nginx**: http://localhost:8082 (Production Proxy)
 - **Redis**: localhost:6379 (Session Management)
 
@@ -73,7 +76,7 @@ docker-compose logs -f
 cd truemark-website
 python -m http.server 8080
 
-# Backend (Alpha Mint Engine)
+# Backend (Mint Engine)
 cd Alpha-mint-engine
 pip install -r requirements.txt
 python app.py

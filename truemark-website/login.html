@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - TrueMark Mint</title>
-    <link rel="icon" type="image/x-icon" href="assets/img/truemark.ico">
+    <link rel="icon" type="image/x-icon" href="assets/img/bryan-spruk.png">
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
 </head>
@@ -13,7 +13,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <img src="assets/img/truemarklogo.png" alt="TrueMark Mint Logo">
+                <img src="assets/img/truemarklogoTM.jpg" alt="TrueMark Mint Logo">
                 <span>TrueMark Mint</span>
             </div>
             <ul class="nav-menu">
@@ -118,6 +118,29 @@
                     </div>
                 </form>
 
+                <!-- MetaMask Authentication Section -->
+                <div class="metamask-auth-section">
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+                    <div class="metamask-login">
+                        <button type="button" class="btn btn-metamask btn-large" id="metamaskLoginBtn">
+                            <div class="metamask-icon">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" width="24" height="24">
+                            </div>
+                            <span class="metamask-text">Connect with MetaMask</span>
+                            <span class="metamask-loading" style="display: none;">Connecting...</span>
+                        </button>
+                        <p class="metamask-info">
+                            Secure wallet-based authentication for blockchain minting
+                        </p>
+                        <div class="metamask-status" id="metamaskStatus" style="display: none;">
+                            <div class="status-icon">🔗</div>
+                            <span id="metamaskStatusText">Wallet connected successfully</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="login-success" id="loginSuccess" style="display: none;">
                     <div class="success-icon">✅</div>
                     <h3>Authentication Successful</h3>
@@ -212,7 +235,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
-                        <img src="assets/img/truemarklogo.png" alt="TrueMark Mint Logo">
+                        <img src="assets/img/treumarkbrown1600.png" alt="TrueMark Mint Logo">
                         <span>TrueMark Mint</span>
                     </div>
                     <p>Where heritage meets modern proof</p>
@@ -256,5 +279,96 @@
 
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth.js"></script>
+
+    <script>
+        // MetaMask Authentication Handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const metamaskBtn = document.getElementById('metamaskLoginBtn');
+            const metamaskStatus = document.getElementById('metamaskStatus');
+            const metamaskStatusText = document.getElementById('metamaskStatusText');
+            const loginSuccess = document.getElementById('loginSuccess');
+
+            // Check if MetaMask is available
+            if (!WalletAuth.isMetaMaskInstalled()) {
+                metamaskBtn.disabled = true;
+                metamaskBtn.innerHTML = `
+                    <div class="metamask-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" width="24" height="24">
+                    </div>
+                    <span class="metamask-text">Install MetaMask to continue</span>
+                `;
+                metamaskBtn.style.opacity = '0.6';
+                return;
+            }
+
+            // MetaMask login handler
+            metamaskBtn.addEventListener('click', async function() {
+                try {
+                    // Update button state
+                    metamaskBtn.classList.add('loading');
+                    metamaskBtn.disabled = true;
+
+                    // Hide any previous status
+                    metamaskStatus.style.display = 'none';
+
+                    // Attempt MetaMask authentication
+                    const result = await WalletAuth.authenticateWithWallet();
+
+                    if (result.success) {
+                        // Show success status
+                        metamaskStatusText.textContent = `Connected: ${result.user.wallet_address.substring(0, 6)}...${result.user.wallet_address.substring(result.user.wallet_address.length - 4)}`;
+                        metamaskStatus.style.display = 'flex';
+
+                        // Show login success and redirect
+                        setTimeout(() => {
+                            loginSuccess.style.display = 'block';
+                            loginSuccess.innerHTML = `
+                                <div class="success-icon">✅</div>
+                                <h3>Wallet Authentication Successful</h3>
+                                <p>Redirecting to minting portal...</p>
+                            `;
+
+                            // Redirect to mint page after success
+                            setTimeout(() => {
+                                window.location.href = 'mint.html';
+                            }, 2000);
+                        }, 1000);
+
+                    } else {
+                        throw new Error(result.error || 'Authentication failed');
+                    }
+
+                } catch (error) {
+                    console.error('MetaMask authentication error:', error);
+
+                    // Show error status
+                    metamaskStatusText.textContent = error.message;
+                    metamaskStatus.style.background = 'rgba(239, 68, 68, 0.1)';
+                    metamaskStatus.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+                    metamaskStatus.style.color = 'var(--error)';
+                    metamaskStatus.style.display = 'flex';
+
+                    // Reset button
+                    metamaskBtn.classList.remove('loading');
+                    metamaskBtn.disabled = false;
+                }
+            });
+
+            // Check if already authenticated
+            WalletAuth.verifyAuthentication().then(result => {
+                if (result.authenticated) {
+                    // User is already authenticated, redirect to mint page
+                    window.location.href = 'mint.html';
+                }
+            }).catch(error => {
+                console.log('Not authenticated, staying on login page');
+            });
+        });
+    </script>
+
+    <!-- TrueMark Mint Seal -->
+    <div class="truemark-seal">
+        <img src="assets/img/TrueMarkMintseal.png" alt="TrueMark Mint Seal" class="seal-image">
+    </div>
 </body>
 </html>

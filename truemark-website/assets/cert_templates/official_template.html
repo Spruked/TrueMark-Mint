@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrueMark Certificate - {{certificate.serial_number}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'EB Garamond', serif;
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #212529;
+        }
+
+        .certificate-container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: white;
+            border: 3px solid #6c757d;
+            border-radius: 0;
+            padding: 50px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Watermark - Large faint background seal */
+        .certificate-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60%;
+            opacity: 0.14;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Bottom-left seal */
+        .certificate-seal {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 100px;
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .certificate-content {
+            position: relative;
+            z-index: 5;
+        }
+
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 20px;
+        }
+
+        .certificate-title {
+            font-size: 42px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .certificate-subtitle {
+            font-size: 16px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .certificate-type {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .certificate-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .certificate-details {
+            flex: 1;
+            margin-right: 40px;
+        }
+
+        .certificate-metadata {
+            flex: 1;
+        }
+
+        .detail-section {
+            margin-bottom: 25px;
+        }
+
+        .detail-section h3 {
+            font-size: 14px;
+            color: #495057;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 4px;
+        }
+
+        .detail-item {
+            display: flex;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            width: 140px;
+            color: #495057;
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            flex: 1;
+            color: #212529;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            word-break: break-all;
+        }
+
+        .certificate-qr {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .qr-code {
+            width: 120px;
+            height: 120px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .certificate-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .footer-quote {
+            font-size: 16px;
+            color: #6c757d;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .verification-info {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .certificate-qr {
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            width: 200px;
+            color: #2c3e50;
+        }
+
+        .detail-value {
+            flex: 1;
+            color: #34495e;
+        }
+
+        .certificate-metadata {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #495057;
+        }
+
+        .certificate-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #2c3e50;
+        }
+
+        .verification-info {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .web3-domain {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate-container">
+        <!-- TrueMark Seal -->
+        <img src="/assets/img/truemark-seal.png" alt="TrueMark Seal" class="truemark-seal">
+
+        <!-- Certificate Header -->
+        <div class="certificate-header">
+            <h1 class="certificate-title">TrueMark Certificate</h1>
+            <p class="certificate-subtitle">Digital Asset Certification & Blockchain Minting</p>
+        </div>
+
+        <!-- Certificate Content -->
+        <div class="certificate-content">
+            <div class="certificate-details">
+                <div class="detail-row">
+                    <div class="detail-label">Serial Number:</div>
+                    <div class="detail-value">{{certificate.serial_number}}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Web3 Domain:</div>
+                    <div class="detail-value web3-domain">{{certificate.issuer_web3_domain}}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">NFT Token ID:</div>
+                    <div class="detail-value">{{certificate.token_id}}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Blockchain Transaction:</div>
+                    <div class="detail-value">{{certificate.transaction_hash}}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Timestamp (ISS Stardate):</div>
+                    <div class="detail-value">{{certificate.stardate}}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">ISO Timestamp:</div>
+                    <div class="detail-value">{{certificate.iso_timestamp}}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Caleon Verification:</div>
+                    <div class="detail-value">{{certificate.cali_verification}}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Owner Wallet:</div>
+                    <div class="detail-value">{{certificate.wallet}}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Metadata URL:</div>
+                    <div class="detail-value">{{certificate.metadata_url}}</div>
+                </div>
+            </div>
+
+            <!-- QR Code for Verification -->
+            <div class="certificate-qr">
+                <div class="qr-code">
+                    QR Code<br>Verification
+                </div>
+                <p>Scan to verify authenticity</p>
+            </div>
+        </div>
+
+        <!-- Certificate Metadata (JSON) -->
+        <div class="certificate-metadata">
+            <strong>Certificate Metadata:</strong><br>
+            {{certificate.json_metadata}}
+        </div>
+
+        <!-- Certificate Footer -->
+        <div class="certificate-footer">
+            <p class="verification-info">
+                This certificate is verified by Caleon AI and secured on the blockchain.<br>
+                Issued by <span class="web3-domain">{{certificate.issuer_web3_domain}}</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mint Certificate - TrueMark Mint</title>
-    <link rel="icon" type="image/x-icon" href="assets/img/truemark.ico">
+    <link rel="icon" type="image/x-icon" href="assets/img/bryan-spruk.png">
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -13,7 +13,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <img src="assets/img/truemarklogo.png" alt="TrueMark Mint Logo">
+                <img src="assets/img/treumarkbrown1600.png" alt="TrueMark Mint Logo">
                 <span>TrueMark Mint</span>
             </div>
             <ul class="nav-menu">
@@ -28,6 +28,9 @@
                 </li>
                 <li class="nav-item">
                     <a href="mint.html" class="nav-link active">Mint</a>
+                </li>
+                <li class="nav-item">
+                    <a href="demo-mint.html" class="nav-link demo-link">Demo Mint</a>
                 </li>
                 <li class="nav-item">
                     <a href="contact.html" class="nav-link">Contact</a>
@@ -48,6 +51,18 @@
             <p>Secure your digital assets with blockchain-powered authentication</p>
         </div>
     </section>
+
+    <!-- Demo Mode Banner -->
+    <div id="demo-banner" class="demo-banner" style="display: none;">
+        <div class="container">
+            <div class="demo-banner-content">
+                <span class="demo-icon">🚀</span>
+                <strong>Demo Mode Active</strong>
+                <span class="demo-text">You are viewing the mint interface in demo mode. All features are available for testing.</span>
+                <a href="login.html" class="demo-login-link">Login for Full Access</a>
+            </div>
+        </div>
+    </div>
 
     <!-- Mint Form Section -->
     <section class="mint-form-section">
@@ -458,7 +473,7 @@
 
                         <div class="certificate-preview">
                             <div class="cert-header">
-                                <img src="assets/img/truemarklogo.png" alt="TrueMark Logo" class="cert-logo">
+                                <img src="assets/img/treumarkbrown1600.png" alt="TrueMark Logo" class="cert-logo">
                                 <h3>TrueMark Digital Certificate</h3>
                             </div>
                             <div class="cert-body">
@@ -550,7 +565,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
-                        <img src="assets/img/truemarklogo.png" alt="TrueMark Mint Logo">
+                        <img src="assets/img/treumarkbrown1600.png" alt="TrueMark Mint Logo">
                         <span>TrueMark Mint</span>
                     </div>
                     <p>Securing digital assets with blockchain technology</p>
@@ -601,6 +616,39 @@
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/mint.js"></script>
     
+    <script>
+        // Authentication check for mint page
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Check if user is authenticated
+                const authResult = await WalletAuth.verifyAuthentication();
+
+                if (!authResult.authenticated) {
+                    // Check if demo mode is requested
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const isDemoMode = urlParams.get('demo') === 'true';
+
+                    if (!isDemoMode) {
+                        // Not authenticated and not demo mode, redirect to login
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                }
+
+                // User is authenticated or in demo mode, proceed with mint page initialization
+                console.log('Authentication verified, initializing mint page');
+
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+                // On error, redirect to login unless in demo mode
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('demo') !== 'true') {
+                    window.location.href = 'login.html';
+                }
+            }
+        });
+    </script>
+
     <script>
         // Initialize USD-based crypto pricing system
         document.addEventListener('DOMContentLoaded', async () => {
@@ -807,5 +855,10 @@
             alert(`❌ Payment Failed: ${error}\n\nPlease try again or contact support.`);
         }
     </script>
+
+    <!-- TrueMark Mint Seal -->
+    <div class="truemark-seal">
+        <img src="assets/img/TrueMarkMintseal.png" alt="TrueMark Mint Seal" class="seal-image">
+    </div>
 </body>
 </html>

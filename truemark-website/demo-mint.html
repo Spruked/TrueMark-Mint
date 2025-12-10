@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Mint - TrueMark Mint</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/bryan-spruk.png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .demo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .demo-banner .demo-icon {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        .certificate-preview {
+            margin-top: 2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .certificate-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .certificate-content {
+            padding: 2rem;
+        }
+
+        .certificate-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .detail-value {
+            color: #34495e;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .certificate-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .certificate-actions .btn {
+            padding: 0.75rem 1.5rem;
+        }
+
+        .truemark-seal-demo {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 80px;
+            height: 80px;
+            opacity: 0.8;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .demo-info {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .sample-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .sample-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Banner -->
+    <div class="demo-banner">
+        <span class="demo-icon">🚀</span>
+        TrueMark Mint Demo - Experience the Full Certificate Generation Process
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/img/truemarklogoTM.jpg" alt="TrueMark Mint Logo">
+                <span>TrueMark Mint</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="how.html" class="nav-link">How It Works</a>
+                </li>
+                <li class="nav-item">
+                    <a href="mint.html" class="nav-link">Mint</a>
+                </li>
+                <li class="nav-item">
+                    <a href="demo-mint.html" class="nav-link active">Demo Mint</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>TrueMark Mint Demo</h1>
+            <p>Experience the complete certificate generation process with real data formats</p>
+            <div class="demo-info">
+                <p><strong>Want to see what your certificate will look like?</strong> 
+                <a href="../sample_certificate.html" target="_blank" class="sample-link">View Sample Certificate →</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Mint Form -->
+    <section class="mint-section">
+        <div class="container">
+            <div class="mint-form-container">
+                <form id="demoMintForm" class="mint-form">
+                    <!-- Step 1: Asset Information -->
+                    <div class="form-step active" id="demo-step-1">
+                        <div class="step-header">
+                            <div class="step-number">1</div>
+                            <h3>Asset Information</h3>
+                        </div>
+                        <div class="step-content">
+                            <div class="form-group">
+                                <label for="demoAssetTitle">Asset Title *</label>
+                                <input type="text" id="demoAssetTitle" name="title" required
+                                       placeholder="e.g., My Digital Artwork" value="TrueMark Demo Certificate">
+                            </div>
+                            <div class="form-group">
+                                <label for="demoAssetDescription">Description *</label>
+                                <textarea id="demoAssetDescription" name="description" required rows="3"
+                                          placeholder="Describe your digital asset">This is a demonstration certificate showcasing the TrueMark Mint system capabilities. It contains all the same information and formatting as a real NFT certificate.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="demoAssetCreator">Creator/Author *</label>
+                                <input type="text" id="demoAssetCreator" name="creator" required
+                                       placeholder="Your name or organization" value="TrueMark Mint Demo">
+                            </div>
+                            <div class="form-group">
+                                <label for="demoAssetDate">Creation Date *</label>
+                                <input type="date" id="demoAssetDate" name="creationDate" required
+                                       value="2025-12-10">
+                            </div>
+                        </div>
+                        <div class="step-actions">
+                            <button type="button" class="btn btn-primary" onclick="nextDemoStep()">Next: NFT Type</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: NFT Type Selection -->
+                    <div class="form-step" id="demo-step-2">
+                        <div class="step-header">
+                            <div class="step-number">2</div>
+                            <h3>NFT Type Selection</h3>
+                        </div>
+                        <div class="step-content">
+                            <div class="nft-types-grid" id="demoNftTypesGrid">
+                                <!-- NFT types will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="step-actions">
+                            <button type="button" class="btn btn-secondary" onclick="prevDemoStep()">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextDemoStep()">Next: Network</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Network Selection -->
+                    <div class="form-step" id="demo-step-3">
+                        <div class="step-header">
+                            <div class="step-number">3</div>
+                            <h3>Blockchain Network</h3>
+                        </div>
+                        <div class="step-content">
+                            <div class="network-selection">
+                                <div class="network-option">
+                                    <input type="radio" id="demoNetworkPolygon" name="network" value="polygon" checked>
+                                    <label for="demoNetworkPolygon">
+                                        <div class="network-info">
+                                            <div class="network-name">Polygon</div>
+                                            <div class="network-desc">Low-cost, fast transactions</div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="network-option">
+                                    <input type="radio" id="demoNetworkEthereum" name="network" value="ethereum">
+                                    <label for="demoNetworkEthereum">
+                                        <div class="network-info">
+                                            <div class="network-name">Ethereum</div>
+                                            <div class="network-desc">Maximum security, established ecosystem</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-actions">
+                            <button type="button" class="btn btn-secondary" onclick="prevDemoStep()">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextDemoStep()">Next: Review</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Review & Mint -->
+                    <div class="form-step" id="demo-step-4">
+                        <div class="step-header">
+                            <div class="step-number">4</div>
+                            <h3>Review & Generate Certificate</h3>
+                        </div>
+                        <div class="step-content">
+                            <div class="review-section" id="demoReviewSection">
+                                <!-- Review content will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="step-actions">
+                            <button type="button" class="btn btn-secondary" onclick="prevDemoStep()">Back</button>
+                            <button type="button" class="btn btn-primary btn-large" id="demoMintBtn" onclick="generateDemoCertificate()">
+                                <span class="mint-text">🏛️ Generate Certificate</span>
+                                <span class="loading-text" style="display: none;">Generating...</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Certificate Display -->
+                    <div class="form-step" id="demo-step-5">
+                        <div class="step-header">
+                            <div class="step-number">5</div>
+                            <h3>Your TrueMark Certificate</h3>
+                        </div>
+                        <div class="step-content">
+                            <div class="certificate-preview" id="certificatePreview">
+                                <!-- Certificate will be displayed here -->
+                            </div>
+
+                            <div class="certificate-actions">
+                                <button type="button" class="btn btn-primary" onclick="downloadCertificate()">
+                                    📥 Download Certificate
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="shareCertificate()">
+                                    🔗 Share Certificate
+                                </button>
+                                <button type="button" class="btn btn-outline" onclick="resetDemo()">
+                                    🔄 Try Another Demo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="assets/img/truemarklogoTM.jpg" alt="TrueMark Mint Logo">
+                        <span>TrueMark Mint</span>
+                    </div>
+                    <p>Where heritage meets modern proof</p>
+                    <div class="alpha-cert-seal">
+                        <div class="seal-icon">🏛️</div>
+                        <span class="heritage-text">Certified by Alpha CertSig Mint</span>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="how.html">How It Works</a></li>
+                        <li><a href="mint.html">Mint</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Certified by Alpha CertSig Mint</p>
+                <p>&copy; 2025 TrueMark LLC, an affiliate of Pro Prime Holdings.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- TrueMark Mint Seal -->
+    <div class="truemark-seal">
+        <img src="assets/img/TrueMarkMintseal.png" alt="TrueMark Mint Seal" class="seal-image">
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/demo-mint.js"></script>
+</body>
+</html>

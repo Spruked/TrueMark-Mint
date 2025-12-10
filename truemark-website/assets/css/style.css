@@ -5,19 +5,24 @@
 /* Custom Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap');
 
-/* Premium Color Palette */
+/* Modern Tech Color Palette */
 :root {
-    --gold: #C6A94E;
-    --gold-light: #D4BC6A;
-    --gold-dark: #B8973D;
-    --navy: #0F2741;
-    --navy-light: #1A3B5C;
-    --navy-dark: #0A1E2F;
-    --pearl: #F8F8F5;
-    --pearl-dark: #F0F0ED;
-    --text-primary: #0F2741;
-    --text-secondary: #5A6B7D;
-    --text-light: #8B96A5;
+    --primary: #6366f1;        /* Indigo */
+    --primary-light: #818cf8;  /* Light Indigo */
+    --primary-dark: #4f46e5;   /* Dark Indigo */
+    --secondary: #06b6d4;     /* Cyan */
+    --accent: #f59e0b;        /* Amber */
+    --accent-light: #fbbf24;  /* Light Amber */
+    --dark: #0f172a;          /* Slate Dark */
+    --dark-light: #1e293b;    /* Slate Light */
+    --light: #f8fafc;         /* Slate Light */
+    --light-dark: #e2e8f0;    /* Slate Medium */
+    --text-primary: #0f172a;  /* Dark Slate */
+    --text-secondary: #475569; /* Medium Slate */
+    --text-light: #64748b;    /* Light Slate */
+    --success: #10b981;       /* Emerald */
+    --warning: #f59e0b;       /* Amber */
+    --error: #ef4444;         /* Red */
 }
 
 /* Reset and Base Styles */
@@ -35,7 +40,7 @@ body {
     font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: var(--text-primary);
-    background-color: var(--pearl);
+    background-color: var(--light);
 }
 
 /* Container */
@@ -51,7 +56,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 1rem;
-    color: var(--navy);
+    color: var(--dark);
     letter-spacing: -0.02em;
 }
 
@@ -97,7 +102,7 @@ p {
 }
 
 .highlight {
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -132,43 +137,43 @@ p {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
-    color: var(--navy);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
     font-weight: 700;
-    box-shadow: 0 4px 15px rgba(198, 169, 78, 0.3);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(198, 169, 78, 0.4);
-    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
 }
 
 .btn-secondary {
     background: transparent;
-    color: var(--navy);
-    border: 2px solid var(--navy);
+    color: var(--dark);
+    border: 2px solid var(--dark);
     font-weight: 600;
 }
 
 .btn-secondary:hover {
-    background: var(--navy);
-    color: var(--pearl);
+    background: var(--dark);
+    color: white;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(15, 39, 65, 0.2);
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.2);
 }
 
 .btn-outline {
     background: transparent;
-    color: var(--gold);
-    border: 2px solid var(--gold);
+    color: var(--primary);
+    border: 2px solid var(--primary);
     font-weight: 600;
 }
 
 .btn-outline:hover {
-    background: var(--gold);
-    color: var(--navy);
-    box-shadow: 0 4px 15px rgba(198, 169, 78, 0.3);
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
 
 .btn-large {
@@ -194,16 +199,16 @@ p {
 
 /* Navigation */
 .navbar {
-    background: rgba(248, 248, 245, 0.97);
+    background: rgba(248, 250, 252, 0.97);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(198, 169, 78, 0.1);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.1);
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 20px rgba(15, 39, 65, 0.08);
+    box-shadow: 0 2px 20px rgba(15, 23, 42, 0.08);
 }
 
 .nav-container {
@@ -220,15 +225,15 @@ p {
     align-items: center;
     gap: 12px;
     text-decoration: none;
-    color: var(--navy);
+    color: var(--dark);
     font-size: 1.5rem;
     font-weight: 700;
     font-family: 'Merriweather', serif;
 }
 
 .nav-logo img {
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     border-radius: 8px;
 }
 
@@ -251,7 +256,7 @@ p {
 
 .nav-link:hover,
 .nav-link.active {
-    color: var(--gold);
+    color: var(--primary);
 }
 
 .nav-link.active::after {
@@ -261,8 +266,22 @@ p {
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     border-radius: 2px;
+}
+
+.demo-link {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.demo-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
 .hamburger {
@@ -282,8 +301,8 @@ p {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 50%, var(--navy-dark) 100%);
-    color: var(--pearl);
+    background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 50%, var(--primary-dark) 100%);
+    color: white;
     padding: 140px 0 100px;
     margin-top: 80px;
     overflow: hidden;
@@ -297,7 +316,7 @@ p {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="heritage-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(198,169,78,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23heritage-grid)"/></svg>');
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="heritage-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(99,102,241,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23heritage-grid)"/></svg>');
     opacity: 0.6;
 }
 
@@ -308,7 +327,7 @@ p {
     right: -20%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(198, 169, 78, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
     border-radius: 50%;
 }
 
@@ -335,7 +354,7 @@ p {
 
 .hero-description {
     font-size: 1.375rem;
-    color: rgba(248, 248, 245, 0.9);
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 2.5rem;
     line-height: 1.6;
     font-weight: 400;
@@ -355,9 +374,9 @@ p {
 }
 
 .floating-card {
-    background: rgba(248, 248, 245, 0.1);
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(30px);
-    border: 2px solid rgba(198, 169, 78, 0.3);
+    border: 2px solid rgba(99, 102, 241, 0.3);
     border-radius: 20px;
     padding: 3rem;
     text-align: center;
@@ -397,7 +416,7 @@ p {
 .cert-icon {
     font-size: 4rem;
     margin-bottom: 1.5rem;
-    filter: drop-shadow(0 4px 8px rgba(198, 169, 78, 0.3));
+    filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.3));
 }
 
 /* Sections */
@@ -421,7 +440,7 @@ p {
 /* Features Section */
 .features {
     padding: 100px 0;
-    background: var(--pearl);
+    background: var(--background-secondary);
 }
 
 .features-grid {
@@ -435,9 +454,9 @@ p {
     padding: 3rem 2rem;
     border-radius: 16px;
     text-align: center;
-    box-shadow: 0 8px 30px rgba(15, 39, 65, 0.08);
+    box-shadow: 0 8px 30px rgba(99, 102, 241, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(198, 169, 78, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.1);
     position: relative;
 }
 
@@ -448,24 +467,24 @@ p {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     border-radius: 16px 16px 0 0;
 }
 
 .feature-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 16px 40px rgba(15, 39, 65, 0.12);
+    box-shadow: 0 16px 40px rgba(99, 102, 241, 0.12);
 }
 
 .feature-icon {
     font-size: 3.5rem;
     margin-bottom: 1.5rem;
-    filter: drop-shadow(0 4px 8px rgba(198, 169, 78, 0.2));
+    filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.2));
 }
 
 .feature-card h3 {
     margin-bottom: 1rem;
-    color: var(--navy);
+    color: var(--text-primary);
     font-family: 'Merriweather', serif;
 }
 
@@ -510,7 +529,7 @@ p {
     font-weight: 900;
     margin: 0 auto 1.5rem;
     font-family: 'Merriweather', serif;
-    box-shadow: 0 8px 20px rgba(198, 169, 78, 0.3);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
 }
 
 .step h3 {
@@ -665,7 +684,7 @@ p {
     margin: 0 auto 3rem;
     background: #ffffff;
     border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(15, 39, 65, 0.1);
+    box-shadow: 0 10px 40px rgba(99, 102, 241, 0.1);
     overflow: hidden;
 }
 
@@ -875,7 +894,7 @@ p {
     left: -20%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(198, 169, 78, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
     border-radius: 50%;
 }
 
@@ -886,7 +905,7 @@ p {
     right: -20%;
     width: 800px;
     height: 800px;
-    background: radial-gradient(circle, rgba(198, 169, 78, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
     border-radius: 50%;
 }
 
@@ -912,7 +931,19 @@ p {
 }
 
 .cta-content .btn {
-    box-shadow: 0 8px 25px rgba(198, 169, 78, 0.4);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.cta-buttons .btn {
+    min-width: 200px;
 }
 
 /* Process Overview (How It Works) */
@@ -1522,8 +1553,8 @@ p {
 }
 
 .cert-logo {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
 }
 
 .cert-body {
@@ -1847,8 +1878,8 @@ p {
 }
 
 .footer-logo img {
-    width: 30px;
-    height: 30px;
+    width: 60px;
+    height: 60px;
 }
 
 .footer-section p {
@@ -1861,15 +1892,15 @@ p {
     align-items: center;
     gap: 0.75rem;
     padding: 1rem 1.5rem;
-    background: rgba(198, 169, 78, 0.1);
-    border: 2px solid rgba(198, 169, 78, 0.3);
+    background: rgba(99, 102, 241, 0.1);
+    border: 2px solid rgba(99, 102, 241, 0.3);
     border-radius: 12px;
     margin-top: 1rem;
 }
 
 .seal-icon {
     font-size: 1.5rem;
-    filter: drop-shadow(0 2px 4px rgba(198, 169, 78, 0.3));
+    filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.3));
 }
 
 .alpha-cert-seal .heritage-text {
@@ -1899,7 +1930,7 @@ p {
 }
 
 .footer-bottom {
-    border-top: 1px solid rgba(198, 169, 78, 0.2);
+    border-top: 1px solid rgba(99, 102, 241, 0.2);
     padding-top: 2rem;
     text-align: center;
     color: rgba(248, 248, 245, 0.7);
@@ -2135,8 +2166,8 @@ p {
 
 .form-control:focus {
     outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(198, 169, 78, 0.1);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
 .password-input-wrapper {
@@ -2200,7 +2231,7 @@ p {
 
 .login-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(15, 39, 65, 0.3);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
 }
 
 .login-btn.loading {
@@ -2255,6 +2286,112 @@ p {
     font-size: 4rem;
     margin-bottom: 1rem;
     color: #28a745;
+}
+
+/* MetaMask Authentication Styles */
+.metamask-auth-section {
+    padding: 0 2rem 2rem;
+}
+
+.metamask-auth-section .divider {
+    margin: 2rem 0;
+    text-align: center;
+    position: relative;
+}
+
+.metamask-auth-section .divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e0e0e0;
+}
+
+.metamask-auth-section .divider span {
+    background: var(--pearl);
+    padding: 0 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.metamask-login {
+    text-align: center;
+}
+
+.btn-metamask {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #f6851b 0%, #f7931e 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.btn-metamask:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(247, 147, 30, 0.3);
+    background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+}
+
+.btn-metamask:active {
+    transform: translateY(0);
+}
+
+.btn-metamask .metamask-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-metamask .metamask-loading {
+    display: none;
+}
+
+.btn-metamask.loading .metamask-text {
+    display: none;
+}
+
+.btn-metamask.loading .metamask-loading {
+    display: block;
+}
+
+.metamask-info {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.metamask-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 6px;
+    color: var(--success);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.metamask-status .status-icon {
+    font-size: 1.1rem;
 }
 
 /* Two-Factor Authentication Modal */
@@ -2391,14 +2528,14 @@ p {
 
 /* Mint Page Authentication */
 .mint-user-status {
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
-    color: var(--navy);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
     padding: 1.5rem;
     border-radius: 12px;
     margin-bottom: 2rem;
     text-align: center;
     font-weight: 600;
-    box-shadow: 0 4px 15px rgba(198, 169, 78, 0.2);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
 }
 
 .mint-success {
@@ -2488,8 +2625,8 @@ p {
 
 /* Demo Credentials Section */
 .demo-credentials {
-    background: linear-gradient(135deg, rgba(198, 169, 78, 0.05) 0%, rgba(15, 39, 65, 0.05) 100%);
-    border: 1px solid rgba(198, 169, 78, 0.2);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.2);
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 2rem;
@@ -2518,7 +2655,7 @@ p {
 
 .demo-account {
     background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(198, 169, 78, 0.3);
+    border: 1px solid rgba(99, 102, 241, 0.3);
     border-radius: 8px;
     padding: 0.75rem 1rem;
     cursor: pointer;
@@ -2529,8 +2666,8 @@ p {
 }
 
 .demo-account:hover {
-    background: rgba(198, 169, 78, 0.1);
-    border-color: var(--gold);
+    background: rgba(99, 102, 241, 0.1);
+    border-color: var(--primary);
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -2545,7 +2682,7 @@ p {
     font-family: 'Courier New', monospace;
     color: var(--text-secondary);
     font-size: 0.85rem;
-    background: rgba(15, 39, 65, 0.05);
+    background: rgba(99, 102, 241, 0.05);
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
 }
@@ -2563,9 +2700,9 @@ p {
 .network-selection {
     margin: 2rem 0;
     padding: 1.5rem;
-    background: linear-gradient(135deg, rgba(198, 169, 78, 0.05) 0%, rgba(15, 39, 65, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
     border-radius: 12px;
-    border: 1px solid rgba(198, 169, 78, 0.2);
+    border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
 .network-selection h3 {
@@ -2593,7 +2730,7 @@ p {
 
 .network-option {
     background: white;
-    border: 2px solid rgba(198, 169, 78, 0.2);
+    border: 2px solid rgba(99, 102, 241, 0.2);
     border-radius: 12px;
     padding: 1.5rem;
     cursor: pointer;
@@ -2602,8 +2739,8 @@ p {
 }
 
 .network-option:hover {
-    border-color: var(--gold);
-    box-shadow: 0 8px 25px rgba(198, 169, 78, 0.15);
+    border-color: var(--primary);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
     transform: translateY(-2px);
 }
 
@@ -2644,7 +2781,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(198, 169, 78, 0.1);
+    background: rgba(99, 102, 241, 0.1);
     border-radius: 50%;
 }
 
@@ -2704,9 +2841,9 @@ p {
 .nft-type-selection {
     margin: 2rem 0;
     padding: 2rem;
-    background: linear-gradient(135deg, rgba(198, 169, 78, 0.05) 0%, rgba(15, 39, 65, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
     border-radius: 16px;
-    border: 1px solid rgba(198, 169, 78, 0.2);
+    border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
 .nft-type-selection h3 {
@@ -2743,7 +2880,7 @@ p {
 
 .nft-type-card {
     background: white;
-    border: 2px solid rgba(198, 169, 78, 0.2);
+    border: 2px solid rgba(99, 102, 241, 0.2);
     border-radius: 12px;
     padding: 1.5rem;
     cursor: pointer;
@@ -2755,15 +2892,15 @@ p {
 }
 
 .nft-type-card:hover {
-    border-color: var(--gold);
-    box-shadow: 0 8px 25px rgba(198, 169, 78, 0.15);
+    border-color: var(--primary);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
     transform: translateY(-2px);
 }
 
 .nft-type-card.selected {
-    border-color: var(--gold);
-    background: linear-gradient(135deg, rgba(198, 169, 78, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
-    box-shadow: 0 8px 25px rgba(198, 169, 78, 0.2);
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
 }
 
 .nft-type-card input[type="radio"] {
@@ -2790,7 +2927,7 @@ p {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(198, 169, 78, 0.1);
+    background: rgba(99, 102, 241, 0.1);
 }
 
 .nft-type-info h4 {
@@ -2837,8 +2974,8 @@ p {
 
 .nft-feature-tag {
     padding: 0.25rem 0.5rem;
-    background: rgba(15, 39, 65, 0.1);
-    color: var(--navy);
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--text-primary);
     border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 500;
@@ -2856,8 +2993,8 @@ p {
 }
 
 .nft-type-card.heirloom .nft-type-icon {
-    background: rgba(198, 169, 78, 0.1);
-    color: #c6a94e;
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
 }
 
 .nft-type-card.academic .nft-type-icon {
@@ -2878,6 +3015,22 @@ p {
 .nft-type-card.licensable .nft-type-icon {
     background: rgba(124, 58, 237, 0.1);
     color: #7c3aed;
+}
+
+.nft-type-card.kep-nft .nft-type-icon {
+    background: linear-gradient(135deg, rgba(26, 13, 61, 0.1) 0%, rgba(212, 175, 55, 0.1) 100%);
+    color: #1a0d3d;
+}
+
+.nft-type-card.kep-nft {
+    border-color: #1a0d3d;
+    background: linear-gradient(135deg, rgba(26, 13, 61, 0.05) 0%, rgba(212, 175, 55, 0.05) 100%);
+}
+
+.nft-type-card.kep-nft:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(26, 13, 61, 0.3);
+    border-color: #d4af37;
 }
 
 /* Special styling for premium features */
@@ -2955,13 +3108,13 @@ p {
 }
 
 .payment-method:hover {
-    border-color: var(--gold);
-    box-shadow: 0 4px 15px rgba(198, 169, 78, 0.2);
+    border-color: var(--primary);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
 }
 
 .payment-method.active {
-    border-color: var(--gold);
-    background: linear-gradient(135deg, var(--pearl) 0%, #ffffff 100%);
+    border-color: var(--primary);
+    background: linear-gradient(135deg, var(--background-secondary) 0%, #ffffff 100%);
 }
 
 .method-icon {
@@ -3056,13 +3209,13 @@ p {
 }
 
 .network-selector:hover, .phase-selector:hover {
-    border-color: var(--gold);
-    box-shadow: 0 4px 15px rgba(198, 169, 78, 0.2);
+    border-color: var(--primary);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
 }
 
 .network-selector.active, .phase-selector.active {
-    border-color: var(--gold);
-    background: linear-gradient(135deg, var(--pearl) 0%, #ffffff 100%);
+    border-color: var(--primary);
+    background: linear-gradient(135deg, var(--background-secondary) 0%, #ffffff 100%);
 }
 
 .network-icon {
@@ -3323,9 +3476,45 @@ p {
     }
 }
 
-/* ==========================================================================
-   Legal Pages Styling (Privacy Policy, Terms of Service)
-   ========================================================================== */
+/* Demo Mode Banner */
+.demo-banner {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.demo-banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.demo-icon {
+    font-size: 1.5rem;
+}
+
+.demo-banner strong {
+    color: white;
+    font-weight: 600;
+}
+
+.demo-text {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.demo-login-link {
+    color: white;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.demo-login-link:hover {
+    color: var(--background-secondary);
+}
 
 .legal-content {
     max-width: 800px;
@@ -3333,7 +3522,7 @@ p {
     padding: 2rem;
     background: white;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(15, 39, 65, 0.1);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.1);
     line-height: 1.7;
 }
 
@@ -3398,6 +3587,29 @@ p {
     border-left: 4px solid var(--gold);
 }
 
+/* ==========================================================================
+   TrueMark Mint Seal
+   ========================================================================== */
+
+.truemark-seal {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.truemark-seal:hover {
+    opacity: 1;
+}
+
+.seal-image {
+    width: 80px;
+    height: auto;
+    filter: drop-shadow(0 2px 8px rgba(99, 102, 241, 0.3));
+}
+
 .contact-info p {
     margin-bottom: 0.5rem;
 }
@@ -3418,7 +3630,7 @@ p {
 .legal-footer .acknowledgment {
     margin-top: 1.5rem;
     padding: 1rem;
-    background: rgba(198, 169, 78, 0.2);
+    background: rgba(99, 102, 241, 0.2);
     border-radius: 6px;
     font-weight: 600;
 }

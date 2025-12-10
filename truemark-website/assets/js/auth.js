@@ -20,7 +20,9 @@ let authState = {
     user: null,
     token: null,
     sessionExpiry: null,
-    permissions: []
+    permissions: [],
+    walletAddress: null,
+    isMetaMaskConnected: false
 };
 
 // Security utilities
@@ -100,6 +102,201 @@ const SecurityUtils = {
     }
 };
 
+// MetaMask Wallet Integration
+const WalletAuth = {
+    /**
+     * Check if MetaMask is installed
+     */
+    isMetaMaskInstalled() {
+        return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
+    },
+
+    /**
+     * Connect to MetaMask wallet
+     */
+    async connectWallet() {
+        try {
+            if (!this.isMetaMaskInstalled()) {
+                throw new Error('MetaMask is not installed. Please install MetaMask to continue.');
+            }
+
+            // Request account access
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const walletAddress = accounts[0];
+
+            authState.walletAddress = walletAddress;
+            authState.isMetaMaskConnected = true;
+
+            return { success: true, walletAddress };
+        } catch (error) {
+            console.error('Wallet connection failed:', error);
+            return { success: false, error: error.message };
+        }
+    },
+
+    /**
+     * Disconnect wallet
+     */
+    disconnectWallet() {
+        authState.walletAddress = null;
+        authState.isMetaMaskConnected = false;
+        this.clearAuthSession();
+    },
+
+    /**
+     * Sign authentication message
+     */
+    async signAuthMessage(message) {
+        try {
+            if (!authState.walletAddress) {
+                throw new Error('Wallet not connected');
+            }
+
+            const signature = await window.ethereum.request({
+                method: 'personal_sign',
+                params: [message, authState.walletAddress]
+            });
+
+            return { success: true, signature };
+        } catch (error) {
+            console.error('Message signing failed:', error);
+            return { success: false, error: error.message };
+        }
+    },
+
+    /**
+     * Authenticate with wallet signature
+     */
+    async authenticateWithWallet() {
+        try {
+            // Connect wallet first
+            const connectResult = await this.connectWallet();
+            if (!connectResult.success) {
+                return connectResult;
+            }
+
+            // Create authentication message
+            const message = `TrueMark Mint Authentication\n\nWallet: ${authState.walletAddress}\nTimestamp: ${new Date().toISOString()}\n\nSign this message to authenticate with TrueMark Mint.`;
+
+            // Sign the message
+            const signResult = await this.signAuthMessage(message);
+            if (!signResult.success) {
+                return signResult;
+            }
+
+            // Send to backend for verification
+            const response = await fetch(`${AUTH_CONFIG.backend_url}/api/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    wallet_address: authState.walletAddress,
+                    signature: signResult.signature,
+                    message: message
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Authentication failed');
+            }
+
+            // Store authentication data
+            this.setAuthSession(data.token, data.user, data.expires_in);
+
+            return { success: true, user: data.user };
+        } catch (error) {
+            console.error('Wallet authentication failed:', error);
+            return { success: false, error: error.message };
+        }
+    },
+
+    /**
+     * Verify current authentication
+     */
+    async verifyAuthentication() {
+        try {
+            const token = localStorage.getItem('truemark_token');
+            if (!token) {
+                return { authenticated: false };
+            }
+
+            const response = await fetch(`${AUTH_CONFIG.backend_url}/api/auth/verify`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Auth verification failed:', error);
+            return { authenticated: false, error: error.message };
+        }
+    },
+
+    /**
+     * Set authentication session
+     */
+    setAuthSession(token, user, expiresIn) {
+        const expiry = new Date().getTime() + (expiresIn * 1000);
+
+        authState.isAuthenticated = true;
+        authState.token = token;
+        authState.user = user;
+        authState.sessionExpiry = expiry;
+
+        localStorage.setItem('truemark_token', token);
+        localStorage.setItem('truemark_session_expiry', expiry.toString());
+        localStorage.setItem('truemark_user', JSON.stringify(user));
+        localStorage.setItem('truemark_wallet', authState.walletAddress);
+
+        SecurityUtils.clearFailedAttempts();
+    },
+
+    /**
+     * Clear authentication session
+     */
+    clearAuthSession() {
+        authState.isAuthenticated = false;
+        authState.user = null;
+        authState.token = null;
+        authState.sessionExpiry = null;
+        authState.walletAddress = null;
+        authState.isMetaMaskConnected = false;
+
+        localStorage.removeItem('truemark_token');
+        localStorage.removeItem('truemark_session_expiry');
+        localStorage.removeItem('truemark_user');
+        localStorage.removeItem('truemark_wallet');
+    },
+
+    /**
+     * Get user permissions
+     */
+    hasPermission(permission) {
+        return authState.user && authState.user.permissions &&
+               authState.user.permissions.includes(permission);
+    },
+
+    /**
+     * Get user type for UI customization
+     */
+    getUserType() {
+        if (!authState.user) return 'guest';
+        return authState.user.user_type || 'standard';
+    },
+
+    /**
+     * Check if in demo mode
+     */
+    isDemoMode() {
+        return AUTH_CONFIG.demo_mode;
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     // Check if user is already logged in
     checkAuthStatus();
@@ -140,7 +337,11 @@ function checkAuthStatus() {
             // Get user info from token (simplified)
             try {
                 const payload = JSON.parse(atob(token.split('.')[1]));
-                authState.user = payload.user;
+                authState.user = {
+                    username: payload.username || payload.sub,
+                    role: payload.role,
+                    permissions: payload.permissions
+                };
             } catch (e) {
                 console.warn('Invalid token format');
                 clearAuthSession();

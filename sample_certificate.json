@@ -1,0 +1,57 @@
+{
+  "certificate": {
+    "serial_number": "LNFT-2025-TRM-000047-A9F2",
+    "token_id": 47,
+    "transaction_hash": "0xa43f9f75e8b2c1d6f3a9e8b5c7d2f1e4a6b8c9d0e3f5a7b9c1d3e5f7a9b0c2d4",
+    "issuer_web3_domain": "truemark.x",
+    "caleon_verification": "HASH_OF_CONTENT+SIGNATURE_1733846400000",
+    "wallet": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+    "stardate": "9530.1184",
+    "iso_timestamp": "2025-12-10T12:00:00.000Z",
+    "metadata_url": "https://ipfs.io/ipfs/QmYwAPJzv5CZsnAzt7HNWzMaRmHnSZQyWYLQK1jCQjF9gR",
+    "json_metadata": {
+      "name": "TrueMark Demo Certificate",
+      "description": "This is a demonstration certificate showcasing the TrueMark Mint system capabilities. It contains all the same information and formatting as a real NFT certificate.",
+      "creator": "TrueMark Mint Demo",
+      "creationDate": "2025-12-10",
+      "certificateType": "standard",
+      "network": "polygon",
+      "issuer": "truemark.x",
+      "verified": true,
+      "attributes": [
+        {
+          "trait_type": "Certificate Type",
+          "value": "Standard Certificate"
+        },
+        {
+          "trait_type": "Blockchain Network",
+          "value": "Polygon"
+        },
+        {
+          "trait_type": "Issuer Domain",
+          "value": "truemark.x"
+        },
+        {
+          "trait_type": "Caleon Verified",
+          "value": "Yes"
+        }
+      ]
+    }
+  },
+  "visual_certificate_html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>TrueMark Certificate - LNFT-2025-TRM-000047-A9F2</title>\n    <style>\n        body {\n            font-family: 'Times New Roman', serif;\n            margin: 0;\n            padding: 40px;\n            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);\n            color: #333;\n        }\n        .certificate-container {\n            max-width: 800px;\n            margin: 0 auto;\n            background: white;\n            border: 10px solid #2c3e50;\n            border-radius: 15px;\n            padding: 60px;\n            position: relative;\n            box-shadow: 0 20px 40px rgba(0,0,0,0.1);\n        }\n        .truemark-seal {\n            position: absolute;\n            bottom: 30px;\n            left: 30px;\n            width: 120px;\n            height: 120px;\n            opacity: 0.8;\n        }\n        .certificate-title {\n            font-size: 36px;\n            font-weight: bold;\n            color: #2c3e50;\n            text-align: center;\n            margin-bottom: 20px;\n            text-transform: uppercase;\n            letter-spacing: 2px;\n        }\n        .certificate-details {\n            display: grid;\n            grid-template-columns: 1fr 1fr;\n            gap: 15px;\n            margin: 30px 0;\n        }\n        .detail-item {\n            display: flex;\n            justify-content: space-between;\n            padding: 8px 0;\n            border-bottom: 1px solid #ecf0f1;\n        }\n        .detail-label {\n            font-weight: bold;\n            color: #2c3e50;\n            width: 200px;\n        }\n        .detail-value {\n            color: #34495e;\n            font-family: 'Courier New', monospace;\n            font-size: 0.9rem;\n            word-break: break-all;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"certificate-container\">\n        <img src=\"/assets/img/TrueMarkMintseal.png\" alt=\"TrueMark Seal\" class=\"truemark-seal\">\n        \n        <h1 class=\"certificate-title\">TrueMark Certificate</h1>\n        \n        <div class=\"certificate-details\">\n            <div class=\"detail-item\">\n                <span class=\"detail-label\">Serial Number:</span>\n                <span class=\"detail-value\">LNFT-2025-TRM-000047-A9F2</span>\n            </div>\n            <div class=\"detail-item\">\n                <span class=\"detail-label\">Web3 Domain:</span>\n                <span class=\"detail-value\">truemark.x</span>\n            </div>\n            <div class=\"detail-item\">\n                <span class=\"detail-label\">NFT Token ID:</span>\n                <span class=\"detail-value\">47</span>\n            </div>\n            <div class=\"detail-item\">\n                <span class=\"detail-label\">Blockchain Transaction:</span>\n                <span class=\"detail-value\">0xa43f9f75e8b2c1d6f3a9e8b5c7d2f1e4a6b8c9d0e3f5a7b9c1d3e5f7a9b0c2d4</span>\n            </div>\n            <div class=\"detail-item\">\n                <span class=\"detail-label\">Timestamp (ISS Stardate):</span>\n                <span class=\"detail-value\">9530.1184</span>\n            </div>\n            <div class=\"detail-item\">\n                <span class=\"detail-label\">ISO Timestamp:</span>\n                <span class=\"detail-value\">2025-12-10T12:00:00.000Z</span>\n            </div>\n            <div class=\"detail-item\">\n                <span class=\"detail-label\">Caleon Verification:</span>\n                <span class=\"detail-value\">HASH_OF_CONTENT+SIGNATURE_1733846400000</span>\n            </div>\n            <div class=\"detail-item\">\n                <span class=\"detail-label\">Owner Wallet:</span>\n                <span class=\"detail-value\">0x742d35Cc6634C0532925a3b844Bc454e4438f44e</span>\n            </div>\n            <div class=\"detail-item\">\n                <span class=\"detail-label\">Metadata URL:</span>\n                <span class=\"detail-value\">https://ipfs.io/ipfs/QmYwAPJzv5CZsnAzt7HNWzMaRmHnSZQyWYLQK1jCQjF9gR</span>\n            </div>\n        </div>\n        \n        <div style=\"text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #2c3e50;\">\n            <p style=\"color: #7f8c8d; font-size: 14px;\">\n                This certificate is verified by Caleon AI and secured on the blockchain.<br>\n                Issued by <strong>truemark.x</strong>\n            </p>\n        </div>\n    </div>\n</body>\n</html>",
+  "blockchain_info": {
+    "network": "polygon",
+    "contract_address": "0x1234567890123456789012345678901234567890",
+    "token_standard": "ERC-721",
+    "block_number": 12345678,
+    "gas_used": 210000,
+    "gas_price": "30000000000"
+  },
+  "verification_info": {
+    "caleon_status": "verified",
+    "dals_registry": "active",
+    "web3_domain_resolution": "truemark.x -> 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+    "timestamp_verification": "valid",
+    "signature_verification": "valid"
+  }
+}

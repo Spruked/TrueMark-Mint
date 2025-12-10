@@ -1,0 +1,43 @@
+{
+  "name": "caleon-worker-bubble-plugin",
+  "version": "1.0.0",
+  "description": "Bubble Host Assistant Plugin for Caleon Worker",
+  "author": "TrueMark Mint",
+  "type": "bubble-assistant",
+  "target": "caleon-worker",
+  "capabilities": [
+    "mint-assistance",
+    "certificate-verification",
+    "blockchain-integration",
+    "payment-processing"
+  ],
+  "endpoints": {
+    "health": "/api/health",
+    "mint": "/api/mint",
+    "verify": "/api/verify",
+    "status": "/api/status"
+  },
+  "dependencies": {
+    "web3": "^6.15.1",
+    "requests": "^2.31.0",
+    "flask": "^3.0.0"
+  },
+  "configuration": {
+    "backend_url": "http://truemark-backend:5000",
+    "blockchain_network": "polygon",
+    "gas_limit": 300000,
+    "timeout": 30000
+  },
+  "permissions": [
+    "read:blockchain",
+    "write:nft",
+    "read:payments",
+    "execute:transactions"
+  ],
+  "hooks": {
+    "onMintStart": "handleMintStart",
+    "onMintComplete": "handleMintComplete",
+    "onVerification": "handleVerification",
+    "onError": "handleError"
+  }
+}

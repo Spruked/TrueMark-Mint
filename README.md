@@ -6,51 +6,62 @@
 
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Blockchain](https://img.shields.io/badge/Blockchain-Ethereum-purple.svg)](https://ethereum.org)
+[![Blockchain](https://img.shields.io/badge/Blockchain-Polygon-purple.svg)](https://polygon.technology)
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg)](#)
 [![Validation](https://img.shields.io/badge/Validation-Passed-success.svg)](#production-validation)
 [![Security](https://img.shields.io/badge/Security-Hardened-orange.svg)](#security)
 
 ## ✨ **Overview**
 
-TrueMark Mint is a sophisticated digital certificate platform implementing the complete **Alpha CertSig NFT Taxonomy** with 7 specialized certificate types. Combines premium heritage branding with cutting-edge blockchain technology and comprehensive royalty management systems.
+TrueMark Mint is a sophisticated digital certificate platform implementing the **KEP-NFT (Knowledge & Expertise Preservation)** system with legal-grade documentation and institutional-quality design. Features complete DALS (Digital Asset Ledger System) integration, ChaCha20-Poly1305 encryption, and professional certificate generation with watermark and seal positioning.
 
-**Featuring Complete Alpha CertSig Implementation:**
-- **7 NFT Certificate Types**: K, L, H, E, A, C, and Lic-NFT
-- **Dual Pricing Tiers**: Entry and Premium phases with configurable switching
-- **Royalty Management**: 1.5% resale and 3% licensing royalties
-- **Multi-Network Support**: Polygon (personal) and Ethereum (enterprise)
+**Featuring Complete KEP-NFT Implementation:**
+- **Legal-Grade Certificates**: US title-style documentation with blockchain authentication
+- **DALS Integration**: Deterministic serial number generation and metadata embedding
+- **Professional Design**: Institutional-quality certificates with EB Garamond typography
+- **Multi-Network Support**: Polygon blockchain with IPFS storage
+- **Royalty Management**: Configurable licensing and resale royalties
+- **Enterprise Security**: JWT authentication, rate limiting, and encrypted backups
 
-**Certified by Alpha CertSig Mint © 2025 TrueMark LLC, an affiliate of Pro Prime Holdings.**
+**Certified by Caleon AI and secured on the blockchain.**
 
 ---
 
 ## 🎯 **Key Features**
 
-### 🏛️ **Premium Heritage Design**
-- **Sophisticated Branding**: Gold, Navy, and Pearl color palette
-- **Typography**: Merriweather serif headings with Open Sans body text
+### 🏛️ **Institutional-Quality Design**
+- **Professional Typography**: EB Garamond serif fonts with clean geometric borders
+- **Watermark & Seal Integration**: 14% opacity watermarks with positioned seals
 - **Responsive Layout**: Seamless experience across all devices
-- **Professional Polish**: Corporate-grade visual presentation
+- **Heritage Branding**: Premium visual presentation with TrueMark logo
 
 ### 🔐 **Enterprise Security**
-- **Multi-Factor Authentication**: Secure login with 2FA support
-- **Session Management**: JWT tokens with configurable expiration
+- **Multi-Factor Authentication**: Secure login with JWT tokens
+- **Session Management**: Configurable token expiration and refresh
 - **Rate Limiting**: Protection against brute force attacks
-- **Input Validation**: Comprehensive security checks
+- **Encrypted Backups**: ChaCha20-Poly1305 encryption for data security
 
-### ⚡ **Blockchain Integration**
-- **Ethereum NFT Minting**: ERC-721 standard compliance
-- **IPFS Storage**: Decentralized file storage
-- **Transaction Verification**: Immutable blockchain records
+### ⚡ **KEP-NFT Blockchain Integration**
+- **Polygon NFT Minting**: ERC-721 standard compliance
+- **IPFS Storage**: Decentralized metadata and image storage
+- **DALS Serial Numbers**: Deterministic ID generation system
+- **Web3 Domain Registration**: ENS-compatible domain system
 - **Smart Contract Integration**: Automated certificate generation
 
 ### 🛡️ **Production-Grade Error Handling**
 - **Comprehensive Error System**: User-friendly error recovery
 - **Wallet Error Handling**: MetaMask rejection and connection issues
+- **Payment Processing**: Square integration with fallback options
+- **Network Resilience**: Automatic retry and timeout handling
 - **Payment Error Recovery**: Square API and gas estimation failures
 - **Network Error Management**: Timeout and connectivity handling
 - **API Error Categorization**: 404, 429, 500 error responses with feedback
+
+### 🚀 **Interactive Demo System**
+- **Full Certificate Generation**: Experience complete minting workflow
+- **Real Data Formats**: Authentic certificate information matching NFT standards
+- **Visual Certificate Display**: Professional certificate as NFT "face"
+- **Download & Share**: Complete demo experience with realistic outputs
 
 ### 🔧 **Production Tools & Validation**
 - **Environment Synchronization**: Secure configuration management
@@ -66,36 +77,37 @@ TrueMark Mint is a sophisticated digital certificate platform implementing the c
 
 ---
 
-## 🎖️ **Alpha CertSig NFT Taxonomy**
+## 🎖️ **KEP-NFT Certificate System**
 
-### **7 Specialized Certificate Types**
+### **Knowledge & Expertise Preservation**
 
-| NFT Type | Symbol | Description | Network Priority |
-|----------|--------|-------------|------------------|
-| **Knowledge** | K | Educational credentials, training certificates, academic achievements | Polygon |
-| **Liability** | L | Legal compliance, insurance certificates, liability documentation | Ethereum |
-| **Health** | H | Medical records, health certifications, wellness documents | Ethereum |
-| **Experience** | E | Professional experience, skill verification, work history | Polygon |
-| **Asset** | A | Physical/digital asset authentication, ownership certificates | Ethereum |
-| **Compliance** | C | Regulatory compliance, standards certification, audit reports | Ethereum |
-| **License** | Lic-NFT | Professional licenses, permits, commercial authorizations | Ethereum |
+TrueMark Mint implements the **KEP-NFT (Knowledge & Expertise Preservation)** system, creating legal-grade digital certificates that preserve knowledge and expertise as titled property on the blockchain.
 
-### **Pricing Structure**
+#### **Certificate Categories**
+- **Expertise**: Professional skills, certifications, and qualifications
+- **Knowledge**: Educational achievements, training, and academic credentials
+- **Innovation**: Patents, inventions, and intellectual property
+- **Achievement**: Awards, recognitions, and accomplishments
+- **Compliance**: Regulatory compliance and standards certification
+- **Asset**: Digital/physical asset authentication and ownership
 
-#### **Entry Phase** (Basic Minting)
-- **Ethereum**: 0.01 ETH
-- **Polygon**: 15 MATIC
-- Standard NFT features
+#### **DALS Integration**
+- **Deterministic Serial Numbers**: DALS-D1A84ACB1A9C080A format
+- **Metadata Embedding**: Complete certificate data in NFT metadata
+- **IPFS Storage**: Decentralized storage with content addressing
+- **Blockchain Verification**: Immutable transaction records
 
-#### **Premium Phase** (Enhanced Features)
-- **Ethereum**: 0.05 ETH  
-- **Polygon**: 75 MATIC
-- Royalty benefits and enhanced metadata
+#### **Professional Design Standards**
+- **Typography**: EB Garamond serif fonts for institutional quality
+- **Layout**: Clean geometric borders with positioned watermarks
+- **Security Features**: QR codes, verification seals, and blockchain stamps
+- **Print Quality**: US title-style documentation suitable for legal use
 
-### **Royalty System**
-- **Resale Royalty**: 1.5% on secondary market transactions
-- **Licensing Royalty**: 3% on commercial usage and licensing
-- **EIP-2981 Compliance**: Standard royalty implementation
+### **Royalty Management**
+- **Licensing Royalty**: 3% on commercial usage and licensing agreements
+- **Resale Royalty**: 5% on secondary market transactions
+- **Creator Protection**: Configurable royalty tolerance and enforcement
+- **EIP-2981 Compliance**: Standard royalty implementation across marketplaces
 
 ---
 
@@ -104,7 +116,7 @@ TrueMark Mint is a sophisticated digital certificate platform implementing the c
 ### **Prerequisites**
 - Docker & Docker Compose
 - Git
-- Modern web browser
+- Modern web browser with MetaMask
 
 ### **1. Clone Repository**
 ```bash
@@ -114,26 +126,23 @@ cd truemark-mint
 
 ### **2. Environment Setup**
 ```bash
-# Automated environment setup with secure defaults
-node scripts/env-sync.js
-
-# Or manually copy and edit
+# Copy environment template
 cp .env.example .env
+
+# Edit with your API keys
 nano .env
-
-# Validate environment configuration
-node scripts/env-sync.js status
 ```
 
-### **3. Production Validation**
-```bash
-# Run comprehensive production readiness check
-node scripts/production-validator.js
-
-# Should output: 🎉 PRODUCTION READY!
+**Required Environment Variables:**
+```env
+SECRET_KEY=your-secure-secret-key-here
+JWT_SECRET=your-jwt-secret-here
+IPFS_NODE_URL=https://ipfs.infura.io:5001
+WEB3_PROVIDER_URL=https://polygon-rpc.com
+SQUARE_ACCESS_TOKEN=your-square-access-token
 ```
 
-### **4. Launch Application**
+### **3. Launch Application**
 ```bash
 # Start all services
 docker-compose up -d
@@ -142,10 +151,17 @@ docker-compose up -d
 docker-compose logs -f
 ```
 
-### **5. Access Application**
-- **Frontend**: http://localhost:8081 (external) / http://localhost:8080 (internal)
+### **4. Access Application**
+- **Frontend**: http://localhost:8081
 - **Backend API**: http://localhost:5000
-- **Admin Panel**: http://localhost:8081/login
+- **Demo System**: http://localhost:8081/demo-mint.html
+
+### **5. Generate Your First Certificate**
+1. Visit the demo page
+2. Fill in certificate details
+3. Connect MetaMask wallet
+4. Mint your KEP-NFT certificate
+5. Download the professional PDF certificate
 
 ---
 
@@ -153,32 +169,45 @@ docker-compose logs -f
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Frontend      │    │     Backend      │    │   Multi-Network │
-│   (Website)     │◄──►│  (Alpha Engine)  │◄──►│   Blockchain    │
+│   Frontend      │    │     Backend      │    │   Blockchain    │
+│   (Website)     │◄──►│  (Mint Engine)   │◄──►│   Networks      │
 │                 │    │                  │    │                 │
-│ • Authentication│    │ • NFT Minting    │    │ 🟣 Polygon      │
-│ • File Upload   │    │ • IPFS Storage   │    │   (Personal)    │
-│ • Network Select│    │ • Security       │    │                 │
-│ • Certificate   │    │ • API Endpoints  │    │ 💎 Ethereum     │
-│   Preview       │    │                  │    │   (Enterprise)  │
+│ • Authentication│    │ • KEP-NFT Minting│    │ 🟣 Polygon      │
+│ • File Upload   │    │ • DALS Integration│    │   (Primary)    │
+│ • Certificate   │    │ • IPFS Storage   │    │                 │
+│   Preview       │    │ • Security       │    │ 💎 Ethereum     │
+│ • Web3 Domains  │    │ • API Endpoints  │    │   (Enterprise)  │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
 
-### **Multi-Network Features**
+### **KEP-NFT Certificate Generation**
 
-#### **🟣 Polygon Network (Personal)**
-- **Cost**: $0.01 - $0.50 per mint
+#### **Frontend Layer**
+- **Certificate Builder**: Interactive form for certificate creation
+- **Preview System**: Real-time certificate visualization
+- **Wallet Integration**: MetaMask connection and transaction signing
+- **File Upload**: Drag-and-drop document and media upload
+
+#### **Backend Engine**
+- **DALS Generator**: Deterministic serial number creation
+- **Image Generation**: PIL-based certificate rendering with watermarks
+- **PDF Creation**: ReportLab professional document generation
+- **IPFS Upload**: Decentralized metadata and image storage
+- **Blockchain Minting**: Web3 integration for NFT creation
+
+#### **Blockchain Networks**
+
+##### **🟣 Polygon Network (Primary)**
+- **Cost**: ~$0.01 per certificate
 - **Speed**: 2-3 second confirmations
-- **Use Case**: Personal projects, portfolios, small creators
-- **Benefits**: Eco-friendly, affordable, fast
+- **Use Case**: Personal and professional certificates
+- **Benefits**: Fast, affordable, eco-friendly
 
-#### **💎 Ethereum Network (Enterprise)**
-- **Cost**: $15 - $50 per mint
-- **Speed**: 15-30 second confirmations  
-- **Use Case**: Commercial use, enterprise clients, high-value assets
-- **Benefits**: Maximum security, largest ecosystem, premium brand
-
-#### **Smart Network Selection**
+##### **💎 Ethereum Network (Enterprise)**
+- **Cost**: ~$15-50 per certificate
+- **Speed**: 15-30 second confirmations
+- **Use Case**: Commercial and high-value certifications
+- **Benefits**: Maximum security, largest NFT ecosystem
 - **Admin/Enterprise Users**: Auto-default to Ethereum
 - **Personal/Minter Users**: Auto-default to Polygon
 - **Manual Override**: Users can switch networks anytime

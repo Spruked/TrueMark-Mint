@@ -1,0 +1,9 @@
+#! nginx-T:\truemark-mint\nginx.conf-persistentVolumeClaim.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: nginx-t--truemark-mint-nginx-conf
+    namespace: truemark-mint
+spec:
+    storageClassName: "hostpath" # see docker/desktop-storage-provisioner
