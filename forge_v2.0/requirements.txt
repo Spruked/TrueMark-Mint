@@ -1,0 +1,4 @@
+reportlab==4.0.0
+Pillow==9.5.0
+qrcode==7.4.2
+ed25519==1.5
