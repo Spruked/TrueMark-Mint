@@ -75,6 +75,24 @@ services:
       - truemark-network
     restart: unless-stopped
 
+  # Certificate Forge v2.0 Service
+  forge:
+    build:
+      context: .
+      dockerfile: Dockerfile.forge
+    container_name: truemark-forge
+    volumes:
+      - ./forge_v2.0/vault_system:/app/vault_system
+      - ./forge_v2.0/keys:/app/keys
+      - ./forge_v2.0/templates:/app/templates
+      - ./forge_v2.0/fonts:/app/fonts
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - truemark-network
+    restart: unless-stopped
+    command: tail -f /dev/null  # Keep container running
+
 networks:
   truemark-network:
     driver: bridge

@@ -1,0 +1,47 @@
+# TrueMark Certificate Forge v2.0
+# Docker configuration for forensic certificate generation
+
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libcairo2-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy forge requirements
+COPY forge_v2.0/requirements.txt ./
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy forge system files
+COPY forge_v2.0/ ./
+
+# Create necessary directories
+RUN mkdir -p vault_system/certificates/issued \
+             vault_system/workers \
+             vault_system/fusion_queue \
+             keys \
+             templates \
+             fonts \
+             /tmp
+
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+# Expose API port (for future REST API)
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import sys; sys.exit(0)"
+
+# Default command shows help
+CMD ["python", "certificate_forge.py", "--help"]
