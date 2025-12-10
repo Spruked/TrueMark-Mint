@@ -2,9 +2,15 @@
 from pathlib import Path
 from datetime import datetime
 import asyncio
+import sys
+
+# Add vault_system to path for SKG imports
+sys.path.insert(0, str(Path(__file__).parent / "vault_system" / "skg_core"))
+
 from forensic_renderer import ForensicCertificateRenderer
 from crypto_anchor import CryptoAnchorEngine
 from integration_bridge import VaultFusionBridge
+from skg_integration import CertificateSKGBridge
 
 class TrueMarkForge:
     """
@@ -16,6 +22,7 @@ class TrueMarkForge:
         self.vault = VaultFusionBridge(vault_base_path)
         self.renderer = ForensicCertificateRenderer()
         self.crypto = CryptoAnchorEngine()
+        self.skg_bridge = CertificateSKGBridge(vault_base_path)
 
     async def mint_official_certificate(self, metadata: dict) -> dict:
         """
@@ -47,7 +54,6 @@ class TrueMarkForge:
             data={**metadata, **payload, **signature_bundle},
             output_dir=self.vault.certificates_path
         )
-
         # 5. WorkerVaultWriter log (creates immutable record)
         vault_txn = await self.vault.record_certificate_issuance(
             worker_id="certificate_forge_worker_001",
@@ -57,11 +63,18 @@ class TrueMarkForge:
             signature=signature_bundle['ed25519_signature']
         )
 
-        # 6. FusionQueue swarm broadcast (global asset awareness)
+        # 5.5. SKG Integration (NEW - Swarm Knowledge Graph ingestion)
+        skg_payload = await self.skg_bridge.on_certificate_minted(
+            certificate_data={**metadata, **payload, **signature_bundle},
+            vault_txn_id=vault_txn
+        )
+
+        # 6. FusionQueue swarm broadcast (global asset awareness with SKG)
         swarm_txn = await self.vault.broadcast_to_swarm({
             "event_type": "CERTIFICATE_MINTED",
             "dals_serial": dals_serial,
             "vault_txn": vault_txn,
+            "skg_payload": skg_payload,  # Include SKG data
             "asset_metadata": payload
         })
 

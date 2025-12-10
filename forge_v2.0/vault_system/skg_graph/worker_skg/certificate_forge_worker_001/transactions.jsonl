@@ -1,0 +1,2 @@
+{"transaction_id": "SKG_TXN_certificate_forge_worker_001_1765429968431856", "event_type": "CERTIFICATE_INGESTION", "timestamp": "2025-12-10T23:12:48.431856Z", "worker_id": "certificate_forge_worker_001", "node_count": 3, "edge_count": 3}
+{"transaction_id": "SKG_TXN_certificate_forge_worker_001_1765429979766845", "event_type": "CERTIFICATE_INGESTION", "timestamp": "2025-12-10T23:12:59.766845Z", "worker_id": "certificate_forge_worker_001", "node_count": 3, "edge_count": 3}
