@@ -361,6 +361,34 @@
         <img src="assets/img/TrueMarkMintseal.png" alt="TrueMark Mint Seal" class="seal-image">
     </div>
 
+    <!-- Bubble Host Assistant -->
+    <div id="bubbleHost" class="bubble-host">
+        <div class="bubble-host-header">
+            <div class="bubble-host-icon">🤖</div>
+            <div class="bubble-host-title">Caleon Assistant</div>
+            <div class="bubble-host-status">Online</div>
+        </div>
+        <div class="bubble-host-content">
+            <div class="bubble-message">
+                <p>👋 Hi! I'm your Caleon assistant. I can help you with:</p>
+                <ul>
+                    <li>Certificate generation guidance</li>
+                    <li>Network selection advice</li>
+                    <li>Minting process support</li>
+                    <li>Authentication assistance</li>
+                </ul>
+            </div>
+            <div class="bubble-actions">
+                <button class="bubble-btn" onclick="showBubbleHelp('mint')">Help with Minting</button>
+                <button class="bubble-btn" onclick="showBubbleHelp('network')">Network Info</button>
+                <button class="bubble-btn" onclick="showBubbleHelp('auth')">Login Help</button>
+            </div>
+        </div>
+        <div class="bubble-host-toggle" onclick="toggleBubbleHost()">
+            💬
+        </div>
+    </div>
+
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/demo-mint.js"></script>

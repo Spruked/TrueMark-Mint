@@ -582,3 +582,47 @@ function resetDemo() {
     showDemoStep(1);
     updateDemoStepIndicator();
 }
+
+// Bubble Host Assistant Functions
+function toggleBubbleHost() {
+    const bubbleHost = document.getElementById('bubbleHost');
+    bubbleHost.classList.toggle('collapsed');
+}
+
+function showBubbleHelp(type) {
+    const messages = {
+        mint: "To mint a certificate, fill out the asset information, select your NFT type, choose a blockchain network, and click 'Generate Certificate'. The system will create a professional certificate with blockchain verification.",
+        network: "Polygon offers fast, low-cost transactions perfect for most certificates. Ethereum provides maximum security and ecosystem compatibility for enterprise use.",
+        auth: "To access full minting features, click 'Login for Full Access' and authenticate with your credentials. The demo mode allows you to experience the full process without authentication."
+    };
+
+    // Update bubble message
+    const messageDiv = document.querySelector('.bubble-message');
+    messageDiv.innerHTML = `
+        <p>${messages[type]}</p>
+        <button class="bubble-btn" onclick="resetBubbleMessage()" style="margin-top: 10px;">Got it!</button>
+    `;
+}
+
+function resetBubbleMessage() {
+    const messageDiv = document.querySelector('.bubble-message');
+    messageDiv.innerHTML = `
+        <p>👋 Hi! I'm your Caleon assistant. I can help you with:</p>
+        <ul>
+            <li>Certificate generation guidance</li>
+            <li>Network selection advice</li>
+            <li>Minting process support</li>
+            <li>Authentication assistance</li>
+        </ul>
+    `;
+}
+
+// Initialize bubble host on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Bubble host starts expanded for demo
+    const bubbleHost = document.getElementById('bubbleHost');
+    if (bubbleHost) {
+        // Start expanded to show the Caleon assistant
+        // bubbleHost.classList.remove('collapsed');
+    }
+});

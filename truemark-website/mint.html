@@ -621,9 +621,26 @@
         document.addEventListener('DOMContentLoaded', async function() {
             try {
                 // Check if user is authenticated
-                const authResult = await WalletAuth.verifyAuthentication();
+                const token = localStorage.getItem('truemark_token');
+                const user = localStorage.getItem('truemark_user');
 
-                if (!authResult.authenticated) {
+                if (token && user) {
+                    // Check if it's a demo token (starts with 'demo_')
+                    if (token.startsWith('demo_')) {
+                        console.log('Demo authentication detected, allowing access');
+                        // Set auth state for demo mode
+                        authState.isAuthenticated = true;
+                        authState.token = token;
+                        authState.user = JSON.parse(user);
+                    } else {
+                        // Verify real token with backend
+                        const authResult = await WalletAuth.verifyAuthentication();
+                        if (!authResult.authenticated) {
+                            window.location.href = 'login.html';
+                            return;
+                        }
+                    }
+                } else {
                     // Check if demo mode is requested
                     const urlParams = new URLSearchParams(window.location.search);
                     const isDemoMode = urlParams.get('demo') === 'true';
@@ -640,10 +657,17 @@
 
             } catch (error) {
                 console.error('Authentication check failed:', error);
-                // On error, redirect to login unless in demo mode
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('demo') !== 'true') {
-                    window.location.href = 'login.html';
+                // On error, check for demo token
+                const token = localStorage.getItem('truemark_token');
+                if (token && token.startsWith('demo_')) {
+                    console.log('Demo token found despite error, allowing access');
+                    authState.isAuthenticated = true;
+                } else {
+                    // Redirect to login unless in demo mode
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('demo') !== 'true') {
+                        window.location.href = 'login.html';
+                    }
                 }
             }
         });

@@ -604,27 +604,17 @@ async function authenticateUserDemo(username, password) {
  * Generate demo JWT token for development
  */
 function generateDemoToken(username, role) {
-    const header = btoa(JSON.stringify({
-        typ: 'JWT',
-        alg: 'HS256',
-        kid: 'truemark-demo'
-    }));
-    
-    const payload = btoa(JSON.stringify({
-        sub: username,
+    // Create a demo token that starts with 'demo_' for easy identification
+    const tokenData = {
+        type: 'demo',
         username: username,
         role: role,
-        iss: 'truemark-mint',
-        aud: 'truemark-clients',
-        iat: Math.floor(Date.now() / 1000),
-        exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), // 24 hours
+        timestamp: Date.now(),
         permissions: role === 'admin' ? ['mint', 'verify', 'manage', 'admin'] : 
                     role === 'minter' ? ['mint', 'verify'] : ['mint']
-    }));
+    };
     
-    const signature = btoa('demo_signature_' + Math.random().toString(36).substr(2, 16));
-    
-    return `${header}.${payload}.${signature}`;
+    return 'demo_' + btoa(JSON.stringify(tokenData));
 }
 
 /**
