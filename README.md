@@ -10,36 +10,69 @@
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg)](#)
 [![Validation](https://img.shields.io/badge/Validation-Passed-success.svg)](#production-validation)
 [![Security](https://img.shields.io/badge/Security-Hardened-orange.svg)](#security)
+[![Forge](https://img.shields.io/badge/Forge-v2.0-gold.svg)](#certificate-forge-v20)
 
 ## ✨ **Overview**
 
-TrueMark Mint is a sophisticated digital certificate platform implementing the **KEP-NFT (Knowledge & Expertise Preservation)** system with legal-grade documentation and institutional-quality design. Features complete DALS (Digital Asset Ledger System) integration, ChaCha20-Poly1305 encryption, and professional certificate generation with watermark and seal positioning.
+TrueMark Mint is a sophisticated digital certificate platform implementing the **KEP-NFT (Knowledge & Expertise Preservation)** system with legal-grade documentation and institutional-quality design. Features complete DALS (Digital Asset Ledger System) integration, Ed25519 cryptographic signing, and **enterprise-grade Certificate Forge v2.0** with forensic rendering.
 
 **Featuring Complete KEP-NFT Implementation:**
+- **🔥 Certificate Forge v2.0**: Forensic-grade PDF generation with anti-AI micro-artifacts
 - **Legal-Grade Certificates**: US title-style documentation with blockchain authentication
+- **Cryptographic Anchoring**: Ed25519 digital signatures with SHA-256 payload hashing
 - **DALS Integration**: Deterministic serial number generation and metadata embedding
-- **Professional Design**: Institutional-quality certificates with EB Garamond typography
+- **Professional Design**: Institutional-quality certificates with forensic security features
 - **Multi-Network Support**: Polygon blockchain with IPFS storage
-- **Royalty Management**: Configurable licensing and resale royalties
+- **Vault System**: Immutable audit logging with swarm broadcasting
 - **Enterprise Security**: JWT authentication, rate limiting, and encrypted backups
 
 **Certified by Caleon AI and secured on the blockchain.**
 
 ---
 
+## 🔥 **NEW: Certificate Forge v2.0**
+
+### Revolutionary Certificate Generation System
+
+The TrueMark Certificate Forge v2.0 combines **visual authenticity** with **cryptographic immutability** to create legally-acceptable, bank-grade certificates that are mathematically unforgeable.
+
+**Key Features:**
+- **10 Layers of Security**: Parchment textures, guilloche borders, watermarks, embossed seals, QR codes, officer signatures, micro-noise, and cryptographic metadata
+- **Anti-AI Forensic Markers**: Micro-noise patterns, kerning variance, and baseline drift that AI cannot replicate
+- **Ed25519 Digital Signatures**: 128-bit security level with blockchain anchoring
+- **Vault Integration**: Immutable audit logging with worker event tracking
+- **Swarm Broadcasting**: Distributed consensus validation across guardian nodes
+- **< 5 Second Generation**: Async workflow for instant certificate delivery
+
+**Learn More:** [Certificate Forge v2.0 Documentation](forge_v2.0/README.md)
+
+**Quick Start:**
+```bash
+cd forge_v2.0
+python certificate_forge.py \
+  --owner "Customer Name" \
+  --wallet "0xAddress" \
+  --title "Asset Title" \
+  --ipfs "ipfs://hash" \
+  --category "Knowledge"
+```
+
+---
+
 ## 🎯 **Key Features**
 
 ### 🏛️ **Institutional-Quality Design**
-- **Professional Typography**: EB Garamond serif fonts with clean geometric borders
-- **Watermark & Seal Integration**: 14% opacity watermarks with positioned seals
+- **Professional Typography**: EB Garamond serif fonts with forensic security features
+- **Watermark & Seal Integration**: 12% opacity watermarks with embossed gold seals
 - **Responsive Layout**: Seamless experience across all devices
 - **Heritage Branding**: Premium visual presentation with TrueMark logo
 
 ### 🔐 **Enterprise Security**
 - **Multi-Factor Authentication**: Secure login with JWT tokens
+- **Ed25519 Cryptographic Signing**: Military-grade digital signatures
 - **Session Management**: Configurable token expiration and refresh
 - **Rate Limiting**: Protection against brute force attacks
-- **Encrypted Backups**: ChaCha20-Poly1305 encryption for data security
+- **Vault System**: Immutable audit trails with consensus validation
 
 ### ⚡ **KEP-NFT Blockchain Integration**
 - **Polygon NFT Minting**: ERC-721 standard compliance
