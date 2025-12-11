@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - TrueMark Mint</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/bryan-spruk.png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .checkout-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .checkout-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .checkout-steps {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .step.active {
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5b4 100%);
+            color: #1a1a2e;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .checkout-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+        
+        .checkout-main {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .payment-methods {
+            margin-bottom: 30px;
+        }
+        
+        .payment-method {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .payment-method:hover {
+            border-color: #d4af37;
+        }
+        
+        .payment-method.selected {
+            border-color: #d4af37;
+            background: #fafaf8;
+        }
+        
+        .payment-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .payment-icon {
+            font-size: 32px;
+        }
+        
+        .payment-name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .payment-description {
+            font-size: 14px;
+            color: #666;
+            margin-left: 47px;
+        }
+        
+        .payment-form {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .payment-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .wallet-connect-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #f6851b 0%, #e2761b 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .wallet-connect-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .wallet-connected {
+            padding: 15px;
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkout-summary {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+        }
+        
+        .summary-items {
+            margin-bottom: 20px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .summary-totals {
+            margin-top: 20px;
+        }
+        
+        .summary-total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .place-order-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .place-order-btn:hover {
+            transform: scale(1.02);
+        }
+        
+        .place-order-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .security-notice {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f8ff;
+            border-radius: 8px;
+            font-size: 13px;
+            text-align: center;
+        }
+        
+        .processing-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .processing-overlay.active {
+            display: flex;
+        }
+        
+        .processing-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #d4af37;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/img/treumarkbrown1600.png" alt="TrueMark Mint Logo">
+                <span>TrueMark Mint</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                <li class="nav-item"><a href="cart.html" class="nav-link">Cart</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="checkout-container">
+        <div class="checkout-header">
+            <h1>💳 Checkout</h1>
+            <p>Complete your order securely</p>
+        </div>
+
+        <div class="checkout-steps">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <span>Payment</span>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <span>Review</span>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <span>Complete</span>
+            </div>
+        </div>
+
+        <div class="checkout-content">
+            <div class="checkout-main">
+                <h2>Select Payment Method</h2>
+                
+                <div class="payment-methods">
+                    <!-- MetaMask Payment -->
+                    <div class="payment-method" data-method="metamask" onclick="selectPaymentMethod('metamask')">
+                        <div class="payment-header">
+                            <div class="payment-icon">🦊</div>
+                            <div>
+                                <div class="payment-name">MetaMask (Crypto)</div>
+                                <div class="payment-description">Pay with Ethereum or other supported cryptocurrencies</div>
+                            </div>
+                        </div>
+                        <div class="payment-form" id="metamaskForm">
+                            <div id="walletStatus"></div>
+                            <button class="wallet-connect-btn" id="connectWalletBtn" onclick="connectMetaMask()">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" width="24" height="24">
+                                Connect MetaMask Wallet
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Credit Card Payment -->
+                    <div class="payment-method" data-method="card" onclick="selectPaymentMethod('card')">
+                        <div class="payment-header">
+                            <div class="payment-icon">💳</div>
+                            <div>
+                                <div class="payment-name">Credit / Debit Card</div>
+                                <div class="payment-description">Secure payment via Stripe</div>
+                            </div>
+                        </div>
+                        <div class="payment-form" id="cardForm">
+                            <div class="form-group">
+                                <label class="form-label">Card Number</label>
+                                <input type="text" class="form-input" placeholder="1234 5678 9012 3456" id="cardNumber" maxlength="19">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Cardholder Name</label>
+                                <input type="text" class="form-input" placeholder="John Doe" id="cardName">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Expiry Date</label>
+                                    <input type="text" class="form-input" placeholder="MM/YY" id="cardExpiry" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">CVV</label>
+                                    <input type="text" class="form-input" placeholder="123" id="cardCVV" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PayPal Payment -->
+                    <div class="payment-method" data-method="paypal" onclick="selectPaymentMethod('paypal')">
+                        <div class="payment-header">
+                            <div class="payment-icon">🅿️</div>
+                            <div>
+                                <div class="payment-name">PayPal</div>
+                                <div class="payment-description">Pay with your PayPal account</div>
+                            </div>
+                        </div>
+                        <div class="payment-form" id="paypalForm">
+                            <p>You will be redirected to PayPal to complete your payment securely.</p>
+                            <div id="paypal-button-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-summary">
+                <h3>Order Summary</h3>
+                <div class="summary-items" id="summaryItems"></div>
+                
+                <div class="summary-totals">
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <span id="checkoutSubtotal">$0.00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Processing Fee (2%)</span>
+                        <span id="checkoutFee">$0.00</span>
+                    </div>
+                    <div class="summary-total-row">
+                        <span>Total</span>
+                        <span id="checkoutTotal">$0.00</span>
+                    </div>
+                </div>
+                
+                <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()" disabled>
+                    Place Order
+                </button>
+                
+                <div class="security-notice">
+                    🔒 Secure payment processing<br>
+                    Your payment information is encrypted and secure
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Processing Overlay -->
+    <div class="processing-overlay" id="processingOverlay">
+        <div class="processing-content">
+            <div class="spinner"></div>
+            <h3 id="processingTitle">Processing Payment...</h3>
+            <p id="processingMessage">Please wait while we process your transaction</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        let selectedPaymentMethod = null;
+        let walletConnected = false;
+        let walletAddress = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOrderSummary();
+            formatCardInputs();
+        });
+
+        function loadOrderSummary() {
+            const cart = JSON.parse(localStorage.getItem('truemark_cart') || '[]');
+            
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                window.location.href = 'cart.html';
+                return;
+            }
+            
+            const summaryItems = document.getElementById('summaryItems');
+            summaryItems.innerHTML = cart.map(item => `
+                <div class="summary-item">
+                    <span>${item.icon} ${item.name} (${item.quantity}x)</span>
+                    <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+            `).join('');
+            
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const fee = subtotal * 0.02;
+            const total = subtotal + fee;
+            
+            document.getElementById('checkoutSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('checkoutFee').textContent = `$${fee.toFixed(2)}`;
+            document.getElementById('checkoutTotal').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Update UI
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.querySelector(`[data-method="${method}"]`).classList.add('selected');
+            
+            // Show/hide forms
+            document.querySelectorAll('.payment-form').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById(`${method}Form`).classList.add('active');
+            
+            // Enable place order button based on method
+            updatePlaceOrderButton();
+        }
+
+        function updatePlaceOrderButton() {
+            const btn = document.getElementById('placeOrderBtn');
+            
+            if (selectedPaymentMethod === 'metamask') {
+                btn.disabled = !walletConnected;
+            } else {
+                btn.disabled = false;
+            }
+        }
+
+        async function connectMetaMask() {
+            if (typeof window.ethereum === 'undefined') {
+                alert('Please install MetaMask to use crypto payments');
+                window.open('https://metamask.io/download/', '_blank');
+                return;
+            }
+
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                walletAddress = accounts[0];
+                walletConnected = true;
+                
+                document.getElementById('walletStatus').innerHTML = `
+                    <div class="wallet-connected">
+                        <span style="font-size: 24px;">✓</span>
+                        <div>
+                            <div style="font-weight: 700;">Wallet Connected</div>
+                            <div style="font-size: 12px; font-family: monospace;">${walletAddress.substring(0, 8)}...${walletAddress.substring(walletAddress.length - 6)}</div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('connectWalletBtn').style.display = 'none';
+                updatePlaceOrderButton();
+                
+            } catch (error) {
+                console.error('MetaMask connection failed:', error);
+                alert('Failed to connect wallet. Please try again.');
+            }
+        }
+
+        async function placeOrder() {
+            if (!selectedPaymentMethod) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            const cart = JSON.parse(localStorage.getItem('truemark_cart') || '[]');
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = subtotal * 1.02;
+
+            showProcessing();
+
+            try {
+                if (selectedPaymentMethod === 'metamask') {
+                    await processMetaMaskPayment(total);
+                } else if (selectedPaymentMethod === 'card') {
+                    await processCardPayment(total);
+                } else if (selectedPaymentMethod === 'paypal') {
+                    await processPayPalPayment(total);
+                }
+                
+                // Success!
+                hideProcessing();
+                localStorage.removeItem('truemark_cart');
+                
+                // Show success message
+                alert('✅ Payment successful! Your certificates are being minted.');
+                window.location.href = 'dashboard.html';
+                
+            } catch (error) {
+                hideProcessing();
+                alert('❌ Payment failed: ' + error.message);
+            }
+        }
+
+        async function processMetaMaskPayment(amount) {
+            document.getElementById('processingTitle').textContent = 'Processing Crypto Payment...';
+            
+            // Convert USD to ETH (mock conversion rate: 1 ETH = $3000)
+            const ethAmount = (amount / 3000).toFixed(6);
+            
+            const web3 = new Web3(window.ethereum);
+            const transactionParameters = {
+                to: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb', // TrueMark treasury wallet
+                from: walletAddress,
+                value: web3.utils.toHex(web3.utils.toWei(ethAmount, 'ether'))
+            };
+
+            await window.ethereum.request({
+                method: 'eth_sendTransaction',
+                params: [transactionParameters],
+            });
+        }
+
+        async function processCardPayment(amount) {
+            document.getElementById('processingTitle').textContent = 'Processing Card Payment...';
+            
+            // Simulate card payment processing
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // In production, integrate with Stripe API
+                    resolve();
+                }, 2000);
+            });
+        }
+
+        async function processPayPalPayment(amount) {
+            document.getElementById('processingTitle').textContent = 'Processing PayPal Payment...';
+            
+            // Simulate PayPal payment
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // In production, integrate with PayPal SDK
+                    resolve();
+                }, 2000);
+            });
+        }
+
+        function showProcessing() {
+            document.getElementById('processingOverlay').classList.add('active');
+        }
+
+        function hideProcessing() {
+            document.getElementById('processingOverlay').classList.remove('active');
+        }
+
+        function formatCardInputs() {
+            const cardNumber = document.getElementById('cardNumber');
+            const cardExpiry = document.getElementById('cardExpiry');
+            
+            cardNumber.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s/g, '');
+                let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                e.target.value = formattedValue;
+            });
+            
+            cardExpiry.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    e.target.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                } else {
+                    e.target.value = value;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

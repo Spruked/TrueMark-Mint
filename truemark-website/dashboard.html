@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TrueMark Mint</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/bryan-spruk.png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-align: space-between;
+            align-items: center;
+        }
+        
+        .user-info h1 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+        
+        .user-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .dashboard-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        
+        .card-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .card-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .certificates-list {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .certificate-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: all 0.2s;
+        }
+        
+        .certificate-item:hover {
+            border-color: #d4af37;
+            background: #fafaf8;
+        }
+        
+        .cert-info {
+            flex: 1;
+        }
+        
+        .cert-serial {
+            font-weight: 700;
+            font-size: 16px;
+            color: #1a1a2e;
+            margin-bottom: 5px;
+        }
+        
+        .cert-details {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .cert-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .cert-badge.knowledge { background: #e3f2fd; color: #1976d2; }
+        .cert-badge.legacy { background: #f3e5f5; color: #7b1fa2; }
+        .cert-badge.honor { background: #fff3e0; color: #f57c00; }
+        .cert-badge.elite { background: #fce4ec; color: #c2185b; }
+        .cert-badge.authority { background: #e8f5e9; color: #388e3c; }
+        .cert-badge.crown { background: #fff9c4; color: #f57f17; }
+        
+        .cert-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .quick-action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5b4 100%);
+            color: #1a1a2e;
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .wallet-connected {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+        
+        .wallet-address {
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4caf50;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #d4af37;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/img/treumarkbrown1600.png" alt="TrueMark Mint Logo">
+                <span>TrueMark Mint</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+                <li class="nav-item"><a href="mint.html" class="nav-link">Mint</a></li>
+                <li class="nav-item"><a href="cart.html" class="nav-link">Cart <span id="cartCount" class="cart-badge">0</span></a></li>
+                <li class="nav-item"><a href="#" onclick="logout()" class="nav-link">Logout</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- User Header -->
+        <div class="dashboard-header">
+            <div class="user-info">
+                <h1>Welcome, <span id="userName">User</span>!</h1>
+                <div class="wallet-connected" id="walletInfo" style="display: none;">
+                    <div class="status-indicator"></div>
+                    <span>Wallet:</span>
+                    <span class="wallet-address" id="walletAddress">0x...</span>
+                </div>
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <div>
+                            <div class="stat-value" id="totalCertificates">0</div>
+                            <div class="stat-label">Certificates</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div>
+                            <div class="stat-value" id="cartItems">0</div>
+                            <div class="stat-label">Cart Items</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div>
+                            <div class="stat-value" id="userRole">User</div>
+                            <div class="stat-label">Role</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-actions">
+                <button class="quick-action-btn btn-primary" onclick="window.location.href='mint.html'">
+                    ✨ Mint Certificate
+                </button>
+                <button class="quick-action-btn btn-secondary" onclick="window.location.href='cart.html'">
+                    🛒 View Cart
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Actions Grid -->
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="card-icon">🏛️</div>
+                <div class="card-title">Mint New Certificate</div>
+                <div class="card-description">Create a new blockchain-verified certificate for your digital assets</div>
+                <button class="quick-action-btn btn-primary" onclick="window.location.href='mint.html'">Start Minting</button>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-icon">🛒</div>
+                <div class="card-title">Shopping Cart</div>
+                <div class="card-description">Review and checkout your selected certificates and NFT types</div>
+                <button class="quick-action-btn btn-primary" onclick="window.location.href='cart.html'">
+                    View Cart (<span id="cartCountText">0</span>)
+                </button>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-icon">📚</div>
+                <div class="card-title">My Certificates</div>
+                <div class="card-description">View, download, and manage all your minted certificates</div>
+                <button class="quick-action-btn btn-secondary" onclick="scrollToCertificates()">View All</button>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-icon">💳</div>
+                <div class="card-title">Payment Methods</div>
+                <div class="card-description">Connect MetaMask wallet or add payment methods for checkout</div>
+                <button class="quick-action-btn btn-secondary" id="connectWalletBtn" onclick="connectMetaMask()">
+                    Connect MetaMask
+                </button>
+            </div>
+        </div>
+
+        <!-- Certificates List -->
+        <div class="certificates-list">
+            <h2>My Certificates</h2>
+            <div id="certificatesContainer" class="loading">
+                <div class="spinner"></div>
+                <p>Loading your certificates...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="assets/img/treumarkbrown1600.png" alt="TrueMark Mint Logo">
+                        <span>TrueMark Mint</span>
+                    </div>
+                    <p>Where heritage meets modern proof</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="mint.html">Mint</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="contact.html">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TrueMark LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script>
+        // Dashboard initialization
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication
+            if (!isAuthenticated()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Load user data
+            const user = JSON.parse(localStorage.getItem('truemark_user') || '{}');
+            const wallet = localStorage.getItem('truemark_wallet');
+            
+            document.getElementById('userName').textContent = user.username || user.wallet_address || 'User';
+            document.getElementById('userRole').textContent = user.role || 'User';
+            
+            if (wallet) {
+                document.getElementById('walletInfo').style.display = 'flex';
+                document.getElementById('walletAddress').textContent = 
+                    wallet.substring(0, 6) + '...' + wallet.substring(wallet.length - 4);
+                document.getElementById('connectWalletBtn').textContent = '✓ Wallet Connected';
+            }
+
+            // Update cart count
+            updateCartCount();
+
+            // Load certificates
+            loadCertificates();
+        });
+
+        function isAuthenticated() {
+            const token = localStorage.getItem('truemark_token');
+            const expiry = localStorage.getItem('truemark_session_expiry');
+            
+            if (!token || !expiry) return false;
+            
+            return new Date().getTime() < parseInt(expiry);
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('truemark_cart') || '[]');
+            document.getElementById('cartCount').textContent = cart.length;
+            document.getElementById('cartItems').textContent = cart.length;
+            document.getElementById('cartCountText').textContent = cart.length;
+        }
+
+        async function loadCertificates() {
+            const container = document.getElementById('certificatesContainer');
+            
+            // Simulate loading certificates (replace with actual API call)
+            setTimeout(() => {
+                const mockCertificates = JSON.parse(localStorage.getItem('user_certificates') || '[]');
+                
+                document.getElementById('totalCertificates').textContent = mockCertificates.length;
+                
+                if (mockCertificates.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📄</div>
+                            <h3>No certificates yet</h3>
+                            <p>Start minting your first certificate to see it here</p>
+                            <button class="quick-action-btn btn-primary" onclick="window.location.href='mint.html'">
+                                Mint Your First Certificate
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = mockCertificates.map(cert => `
+                        <div class="certificate-item">
+                            <div class="cert-info">
+                                <div class="cert-serial">
+                                    ${cert.serial}
+                                    <span class="cert-badge ${cert.type.toLowerCase()}">${cert.type}</span>
+                                </div>
+                                <div class="cert-details">
+                                    ${cert.title} • Minted on ${new Date(cert.date).toLocaleDateString()}
+                                </div>
+                            </div>
+                            <div class="cert-actions">
+                                <button class="quick-action-btn btn-secondary" onclick="viewCertificate('${cert.serial}')">
+                                    View
+                                </button>
+                                <button class="quick-action-btn btn-secondary" onclick="downloadCertificate('${cert.serial}')">
+                                    Download
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }, 1000);
+        }
+
+        function scrollToCertificates() {
+            document.querySelector('.certificates-list').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function connectMetaMask() {
+            if (typeof window.ethereum === 'undefined') {
+                alert('Please install MetaMask to connect your wallet');
+                window.open('https://metamask.io/download/', '_blank');
+                return;
+            }
+
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const wallet = accounts[0];
+                
+                localStorage.setItem('truemark_wallet', wallet);
+                document.getElementById('walletInfo').style.display = 'flex';
+                document.getElementById('walletAddress').textContent = 
+                    wallet.substring(0, 6) + '...' + wallet.substring(wallet.length - 4);
+                document.getElementById('connectWalletBtn').textContent = '✓ Wallet Connected';
+                
+                alert('Wallet connected successfully!');
+            } catch (error) {
+                console.error('MetaMask connection failed:', error);
+                alert('Failed to connect wallet. Please try again.');
+            }
+        }
+
+        function viewCertificate(serial) {
+            alert('Viewing certificate: ' + serial);
+            // Implement certificate viewer
+        }
+
+        function downloadCertificate(serial) {
+            alert('Downloading certificate: ' + serial);
+            // Implement download
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('truemark_token');
+                localStorage.removeItem('truemark_session_expiry');
+                localStorage.removeItem('truemark_user');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>
